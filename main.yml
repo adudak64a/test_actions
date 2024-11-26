@@ -1,0 +1,10 @@
+---
+- name: "TEST"
+  host: "localhost"
+
+  vars:
+
+  tasks:
+
+    - name: "DEBUG"
+      debug: msg="!!!!!!!!!!!!!!"
