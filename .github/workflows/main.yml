@@ -10,7 +10,8 @@ jobs:
   send_message:
     name: "Send slack message"
     runs-on: ubuntu-latest
-
+    
+    steps:
       - name: "Send Slack notification"
         id: send-fail-message
         uses: rtCamp/action-slack-notify@v2
