@@ -17,7 +17,7 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_CHANNEL: "mig-trash"
-          SLACK_TOKEN: ${{ secrets.TEST_TOKEN }}
+          SLACK_TOKEN: ${{ secrets.SLACK_CHANNEL }}
           SLACK_MESSAGE: "It's a test message"
           SLACK_COLOR: "failure"
           SLACK_USERNAME: "borg-sphere"
