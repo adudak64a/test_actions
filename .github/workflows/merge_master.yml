@@ -2,7 +2,7 @@
 
 env:
   SEARCH_PATTERN: "[_AUTO_] - pull-request"
-  MASTER_BRANCH_NAME: "main"
+  MASTER_BRANCH_NAME: "master"
   STAGING_BRANCH_NAME: "staging"
   SLACK_CHANNEL: "mig-trash"
 
