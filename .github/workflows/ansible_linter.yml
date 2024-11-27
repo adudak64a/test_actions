@@ -62,7 +62,6 @@ jobs:
                 .join(' ');
             require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `filesNames=${JSON.stringify(filesNames)}\n`);
             console.log(filesNames)
-            console.log(needs.check_pull_request_title.outputs.isLinterSkipped)
 
       - name: "Checkout source branch"
         id: checkout-scm
