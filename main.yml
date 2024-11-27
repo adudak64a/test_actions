@@ -8,7 +8,7 @@
 
     - name: "DEBUG"
       debug:
-        msg: 
+        msg:
           - "!ddd!!!ssssdddddd!!!!!!ddddd!!ddddddddeeeeedddddddddddddddddddd!!"
           - "ddddddd3"
-          - 233
+          - 222233
