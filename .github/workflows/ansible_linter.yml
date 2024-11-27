@@ -1,6 +1,6 @@
 # We need branch protection rule for all below to have purpose
 env:
-  PULL_REQUEST_HEADER: "[_MANUAL_] - skip linter"
+  PULL_REQUEST_TITLE: "[_MANUAL_] - skip linter"
 
 permissions:
   pull-requests: write
@@ -29,16 +29,20 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            let isLinterSkipped = false;
             const pullRequests = ( await github.rest.pulls.list({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            pull_number: ${{ github.event.number }}
-            })).data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_HEADER }}'))
-            console.log(pullRequests)
+            pull_number: ${{ github.event.number }} });
+            if (pullRequest.data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_TITLE }}')) { isLinterSkipped = true };
+            console.log(isLinterSkipped)
 
   run_ansible_lint:
     name: "Run ansible-lint"
     runs-on: ubuntu-latest
+    needs: ['check_pull_requet_title']
+    if: needs.check_pull_requet_title.outputs.isLinterSkipped == 'true'
+
 
     steps:
       - name: "Get list of changed files"
