@@ -36,6 +36,7 @@ jobs:
             pull_number: ${{ github.event.number }} });
             if (pullRequest.data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_TITLE }}')) != []) { isLinterSkipped = true }
             console.log(isLinterSkipped)
+            console.log((pullRequest.data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_TITLE }}')))
 
   run_ansible_lint:
     name: "Run ansible-lint"
