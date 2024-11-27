@@ -31,7 +31,7 @@ jobs:
             repo: context.repo.repo,
             pull_number: ${{ github.event.number }}
             });
-            const filesNames = filesFullList.data.map(file => file.filename).join(' ');
+            const filesNames = filesFullList.data.map(file => file.filename => if {(file.status != 'removed' )}).join(' ');
             require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `filesNames=${JSON.stringify(filesNames)}\n`);
             console.log(filesNames)
 
