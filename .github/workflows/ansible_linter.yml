@@ -30,7 +30,7 @@ jobs:
         with:
           script: |
             let isLinterSkipped = false
-            const pullRequests = await github.rest.pulls.list({
+            const pullRequest = await github.rest.pulls.list({
             owner: context.repo.owner,
             repo: context.repo.repo,
             pull_number: ${{ github.event.number }} });
