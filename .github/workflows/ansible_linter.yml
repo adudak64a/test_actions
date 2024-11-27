@@ -34,7 +34,7 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             pull_number: ${{ github.event.number }} });
-            if (pullRequest.data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_TITLE }}')) { isLinterSkipped = true };
+            if (pullRequest.data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_TITLE }}'))) { isLinterSkipped = true };
             console.log(isLinterSkipped)
 
   run_ansible_lint:
