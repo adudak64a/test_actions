@@ -30,11 +30,11 @@ jobs:
         with:
           script: |
             let isLinterSkipped = false
-            const pullRequests = ( await github.rest.pulls.list({
+            const pullRequests = await github.rest.pulls.list({
             owner: context.repo.owner,
             repo: context.repo.repo,
             pull_number: ${{ github.event.number }} });
-            if (pullRequest.data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_TITLE }}'))) { isLinterSkipped = true };
+            if (pullRequest.data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_TITLE }}'))) { isLinterSkipped = true }
             console.log(isLinterSkipped)
 
   run_ansible_lint:

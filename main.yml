@@ -8,4 +8,6 @@
 
     - name: "DEBUG"
       debug:
-        msg: s"!ddd!!!ssss!!!!!!ddddd!!ddddddddeeeeedddddddddddddddddddd!!"
+        msg: 
+          - "!ddd!!!ssss!!!!!!ddddd!!ddddddddeeeeedddddddddddddddddddd!!"
+          - "sdfsdf"
