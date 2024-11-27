@@ -1,4 +1,6 @@
 # We need branch protection rule for all below to have purpose
+env:
+  PULL_REQUEST_HEADER: "[_MANUAL_] - skip linter"
 
 permissions:
   pull-requests: write
@@ -16,6 +18,24 @@ concurrency:
   group: ${{ github.workflow }}
 
 jobs:
+
+  check_pull_requet_title:
+    name: "Check pull-request"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Get info about pull-request"
+        id: get_pull-request_info
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pullRequests = ( await github.rest.pulls.list({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: ${{ github.event.number }}
+            })).data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_HEADER }}'))
+            console.log(pullRequests)
+
   run_ansible_lint:
     name: "Run ansible-lint"
     runs-on: ubuntu-latest
