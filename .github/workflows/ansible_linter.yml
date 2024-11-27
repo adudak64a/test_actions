@@ -22,10 +22,11 @@ jobs:
   check_pull_request_title:
     name: "Check pull-request"
     runs-on: ubuntu-latest
-
+    outputs:
+        isLinterSkipped: ${{ steps.get_pull_request_info.outputs.result }}
     steps:
       - name: "Get info about pull-request"
-        id: get_pull-request_info
+        id: get_pull_request_info
         uses: actions/github-script@v6
         with:
           script: |
@@ -35,13 +36,14 @@ jobs:
             repo: context.repo.repo,
             pull_number: ${{ github.event.number }} });
             if (pullRequest.data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_TITLE }}')).length > 0) { isLinterSkipped = true }
+            core.setOutput("result", isLinterSkipped);
             console.log(isLinterSkipped)
 
   run_ansible_lint:
     name: "Run ansible-lint"
     runs-on: ubuntu-latest
     needs: check_pull_request_title
-    if: ${{ needs.outputs.isLinterSkipped != 'true' }}
+    if: ${{ needs.check_pull_request_title.outputs.isLinterSkipped != 'true' }}
 
     steps:
       - name: "Get list of changed files"
