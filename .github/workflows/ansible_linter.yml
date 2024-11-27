@@ -23,7 +23,7 @@ jobs:
     name: "Check pull-request"
     runs-on: ubuntu-latest
     outputs:
-        isLinterSkipped: ${{ steps.get_pull_request_info.outputs.result }}
+        isLinterSkipped: ${{ steps.get_pull_request_info.outputs.isLinterSkipped }}
     steps:
       - name: "Get info about pull-request"
         id: get_pull_request_info
@@ -36,7 +36,7 @@ jobs:
             repo: context.repo.repo,
             pull_number: ${{ github.event.number }} });
             if (pullRequest.data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_TITLE }}')).length > 0) { isLinterSkipped = true }
-            core.setOutput("result", isLinterSkipped);
+            core.setOutput("isLinterSkipped", isLinterSkipped.toString());  // Convert to string
             console.log(isLinterSkipped)
 
   run_ansible_lint:
