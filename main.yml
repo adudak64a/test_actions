@@ -7,4 +7,5 @@
   tasks:
 
     - name: "DEBUG"
-      debug: msg="!ddd!!!ssss!!!!!!ddddd!!deeeeedddddd!!"
+      debug:
+        msg: s"!ddd!!!ssss!!!!!!ddddd!!deeeeedddddd!!"
