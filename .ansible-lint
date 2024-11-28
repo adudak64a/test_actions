@@ -8,7 +8,7 @@ use_default_rules: true
 
 exclude_paths:
   - test_playbooks/
-  - .github
+  - .github/
 
 enable_list:
   - yaml
