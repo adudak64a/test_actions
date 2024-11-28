@@ -1,0 +1,38 @@
+---
+# .ansible-lint
+
+# Enable checking of loop variable prefixes in roles
+loop_var_prefix: "{role}_"
+strict: false
+use_default_rules: true
+
+exclude_paths:
+  - test_playbooks/
+
+enable_list:
+  - yaml
+
+# Ansible-lint completely ignores rules or tags listed below
+skip_list:
+  - skip_ansible_lint
+  - fqcn
+  - role-name[path]
+  - jinja[spacing]
+  - jinja[invalid]
+  - name[template]
+  - name[play]
+  - ignore-errors
+  - no-changed-when
+  - command-instead-of-shell
+  - key-order[task]
+  - risky-shell-pipe
+  - var-naming[no-role-prefix]
+
+
+warn_list:
+  - command-instead-of-shell
+  - name[missing]
+  - key-order[task]
+  - literal-compare
+  - risky-shell-pipe
+  - var-naming[no-role-prefix]
