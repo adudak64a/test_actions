@@ -90,7 +90,7 @@ jobs:
         if: failure()
         uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_CHANNEL: "mig_trash"
+          SLACK_CHANNEL: "mig-trash"
           SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
           SLACK_MESSAGE: "Ansible-lint has failed! Click Actions URL to see full log."
           SLACK_COLOR: "failure"
