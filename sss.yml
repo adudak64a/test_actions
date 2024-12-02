@@ -6,6 +6,9 @@
 
 
 
+
+
+
     - name: "DEBUG"
       debug:
         msg:
@@ -13,8 +16,6 @@
           - "ddddddd3"
           - 222233
           - "d3333d"
-
-
 
 
     - name: "DEBUG"
