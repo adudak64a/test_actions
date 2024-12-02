@@ -1,16 +1,11 @@
 ---
-name: "Test shell message"
+name: "Test Include"
 
 on:
-  pull_request:
+  pull_request:  # default event's activity type is opened, synchronize, or reopened
+    branches:
+      - staging
 
-
-
-
-
-
-
-    
 jobs:
   target_test:
     runs-on: ubuntu-20.04
@@ -18,3 +13,5 @@ jobs:
       - name: echo 
         run: |
           echo "HELLO WORLD!"
+  call-reusable:
+    uses: ansible-linter.yml
