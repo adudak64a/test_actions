@@ -44,7 +44,7 @@ jobs:
             pull_number: ${{ github.event.number }}
             });
             const filesNames = filesFullList.data
-                .filter(file => file.status !== "removed")
+                .filter(file => file.status !== "removed" && (String(file.name).endsWith(".yml") || String(file.name).endsWith(".yaml")))
                 .map(file => file.filename)
                 .join(' ');
             require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `filesNames=${JSON.stringify(filesNames)}\n`);
