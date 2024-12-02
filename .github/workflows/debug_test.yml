@@ -17,5 +17,5 @@ jobs:
         run: |
           echo "HELLO WORLD!"
 
-  call-reusable:
+  ansible-lint:
     uses: ./.github/workflows/ansible_linter.yml
