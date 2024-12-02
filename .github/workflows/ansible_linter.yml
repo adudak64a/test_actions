@@ -22,8 +22,8 @@ jobs:
     name: "Check pull-request"
     runs-on: ubuntu-latest
     outputs:
-        isLinterSkipped: ${{ steps.get_info_and_files.outputs.isLinterSkipped }}
-        filesNames: ${{ steps.get_info_and_files.outputs.filesNames }}
+      isLinterSkipped: ${{ steps.get_info_and_files.outputs.isLinterSkipped }}
+      filesNames: ${{ steps.get_info_and_files.outputs.filesNames }}
     steps:
       - name: "Get info about pull-request and list changed files"
         id: get_info_and_files
