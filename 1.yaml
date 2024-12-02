@@ -1,0 +1,25 @@
+---
+- name: "TEST"
+  host: "localhost"
+  vars:
+  tasks:
+
+
+    - name: "DEBUG"
+      debug:
+        msg:
+          - "!ddd!!!ssssdddddd!!!!!!ddddd!!ddddddddeeeeedddddddddddddddddddd!!"
+          - "ddddddd3"
+          - 222233
+          - "d3333d"
+
+
+
+
+    - name: "DEBUG"
+      debug:
+        msg:
+          - "!ddd!!!ssssdddddd!!!!!!ddddd!!ddddddddeeeeedddddddddddddddddddd!!"
+          - "ddddddd3"
+          - 222233
+          - "d3333d"
