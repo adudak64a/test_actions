@@ -6,9 +6,12 @@ profile: basic
 
 # Enable checking of loop variable prefixes in roles
 loop_var_prefix: "{role}_"
+
 strict: false
+
 # Use default rules or custom from some another directory
 use_default_rules: true
+
 offline: false
 
 exclude_paths:
