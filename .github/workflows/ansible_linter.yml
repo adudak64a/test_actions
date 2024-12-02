@@ -3,9 +3,6 @@
 env:
   SLACK_CHANNEL: "mig-trash"
 
-permissions:
-  pull-requests: write
-
 name: "ansible-lint"
 on:
   workflow_call:
