@@ -13,5 +13,6 @@ jobs:
       - name: echo 
         run: |
           echo "HELLO WORLD!"
+
   call-reusable:
-    uses: ansible-linter.yml
+    uses: ./.github/workflows/ansible-linter.yml
