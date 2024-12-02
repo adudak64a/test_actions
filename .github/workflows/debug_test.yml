@@ -1,7 +1,9 @@
+---
 name: "Test shell message"
 
 on:
   pull_request:
+
 
 jobs:
   target_test:

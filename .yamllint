@@ -11,7 +11,7 @@ ignore: |
 
 rules:
   empty-lines:
-    max: 3
+    max: 2
 
   braces:
     # Defaults
