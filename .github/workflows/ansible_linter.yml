@@ -8,7 +8,7 @@ permissions:
 
 name: "ansible-lint"
 on:
-  pull_request_target:  # event's activity type is opened, synchronize, or reopened
+  pull_request_target:  # default event's activity type is opened, synchronize, or reopened
     branches:
       - staging
 
