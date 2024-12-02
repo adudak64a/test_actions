@@ -8,6 +8,9 @@ ignore: |
   test_playbooks/
   deprecated/
   .github/
+  library/
+  tools/
+  python_packages/
 
 
 rules:
