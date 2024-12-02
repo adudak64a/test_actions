@@ -4,6 +4,8 @@ hosts: localhost
 
 vars:
 
+
+
 tasks:
     - name: "ddd"
       debug: msg="hello"
