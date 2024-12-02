@@ -18,11 +18,12 @@ concurrency:
 
 jobs:
 
-  check_pull_request_title:
+  get_pull_request_info:
     name: "Check pull-request"
     runs-on: ubuntu-latest
     outputs:
         isLinterSkipped: ${{ steps.get_pull_request_info.outputs.isLinterSkipped }}
+        filesNames: ${{ steps.get_pull_request_info.outputs.filesNames }}
     steps:
       - name: "Get info about pull-request and list changed files"
         id: get_pull_request_info
@@ -47,21 +48,21 @@ jobs:
                 .map(file => file.filename)
                 .join(' ');
             require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `filesNames=${JSON.stringify(filesNames)}\n`);
-            console.log(typeof filesNames)
+            core.setOutput("filesNames", filesNames)
             console.log(filesNames)
 
   run_ansible_lint:
     name: "Run ansible-lint"
     runs-on: ubuntu-latest
-    needs: check_pull_request_title
-    if: ${{ needs.check_pull_request_title.outputs.isLinterSkipped != 'true' && needs.check_pull_request_title.outputs.isLinterSkipped != ''}}
+    needs: get_pull_request_info
+    if: ${{ needs.get_pull_request_info.outputs.isLinterSkipped != 'true' && needs.get_pull_request_info.outputs.filesNames != ''}}
 
     steps:
       # Otherwise linter accept list of files as a single filename
       - name: "Remove trailing and leading quotes from list of changed files"
         id: format-filenames
         run: |
-          FILENAMES=${{ steps.get-changed-files.outputs.filesNames }}
+          FILENAMES=${{ needs.get_pull_request_info.outputs.filesNames }}
           FILENAMES="${FILENAMES%\"}"
           FILENAMES="${FILENAMES#\"}"
           echo "FILENAMES=$FILENAMES" >> $GITHUB_ENV
