@@ -59,12 +59,6 @@ jobs:
 
     steps:
 
-      - name: "Checkout source branch"
-        id: checkout-scm
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-
       # Otherwise linter accept list of files as a single filename
       - name: "Remove trailing and leading quotes from list of changed files"
         id: format-filenames
@@ -73,6 +67,12 @@ jobs:
           FILENAMES="${FILENAMES%\"}"
           FILENAMES="${FILENAMES#\"}"
           echo "FILENAMES=$FILENAMES" >> $GITHUB_ENV
+
+      - name: "Checkout source branch"
+        id: checkout-scm
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: "Run ansible-lint"
         id: run-lint
