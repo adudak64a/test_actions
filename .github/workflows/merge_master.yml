@@ -225,7 +225,7 @@ jobs:
             if (invalidMasterPrs.length > 0) {
               invalidPrExists = true;
               github.rest.pulls.update({
-                owner: context.repo.owner,
+                owner: context.repo.owner,  
                 repo: context.repo.repo,
                 pull_number: invalidMasterPrs[0].number,
                 state: 'closed'
