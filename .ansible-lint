@@ -17,6 +17,7 @@ exclude_paths:
   - '**/*.py'
   - 'mtf-venv'
   - 'site-packages'
+  - '.github/'
 
 enable_list:
   - yaml # https://ansible.readthedocs.io/projects/lint/rules/yaml/
