@@ -22,11 +22,11 @@ jobs:
     name: "Check pull-request"
     runs-on: ubuntu-latest
     outputs:
-        isLinterSkipped: ${{ steps.get_pull_request_info.outputs.isLinterSkipped }}
-        filesNames: ${{ steps.get_pull_request_info.outputs.filesNames }}
+      isLinterSkipped: ${{ steps.get_info_and_files.outputs.isLinterSkipped }}
+      filesNames: ${{ steps.get_info_and_files.outputs.filesNames }}
     steps:
       - name: "Get info about pull-request and list changed files"
-        id: get_pull_request_info
+        id: get_info_and_files
         uses: actions/github-script@v6
         with:
           script: |
@@ -37,7 +37,7 @@ jobs:
             pull_number: ${{ github.event.number }} });
             if (pullRequest.data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_TITLE }}')).length > 0) { isLinterSkipped = true }
             core.setOutput("isLinterSkipped", isLinterSkipped.toString());  // Convert to string
-            console.log(isLinterSkipped)
+            console.log("Is linter skipped: " + isLinterSkipped)
             const filesFullList = await github.rest.pulls.listFiles({
             owner: context.repo.owner,
             repo: context.repo.repo,
@@ -49,7 +49,7 @@ jobs:
                 .join(' ');
             require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `filesNames=${JSON.stringify(filesNames)}\n`);
             core.setOutput("filesNames", filesNames)
-            console.log(filesNames)
+            console.log("List of changed files: " + filesNames)
 
   run_ansible_lint:
     name: "Run ansible-lint"
@@ -100,16 +100,16 @@ jobs:
         if: failure()
         uses: actions/github-script@v6
         with:
-            script: |
-                await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: ${{ github.event.number }},
-                body: "Pull Request has been closed because it didn't pass tests"
-                });
-                await github.rest.pulls.update({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: ${{ github.event.number }},
-                state: "closed"
-                });
+          script: |
+              await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.number }},
+              body: "Pull Request has been closed because it didn't pass tests"
+              });
+              await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ github.event.number }},
+              state: "closed"
+              });
