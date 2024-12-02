@@ -49,7 +49,7 @@ jobs:
                 .join(' ');
             require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `filesNames=${JSON.stringify(filesNames)}\n`);
             core.setOutput("filesNames", filesNames)
-            console.log("List of changed files: " + filesNames)
+            console.log("List of changed YAML files: " + filesNames)
 
   run_ansible_lint:
     name: "Run ansible-lint"
