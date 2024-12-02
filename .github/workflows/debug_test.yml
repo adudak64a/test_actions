@@ -15,4 +15,4 @@ jobs:
           echo "HELLO WORLD!"
 
   call-reusable:
-    uses: .github/workflows/ansible-linter.yml
+    uses: ./.github/workflows/ansible_linter.yml
