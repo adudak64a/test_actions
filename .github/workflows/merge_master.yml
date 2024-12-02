@@ -16,8 +16,9 @@ on:
   push:
     branches:
       - staging
-  schedule:
-    - cron: "*/5 * * * *"
+  pull_request:
+    branches:
+      - master
 
 concurrency:
   group: ${{ github.workflow }}
@@ -206,7 +207,7 @@ jobs:
   close_invalid_prs:
     name: "Close PRs created to master by humans"
     runs-on: ubuntu-latest
-    if: github.event_name == 'schedule'
+    if: github.event_name == 'pull_request'
     steps:
       - name: Fetch and close manual PRs to master if any
         id: fetch-and-close-invalid-prs
