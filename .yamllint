@@ -1,6 +1,11 @@
 ---
 extends: default
 
+# By default
+# yaml-files:
+#   - '*.yaml'
+#   - '*.yml'
+#   - '.yamllint'
 
 ignore: |
   venv/
