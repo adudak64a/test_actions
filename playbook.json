@@ -1,7 +1,9 @@
 ---
 name: "EST"
-host: localhost
+hosts: localhost
+
 vars:
+
 tasks:
     - name: "ddd"
       debug: msg="hello"
