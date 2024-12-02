@@ -74,7 +74,7 @@ jobs:
 
       - name: "Checkout source branch"
         id: checkout-scm
-        if: steps.get-changed-files.outputs.filesNames != ''
+        if: steps.get-changed-files.outputs.filesNames != null
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
