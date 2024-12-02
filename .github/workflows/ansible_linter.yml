@@ -79,6 +79,7 @@ jobs:
 
       - name: "Run ansible-lint"
         id: run-lint
+        if: env.FILENAMES != null
         uses: ansible/ansible-lint@main
         with:
           args: ${{ env.FILENAMES }}
