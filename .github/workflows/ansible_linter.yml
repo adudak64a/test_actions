@@ -1,7 +1,6 @@
 ---
 # We need branch protection rule for all below to have purpose
 env:
-  PULL_REQUEST_TITLE: "[_MANUAL_] - skip linter"
   SLACK_CHANNEL: "mig-trash"
 
 permissions:
@@ -22,22 +21,13 @@ jobs:
     name: "Check pull-request"
     runs-on: ubuntu-latest
     outputs:
-      isLinterSkipped: ${{ steps.get_info_and_files.outputs.isLinterSkipped }}
-      filesNames: ${{ steps.get_info_and_files.outputs.filesNames }}
+      filesNames: ${{ steps.get_changed_files.outputs.filesNames }}
     steps:
-      - name: "Get info about pull-request and list changed files"
-        id: get_info_and_files
+      - name: "Get list changed files"
+        id: get_changed_files
         uses: actions/github-script@v6
         with:
           script: |
-            let isLinterSkipped = false
-            const pullRequest = await github.rest.pulls.list({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: ${{ github.event.number }} });
-            if (pullRequest.data.filter(pr => pr.title.includes('${{ env.PULL_REQUEST_TITLE }}')).length > 0) { isLinterSkipped = true }
-            core.setOutput("isLinterSkipped", isLinterSkipped.toString());  // Convert to string
-            console.log("Is linter skipped: " + isLinterSkipped)
             const filesFullList = await github.rest.pulls.listFiles({
             owner: context.repo.owner,
             repo: context.repo.repo,
@@ -55,7 +45,7 @@ jobs:
     name: "Run ansible-lint"
     runs-on: ubuntu-latest
     needs: get_pull_request_info
-    if: ${{ needs.get_pull_request_info.outputs.isLinterSkipped != 'true' && needs.get_pull_request_info.outputs.filesNames != ''}}
+    if: ${{ !contains(github.event.pull_request.title, '[skip ansible-lint]') && needs.get_pull_request_info.outputs.filesNames != ''}}
 
     steps:
 
