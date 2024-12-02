@@ -1,3 +1,4 @@
+---
 # We need branch protection rule for all below to have purpose
 env:
   PULL_REQUEST_TITLE: "[_MANUAL_] - skip linter"
