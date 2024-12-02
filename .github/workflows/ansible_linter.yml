@@ -100,16 +100,16 @@ jobs:
         if: failure()
         uses: actions/github-script@v6
         with:
-            script: |
-                await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: ${{ github.event.number }},
-                body: "Pull Request has been closed because it didn't pass tests"
-                });
-                await github.rest.pulls.update({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: ${{ github.event.number }},
-                state: "closed"
-                });
+          script: |
+              await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.number }},
+              body: "Pull Request has been closed because it didn't pass tests"
+              });
+              await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ github.event.number }},
+              state: "closed"
+              });
