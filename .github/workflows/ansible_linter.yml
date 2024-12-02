@@ -8,12 +8,9 @@ permissions:
 
 name: "ansible-lint"
 on:
-  pull_request_target:
+  pull_request_target:  # event's activity type is opened, synchronize, or reopened
     branches:
       - staging
-    types:
-      - opened
-      - synchronize
 
 concurrency:
   group: ${{ github.workflow }}

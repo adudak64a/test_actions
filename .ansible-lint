@@ -31,7 +31,6 @@ skip_list:
   - no-tabs
   - playbook-extension
 
-
 warn_list:
   - command-instead-of-module
   - command-instead-of-shell
