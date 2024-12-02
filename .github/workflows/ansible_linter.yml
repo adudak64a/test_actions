@@ -63,7 +63,7 @@ jobs:
       - name: "Remove trailing and leading quotes from list of changed files"
         id: format-filenames
         run: |
-          FILENAMES=${{ needs.get_pull_request_info.outputs.filesNames }}
+          FILENAMES="${{ needs.get_pull_request_info.outputs.filesNames }}"
           FILENAMES="${FILENAMES%\"}"
           FILENAMES="${FILENAMES#\"}"
           echo "FILENAMES=$FILENAMES" >> $GITHUB_ENV
