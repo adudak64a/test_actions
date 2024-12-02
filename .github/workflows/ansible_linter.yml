@@ -3,21 +3,21 @@
 env:
   SLACK_CHANNEL: "mig-trash"
 
+concurrency:
+  group: ${{ github.workflow }}
+
 name: "ansible-lint"
 on:
   workflow_call:
 
-concurrency:
-  group: ${{ github.workflow }}
-
 jobs:
 
-  get_pull_request_info:
-    name: "Check pull-request"
+  run_ansible_lint:
+    name: "Run ansible-lint"
     runs-on: ubuntu-latest
-    outputs:
-      filesNames: ${{ steps.get_changed_files.outputs.filesNames }}
+    if: ${{ !contains(github.event.pull_request.title, '[skip ansible-lint]')}}
     steps:
+
       - name: "Get list changed files"
         id: get_changed_files
         uses: actions/github-script@v6
@@ -33,22 +33,13 @@ jobs:
                 .map(file => file.filename)
                 .join(' ');
             require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `filesNames=${JSON.stringify(filesNames)}\n`);
-            core.setOutput("filesNames", filesNames)
             console.log("List of changed files: " + filesNames)
-
-  run_ansible_lint:
-    name: "Run ansible-lint"
-    runs-on: ubuntu-latest
-    needs: get_pull_request_info
-    if: ${{ !contains(github.event.pull_request.title, '[skip ansible-lint]') && needs.get_pull_request_info.outputs.filesNames != ''}}
-
-    steps:
 
       # Otherwise linter accept list of files as a single filename
       - name: "Remove trailing and leading quotes from list of changed files"
         id: format-filenames
         run: |
-          FILENAMES="${{ needs.get_pull_request_info.outputs.filesNames }}"
+          FILENAMES=${{ steps.get_changed_files.outputs.filesNames }}
           FILENAMES="${FILENAMES%\"}"
           FILENAMES="${FILENAMES#\"}"
           echo "FILENAMES=$FILENAMES" >> $GITHUB_ENV
