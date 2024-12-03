@@ -65,16 +65,21 @@ jobs:
       - name: "Send Slack message about stuck PR to master"
         if: failure() && steps.poll-prs.outcome != 'skipped'
         id: send-timeout-message-stuck
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: ${{ env.SLACK_CHANNEL}}
-          SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-          SLACK_MESSAGE: "Could not open PR to master because there is other PR stuck, not closing it for investigation"
-          SLACK_COLOR: "failure"
-          SLACK_USERNAME: "borg-sphere"
-          SLACK_ICON: "https://avatars.slack-edge.com/2020-05-22/1133584994822_7ae043ae65db02608c79_512.jpg"
-          MSG_MINIMAL: "actions url"
-          SLACK_FOOTER: "Powered by borg"
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Could not open PR to master because there is other PR stuck, not closing it for investigation"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Handle merge to master>"
 
 
       # 'Allow GitHub Actions to create and approve pull requests' has to be enabled in repository Settings > Actions > General (most bottom line)
@@ -103,18 +108,22 @@ jobs:
       - name: "Send Slack message about failed opening PR to master"
         if: failure() && steps.open-pr-master.outcome != 'skipped'
         id: send-failure-message-open
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: ${{ env.SLACK_CHANNEL}}
-          SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-          SLACK_MESSAGE: |
-            Could not open a PR to master, status code: ${{ steps.open-pr-master.outputs.createPrStatus }} :rain_cloud:
-            Click on Actions URL to view full log.
-          SLACK_COLOR: "failure"
-          SLACK_USERNAME: "borg"
-          SLACK_ICON: "https://avatars.slack-edge.com/2020-05-22/1133584994822_7ae043ae65db02608c79_512.jpg"
-          MSG_MINIMAL: "actions url"
-          SLACK_FOOTER: "Powered by borg"
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Could not open a PR to master, status code: ${{ steps.open-pr-master.outputs.createPrStatus }} :rain_cloud:
+                            Click on Actions URL to view full log"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Failed opening PR to master>"
 
       - name: "Merge PR to master"
         id: merge-pr-master
@@ -165,44 +174,59 @@ jobs:
       - name: "Send Slack message about timeout waiting for PR to become mergeable"
         if: failure() && steps.merge-pr-master.outcome != 'skipped' && steps.merge-pr-master.outputs.isMergeable == 'false'
         id: send-failure-message-timeout
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: ${{ env.SLACK_CHANNEL}}
-          SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-          SLACK_MESSAGE: "Workflow failed while waiting for PR to become mergeable, please check the issue"
-          SLACK_COLOR: "failure"
-          SLACK_USERNAME: "borg-sphere"
-          SLACK_ICON: "https://avatars.slack-edge.com/2020-05-22/1133584994822_7ae043ae65db02608c79_512.jpg"
-          MSG_MINIMAL: "actions url"
-          SLACK_FOOTER: "Powered by borg"
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            attachments:
+              - color: "failure"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Workflow failed while waiting for PR to become mergeable, please check the issue"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Something bad happened...>"
 
       - name: "Send Slack message about failed merge"
         if: failure() && steps.merge-pr-master.outcome != 'skipped' && steps.merge-pr-master.outputs.isMergeable == 'true'
         id: send-failure-message
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: ${{ env.SLACK_CHANNEL}}
-          SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-          SLACK_MESSAGE: "Auto merge to master has failed, please check the logs."
-          SLACK_COLOR: "failure"
-          SLACK_USERNAME: "borg-sphere"
-          SLACK_ICON: "https://avatars.slack-edge.com/2020-05-22/1133584994822_7ae043ae65db02608c79_512.jpg"
-          MSG_MINIMAL: "actions url"
-          SLACK_FOOTER: "Powered by borg"
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Auto merge to master has failed, please check the logs"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Something bad happened...>"
 
       - name: "Send Slack message about successful merge"
         if: success()
         id: send-success-message
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: ${{ env.SLACK_CHANNEL}}
-          SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-          SLACK_MESSAGE: "PR to master has been successfuly merged"
-          SLACK_COLOR: "success"
-          SLACK_USERNAME: "borg-sphere"
-          SLACK_ICON: "https://avatars.slack-edge.com/2020-05-22/1133584994822_7ae043ae65db02608c79_512.jpg"
-          MSG_MINIMAL: "actions url"
-          SLACK_FOOTER: "Powered by borg"
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            attachments:
+              - color: "00ff00"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "PR to master has been successfuly merged"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Congratulations>"
 
   close_invalid_prs:
     name: "Close PRs created to master by humans"
@@ -238,27 +262,37 @@ jobs:
       - name: Send Slack message about closed PR to master
         id: send-slack-message-invalid-pr
         if: steps.fetch-and-close-invalid-prs.outputs.invalidPrExists == 'true'
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: ${{ env.SLACK_CHANNEL}}
-          SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-          SLACK_MESSAGE: "Humans are not allowed to open PRs to master! Closing..."
-          SLACK_COLOR: "failure"
-          SLACK_USERNAME: "borg-sphere"
-          SLACK_ICON: "https://avatars.slack-edge.com/2020-05-22/1133584994822_7ae043ae65db02608c79_512.jpg"
-          MSG_MINIMAL: "actions url"
-          SLACK_FOOTER: "Powered by borg"
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Humans are not allowed to open PRs to master! Closing..."
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Actions link>"
 
       - name: Send Slack message about failing closing PR to master
         id: send-slack-message
         if: failure()
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: ${{ env.SLACK_CHANNEL}}
-          SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-          SLACK_MESSAGE: "Something went wrong while closing invalid PR to master, please check manually."
-          SLACK_COLOR: "failure"
-          SLACK_USERNAME: "borg-sphere"
-          SLACK_ICON: "https://avatars.slack-edge.com/2020-05-22/1133584994822_7ae043ae65db02608c79_512.jpg"
-          MSG_MINIMAL: "actions url"
-          SLACK_FOOTER: "Powered by borg"
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Something went wrong while closing invalid PR to master, please check manually"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Actions link>"
