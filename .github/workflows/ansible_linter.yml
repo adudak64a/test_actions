@@ -62,21 +62,11 @@ jobs:
         if: failure()
         uses: slackapi/slack-github-action@v2.0.0
         with:
+          method: chat.postMessage
+          token: "${{ secrets.SLACK_API_TOKEN }}"
           payload: |
-            {
-              "text": "A push was made to the repository by `${{ github.actor }}`.",
-              "attachments": [
-                {
-                  "color": "#36a64f",
-                  "fields": [
-                    { "title": "Branch", "value": "${{ github.ref_name }}", "short": true },
-                    { "title": "Commit", "value": "${{ github.sha }}", "short": true }
-                  ]
-                }
-              ]
-            }
-        env:
-          SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: "Ansible-lint has failed! Click Actions URL to see full log."
 
           # attachments:
             #   - color: "failure"
