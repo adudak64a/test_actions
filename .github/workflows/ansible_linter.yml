@@ -55,6 +55,7 @@ jobs:
         uses: ansible/ansible-lint@main
         with:
           args: ${{ env.FILENAMES }}
+          requirements_file: ./requirements.txt
 
       # Add SLACK_API_TOKEN in Github secrets
       - name: "Send Slack notification (fail)"
