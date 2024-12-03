@@ -20,4 +20,4 @@ jobs:
   ansible-lint:
     uses: ./.github/workflows/ansible_linter.yml
     secrets:
-      SLACK_API_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
+      slack_token: ${{ secrets.SLACK_API_TOKEN }}
