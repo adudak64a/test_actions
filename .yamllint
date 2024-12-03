@@ -12,6 +12,7 @@ ignore: |
   *_vault.yml
   test_playbooks/
   .github/
+  deprecated/
   library/
   tools/
   python_packages/
