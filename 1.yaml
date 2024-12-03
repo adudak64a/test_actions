@@ -21,9 +21,7 @@
           - 222233
           - "d3333d"
 
+
     - name: "ELK. Make sure that index pattern for general log is created. Include relevant tasks"
       include_tasks:
         tasks_from: deprecated/test.yml
-
-
-
