@@ -11,7 +11,6 @@ ignore: |
   venv/
   *_vault.yml
   test_playbooks/
-  deprecated/
   .github/
   library/
   tools/
