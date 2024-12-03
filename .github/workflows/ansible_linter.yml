@@ -67,12 +67,13 @@ jobs:
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
             text: "Ansible-lint has failed! Click Actions URL to see full log."
-            attachments:
-              - color: "failure"
-                fields:
-                  - title: "Ansible-lint"
-                    short: false
-                    value: "failed"
+
+          # attachments:
+            #   - color: "failure"
+            #     fields:
+            #       - title: "Ansible-lint"
+            #         short: false
+            #         value: "failed"
 
 
           # env:
