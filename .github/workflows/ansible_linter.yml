@@ -70,13 +70,15 @@ jobs:
           token: ${{ secrets.slack_token }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
-            text: "Ansible-lint has failed! Click Actions URL to see full log"
             attachments:
               - color: "e20d0d"
                 fields:
-                  - title: "Ansible-lint check"
-                    short: true
-                    value: "Failed"
+                  - title: "Message"
+                    short: false
+                    value: "Ansible-lint has failed! Click Actions URL to see full log"
+                  - title: "Actions URL"
+                    short: false
+                    value: "*ansible-lint*: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
           # attachments:
             #   - color: "failure"
