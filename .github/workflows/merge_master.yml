@@ -65,16 +65,21 @@ jobs:
       - name: "Send Slack message about stuck PR to master"
         if: failure() && steps.poll-prs.outcome != 'skipped'
         id: send-timeout-message-stuck
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: ${{ env.SLACK_CHANNEL}}
-          SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-          SLACK_MESSAGE: "Could not open PR to master because there is other PR stuck, not closing it for investigation"
-          SLACK_COLOR: "failure"
-          SLACK_USERNAME: "borg-sphere"
-          SLACK_ICON: "https://avatars.slack-edge.com/2020-05-22/1133584994822_7ae043ae65db02608c79_512.jpg"
-          MSG_MINIMAL: "actions url"
-          SLACK_FOOTER: "Powered by borg"
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            attachments:
+              - color: "failure"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Could not open PR to master because there is other PR stuck, not closing it for investigation"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Handle merge to master>"
 
 
       # 'Allow GitHub Actions to create and approve pull requests' has to be enabled in repository Settings > Actions > General (most bottom line)

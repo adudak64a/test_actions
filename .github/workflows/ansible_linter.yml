@@ -71,7 +71,7 @@ jobs:
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
             attachments:
-              - color: "e20d0d"
+              - color: "failure"
                 fields:
                   - title: "Message"
                     short: false
