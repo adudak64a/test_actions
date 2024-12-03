@@ -63,10 +63,12 @@ jobs:
         uses: slackapi/slack-github-action@v2.0.0
         with:
           method: chat.postMessage
-          token: ${{ env.SLACK_CHANNEL }}
+          token: ${{ env.SLACK_API_TOKEN }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
             text: "Ansible-lint has failed! Click Actions URL to see full log."
+        env:
+          SLACK_API_TOKEN: ${{ secrets.SLACK_WEBHOOK_URL }}
 
           # attachments:
             #   - color: "failure"
