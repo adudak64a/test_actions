@@ -9,6 +9,10 @@ concurrency:
 name: "ansible-lint"
 on:
   workflow_call:
+    secrets:
+      slack_token:
+        description: 'A token passed from the caller workflow'
+        required: true
 
 jobs:
 
@@ -60,33 +64,52 @@ jobs:
       - name: "Send Slack notification (fail)"
         id: send-fail-message
         if: failure()
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: ${{ env.SLACK_CHANNEL }}
-          SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
-          SLACK_MESSAGE: "Ansible-lint has failed! Click Actions URL to see full log."
-          SLACK_COLOR: "failure"
-          SLACK_USERNAME: "borg-sphere"
-          SLACK_ICON: "https://avatars.slack-edge.com/2020-05-22/1133584994822_7ae043ae65db02608c79_512.jpg"
-          MSG_MINIMAL: "actions url"
-          SLACK_FOOTER: "Powered by borg"
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.slack_token }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: "Ansible-lint has failed! Click Actions URL to see full log"
+            attachments:
+              - color: "e20d0d"
+                fields:
+                  - title: "Ansible-lint check"
+                    short: true
+                    value: "Failed"
+
+          # attachments:
+            #   - color: "failure"
+            #     fields:
+            #       - title: "Ansible-lint"
+            #         short: false
+            #         value: "failed"
+
+
+          # env:
+          # SLACK_MESSAGE: 
+          # SLACK_COLOR: ""
+          # SLACK_USERNAME: "borg-sphere"
+          # SLACK_ICON: "https://avatars.slack-edge.com/2020-05-22/1133584994822_7ae043ae65db02608c79_512.jpg"
+          # MSG_MINIMAL: "actions url"
+          # SLACK_FOOTER: "Powered by borg"
 
     # Uncomment if logic is desired
-      - name: "Close pull request if tests failed"
-        id: close-failed-pr
-        if: failure()
-        uses: actions/github-script@v6
-        with:
-          script: |
-              await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: ${{ github.event.number }},
-              body: "Pull Request has been closed because it didn't pass tests"
-              });
-              await github.rest.pulls.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: ${{ github.event.number }},
-              state: "closed"
-              });
+      # - name: "Close pull request if tests failed"
+      #   id: close-failed-pr
+      #   if: failure()
+      #   uses: actions/github-script@v6
+      #   with:
+      #     script: |
+      #         await github.rest.issues.createComment({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         issue_number: ${{ github.event.number }},
+      #         body: "Pull Request has been closed because it didn't pass tests"
+      #         });
+      #         await github.rest.pulls.update({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         pull_number: ${{ github.event.number }},
+      #         state: "closed"
+      #         });
