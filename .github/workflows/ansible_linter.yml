@@ -9,6 +9,10 @@ concurrency:
 name: "ansible-lint"
 on:
   workflow_call:
+    secrets:
+      slack_token:
+        description: 'A token passed from the caller workflow'
+        required: true
 
 jobs:
 
@@ -63,7 +67,7 @@ jobs:
         uses: slackapi/slack-github-action@v2.0.0
         with:
           method: chat.postMessage
-          token: ${{ slack_token }}
+          token: ${{ secrets.slack_token }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
             text: "Ansible-lint has failed! Click Actions URL to see full log."
