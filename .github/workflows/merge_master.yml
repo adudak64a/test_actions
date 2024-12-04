@@ -71,6 +71,7 @@ jobs:
           token: ${{ secrets.SLACK_API_TOKEN }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
             attachments:
               - color: "FF0000"
                 fields:
@@ -114,6 +115,7 @@ jobs:
           token: ${{ secrets.SLACK_API_TOKEN }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
             attachments:
               - color: "FF0000"
                 fields:
@@ -180,8 +182,9 @@ jobs:
           token: ${{ secrets.SLACK_API_TOKEN }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
             attachments:
-              - color: "failure"
+              - color: "FF0000"
                 fields:
                   - title: "Message"
                     short: false
@@ -199,6 +202,7 @@ jobs:
           token: ${{ secrets.SLACK_API_TOKEN }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
             attachments:
               - color: "FF0000"
                 fields:
@@ -218,6 +222,7 @@ jobs:
           token: ${{ secrets.SLACK_API_TOKEN }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
             attachments:
               - color: "00ff00"
                 fields:
@@ -268,6 +273,7 @@ jobs:
           token: ${{ secrets.SLACK_API_TOKEN }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
             attachments:
               - color: "FF0000"
                 fields:
@@ -276,7 +282,7 @@ jobs:
                     value: "Humans are not allowed to open PRs to master! Closing..."
                   - title: "Actions URL"
                     short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Actions link>"
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Link>"
 
       - name: Send Slack message about failing closing PR to master
         id: send-slack-message
@@ -287,6 +293,7 @@ jobs:
           token: ${{ secrets.SLACK_API_TOKEN }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
             attachments:
               - color: "FF0000"
                 fields:
