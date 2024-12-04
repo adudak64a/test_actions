@@ -20,6 +20,7 @@ jobs:
           token: ${{ secrets.SLACK_API_TOKEN }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
+            text: Test message
             attachments:
               - color: "FFFF00"
                 fields:
@@ -28,4 +29,4 @@ jobs:
                     value: "Just test message"
                   - title: "Actions URL"
                     short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ github.run_id.jobs}}|ansible-lint>"
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
