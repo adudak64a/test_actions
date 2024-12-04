@@ -29,4 +29,4 @@ jobs:
                     value: "Just test message"
                   - title: "Actions URL"
                     short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}/checks|Action log>"
+                    value: "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}/checks|Link>"
