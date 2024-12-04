@@ -5,7 +5,7 @@ env:
   SLACK_CHANNEL: "mig-trash"
 
 on:
-  push:  # default event's activity type is opened, synchronize, or reopened
+  push:
     branches:
       - devel-borg
 
@@ -29,4 +29,4 @@ jobs:
                     value: "Just test message"
                   - title: "Actions URL"
                     short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
+                    value: "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}/checks|ansible-lint>"
