@@ -1,0 +1,31 @@
+---
+name: "Test Include"
+
+env:
+  SLACK_CHANNEL: "mig-trash"
+
+on:
+  push:  # default event's activity type is opened, synchronize, or reopened
+    branches:
+      - devel-borg
+
+jobs:
+  slack_notify:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Slack notify
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            attachments:
+              - color: "FFFF00"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Just test message"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
