@@ -80,7 +80,7 @@ jobs:
                     value: "Could not open PR to master because there is other PR stuck, not closing it for investigation"
                   - title: "Actions URL"
                     short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Handle merge to master>"
+                    value: "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}/checks|Handle merge to master>"
 
 
       # 'Allow GitHub Actions to create and approve pull requests' has to be enabled in repository Settings > Actions > General (most bottom line)
@@ -125,7 +125,7 @@ jobs:
                             Click on Actions URL to view full log"
                   - title: "Actions URL"
                     short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Failed opening PR to master>"
+                    value: "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}/checks|Failed opening PR to master>"
 
       - name: "Merge PR to master"
         id: merge-pr-master
@@ -191,7 +191,7 @@ jobs:
                     value: "Workflow failed while waiting for PR to become mergeable, please check the issue"
                   - title: "Actions URL"
                     short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Something bad happened...>"
+                    value: "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}/checks|Something bad happened...>"
 
       - name: "Send Slack message about failed merge"
         if: failure() && steps.merge-pr-master.outcome != 'skipped' && steps.merge-pr-master.outputs.isMergeable == 'true'
@@ -211,7 +211,7 @@ jobs:
                     value: "Auto merge to master has failed, please check the logs"
                   - title: "Actions URL"
                     short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Something bad happened...>"
+                    value: "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}/checks|Something bad happened...>"
 
       - name: "Send Slack message about successful merge"
         if: success()
@@ -231,7 +231,7 @@ jobs:
                     value: "PR to master has been successfuly merged"
                   - title: "Actions URL"
                     short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Congratulations>"
+                    value: "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}/checks|Congratulations>"
 
   close_invalid_prs:
     name: "Close PRs created to master by humans"
@@ -282,7 +282,7 @@ jobs:
                     value: "Humans are not allowed to open PRs to master! Closing..."
                   - title: "Actions URL"
                     short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Link>"
+                    value: "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}/checks|Link>"
 
       - name: Send Slack message about failing closing PR to master
         id: send-slack-message
@@ -302,4 +302,4 @@ jobs:
                     value: "Something went wrong while closing invalid PR to master, please check manually"
                   - title: "Actions URL"
                     short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Actions link>"
+                    value: "<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}/checks|Actions link>"
