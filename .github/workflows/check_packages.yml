@@ -24,6 +24,7 @@ jobs:
       - name: Check and update requirements if needed
         shell: bash
         run: |
+          pip -v
           while IFS= read -r line; do
               echo $line
               # if [[ $line != *"# pinned"* ]]; then
@@ -36,8 +37,8 @@ jobs:
               # fi
               # FILE+=$line"\n"
           done < ./requirements.txt
-          echo -e $FILE > ./requirements.txt
-          echo "NEW_PACKAGES=$(git diff ./requirements.txt)" >> $GITHUB_ENV
+          # echo -e $FILE > ./requirements.txt
+          # echo "NEW_PACKAGES=$(git diff ./requirements.txt)" >> $GITHUB_ENV
 
 
   push_changes:
