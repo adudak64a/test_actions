@@ -25,7 +25,7 @@ jobs:
         shell: bash
         run: |
           pip --version
-          pip index versions yamllint
+          pip index versions beautifulsoup4 --disable-pip-version-check
           while IFS= read -r line; do
               if [[ $line != *"# pinned"* ]]; then
                   PACKAGE=${line%==*}
