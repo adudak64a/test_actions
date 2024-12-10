@@ -30,7 +30,7 @@ jobs:
           while IFS= read -r line; do
               if [[ $line != *"# pinned"* ]]; then
                   PACKAGE=${line%==*} 
-                  NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'Available versions: ')"
+                  NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check | grep 'Available versions: ')"
                   NEWVERSION=${NEWVERSION%%,*}
                   NEWVERSION=${NEWVERSION##*[[:space:]]}
                   if [[ $NEWVERSION ]]; then
@@ -40,7 +40,7 @@ jobs:
               FILE+=$line"\n"
           done < ./requirements.txt
           echo -e $FILE > ./requirements.txt
-          #echo "FILE_DIFF=$(git diff --quiet ./requirements.txt && echo 'no' || echo 'yes')" >> $GITHUB_ENV
+          echo "FILE_DIFF=$(git diff --quiet ./requirements.txt && echo 'no' || echo 'yes')" >> $GITHUB_ENV
 
       - name: "Send Slack message about failed check of new packages versions"
         if: failure()
