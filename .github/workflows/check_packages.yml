@@ -24,11 +24,11 @@ jobs:
       - name: Check and update requirements if needed
         shell: bash
         run: |
+          pip index versions yamllint --disable-pip-version-check 2>&1 | grep 'LATEST:'
           while IFS= read -r line; do
               if [[ $line != *"# pinned"* ]]; then
                   PACKAGE=${line%==*}
                   NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'LATEST:')"
-                  echo $PACKAGE
                   NEWVERSION=${NEWVERSION##*[[:space:]]}
                   if [[ $NEWVERSION ]]; then
                       line=$PACKAGE"=="$NEWVERSION
