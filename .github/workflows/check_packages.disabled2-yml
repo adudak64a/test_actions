@@ -1,0 +1,118 @@
+---
+name: check-packages
+
+env:
+  SLACK_CHANNEL: "mig-trash"
+
+on:
+  push:
+    branches: devel-borg
+
+permissions:
+  contents: write
+
+jobs:
+
+  main_workflow:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Check and update requirements if needed
+        id: check-requirements
+        shell: bash
+        run: |
+          sudo python3 -m pip install --upgrade pip
+          while IFS= read -r line; do
+              if [[ $line != *"# pinned"* ]]; then
+                  PACKAGE=${line%==*} 
+                  NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'Available versions: ')"
+                  NEWVERSION=${NEWVERSION%%,*}
+                  NEWVERSION=${NEWVERSION##*[[:space:]]}
+                  if [[ $NEWVERSION ]]; then
+                      line=$PACKAGE"=="$NEWVERSION
+                  fi
+              fi
+              FILE+=$line"\n"
+          done < ./requirements.txt
+          echo -e $FILE > ./requirements.txt
+          FILE_DIFF=$(git diff --quiet ./requirements.txt && echo 'no' || echo 'yes')
+          echo "FILE_DIFF=$FILE_DIFF" >> $GITHUB_ENV
+          echo "Does requirements.txt have an update: $FILE_DIFF"
+
+      - name: "Send Slack message about failed check of new packages versions"
+        if: failure()
+        id: send-failure-message
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Could not make check of new versions for packages"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Log action>"
+
+      - name: "Push new requirements"
+        if: ${{ env.FILE_DIFF}} == 'yes'
+        id: push-new-requirements
+        env:
+          GH_PAT: ${{ secrets.SERVICE_USER_TOKEN }}
+        run: |
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add ./requirements.txt
+            git commit -m "[evn] - Updated requirements.txt"
+            git push origin devel-borg
+
+      - name: "Send Slack message about failed push to devel-borg"
+        if: failure()
+        id: send-failure-push-message
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Could not push a new commit to devel-borg"
+                  - title: "Actions URL"
+                    short: false 
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Failed push commit to devel-borg>"
+
+      - name: "Send Slack message about success push to devel-borg"
+        if: success()
+        id: send-success-message
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
+            attachments:
+              - color: "00ff00"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "File requirenmets.txt was successfully updated"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
+
