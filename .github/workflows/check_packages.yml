@@ -49,6 +49,8 @@ jobs:
               cat ./requirements.txt >> $GITHUB_OUTPUT
               echo "EOF" >> $GITHUB_OUTPUT
               echo "Does requirements.txt have an update: yes"
+            else
+              echo "Does requirements.txt have an update: no"
           fi
 
       - name: "Send Slack message about failed check of new packages versions"
