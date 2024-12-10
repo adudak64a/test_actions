@@ -25,12 +25,11 @@ jobs:
         shell: bash
         run: |
           sudo python3 -m pip install --upgrade pip
-          pip --version
-          pip index versions beautifulsoup4 --disable-pip-version-check
           while IFS= read -r line; do
               if [[ $line != *"# pinned"* ]]; then
-                  PACKAGE=${line%==*}
-                  NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'LATEST:')"
+                  PACKAGE=${line%==*} 
+                  NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep "Available versions: ")"
+                  NEWVERSION=${NEWVERSION%%,*}
                   NEWVERSION=${NEWVERSION##*[[:space:]]}
                   if [[ $NEWVERSION ]]; then
                       line=$PACKAGE"=="$NEWVERSION
@@ -38,8 +37,8 @@ jobs:
               fi
               FILE+=$line"\n"
           done < ./requirements.txt
-          # echo -e $FILE > ./requirements.txt
-          # echo "NEW_PACKAGES=$(git diff ./requirements.txt)" >> $GITHUB_ENV
+          echo -e $FILE > ./requirements.txt
+          echo "NEW_PACKAGES=$(git diff ./requirements.txt)" >> $GITHUB_ENV
 
       - name: "Send Slack message about failed check of new packages versions"
         if: failure()
