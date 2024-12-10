@@ -25,21 +25,21 @@ jobs:
         id: check-requirements
         shell: bash
         run: |
-          # sudo python3 -m pip install --upgrade pip
-          # while IFS= read -r line; do
-          #     if [[ $line != *"# pinned"* ]]; then
-          #         PACKAGE=${line%==*} 
-          #         NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'Available versions: ')"
-          #         NEWVERSION=${NEWVERSION%%,*}
-          #         NEWVERSION=${NEWVERSION##*[[:space:]]}
-          #         if [[ $NEWVERSION ]]; then
-          #             line=$PACKAGE"=="$NEWVERSION
-          #         fi
-          #     fi
-          #     FILE+=$line"\n"
-          # done < ./requirements.txt
-          # echo -e $FILE > ./requirements.txt
-          # FILE_DIFF="$(git diff ./requirements.txt)"
+          sudo python3 -m pip install --upgrade pip
+          while IFS= read -r line; do
+              if [[ $line != *"# pinned"* ]]; then
+                  PACKAGE=${line%==*} 
+                  NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'Available versions: ')"
+                  NEWVERSION=${NEWVERSION%%,*}
+                  NEWVERSION=${NEWVERSION##*[[:space:]]}
+                  if [[ $NEWVERSION ]]; then
+                      line=$PACKAGE"=="$NEWVERSION
+                  fi
+              fi
+              FILE+=$line"\n"
+          done < ./requirements.txt
+          echo -e $FILE > ./requirements.txt
+          FILE_DIFF="$(git diff ./requirements.txt)"
           echo "FILE_DIFF=$(git diff ./requirements.txt)" >> $GITHUB_OUTPUT
 
       - name: "Send Slack message about failed check of new packages versions"
