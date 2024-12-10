@@ -24,7 +24,9 @@ jobs:
       - name: Check and update requirements if needed
         shell: bash
         run: |
+          ls
           pip index versions yamllint --disable-pip-version-check 2>&1 | grep 'LATEST:'
+          ls
           while IFS= read -r line; do
               if [[ $line != *"# pinned"* ]]; then
                   PACKAGE=${line%==*}
