@@ -44,6 +44,7 @@ jobs:
               fi
           done < ./requirements.txt
           echo -e -n $FILE > ./requirements.txt
+          echo $(git diff --exit-code ./requirements.txt)
           if [[ !$(git diff --quiet ./requirements.txt) ]]; then
               echo "requirements<<EOF" >> $GITHUB_OUTPUT
               cat ./requirements.txt >> $GITHUB_OUTPUT
