@@ -37,8 +37,8 @@ jobs:
               fi
               FILE+=$line"\n"
           done < ./requirements.txt
-          echo -e $FILE > ./requirements.txt
-          echo "NEW_PACKAGES=$(git diff ./requirements.txt)" >> $GITHUB_ENV
+          echo -e $FILE >
+          #echo "NEW_PACKAGES=$(git diff ./requirements.txt)" >> $GITHUB_ENV
 
       - name: "Send Slack message about failed check of new packages versions"
         if: failure()
