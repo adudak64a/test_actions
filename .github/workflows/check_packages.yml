@@ -39,7 +39,6 @@ jobs:
               FILE+=$line"\n"
           done < ./requirements.txt
           echo -e $FILE > ./requirements.txt
-          FILE_DIFF="$(git diff ./requirements.txt)"
           echo "FILE_DIFF=$(git diff ./requirements.txt)" >> $GITHUB_OUTPUT
 
       - name: "Send Slack message about failed check of new packages versions"
