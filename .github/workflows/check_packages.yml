@@ -42,7 +42,7 @@ jobs:
               FILE+=$line"\n"
           done < ./requirements.txt
           if [[ !$(git diff --quiet ./requirements.txt) ]]; then
-              echo "requirements=$(cat /requirements.txt)" >> $GITHUB_OUTPUT
+              echo "requirements=$(cat ./requirements.txt)" >> $GITHUB_OUTPUT
               echo "Does requirements.txt have an update: yes"
           fi
 
