@@ -41,6 +41,26 @@ jobs:
           # echo -e $FILE > ./requirements.txt
           # echo "NEW_PACKAGES=$(git diff ./requirements.txt)" >> $GITHUB_ENV
 
+      - name: "Send Slack message about failed check of new packages versions"
+        if: failure()
+        id: send-failure-message
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Could not make check of new versions for packages"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Log action>"
+
 
   push_changes:
     needs: main_workflow
