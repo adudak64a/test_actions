@@ -41,6 +41,7 @@ jobs:
               fi
               FILE+=$line"\n"
           done < ./requirements.txt
+          echo -e $FILE > ./requirements.txt
           if [[ !$(git diff --quiet ./requirements.txt) ]]; then
               echo "requirements=$(cat ./requirements.txt)" >> $GITHUB_OUTPUT
               echo "Does requirements.txt have an update: yes"
@@ -71,9 +72,15 @@ jobs:
     if: needs.main_workflow.outputs.requirements != ''
     runs-on: ubuntu-latest
     steps:
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: "Push new requirements"
         id: push-new-requirements
         run: |
+            echo ${{needs.main_workflow.outputs.requirements}}
             echo ${{needs.main_workflow.outputs.requirements}} > /requirements.txt
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
