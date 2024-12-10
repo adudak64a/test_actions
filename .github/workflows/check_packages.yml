@@ -67,6 +67,12 @@ jobs:
     if: needs.main_workflow.outputs.FILE_DIFF == 'yes'
     runs-on: ubuntu-latest
     steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: "Push new requirements"
         id: push-new-requirements
         run: |
