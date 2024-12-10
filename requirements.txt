@@ -77,10 +77,10 @@ pyAesCrypt==6.1.1
 pyOpenSSL==24.3.0
 pyasn1==0.6.1
 pycparser==2.22
-pycrypto==2.6.0
+pycrypto==2.6.1
 pycurl==7.45.3
 pyinotify==0.9.6
-pymssql==2.3.0
+pymssql==2.3.2
 pysocks==1.7.1
 python-crontab==3.2.0
 python-dateutil==2.9.0.post0
@@ -124,3 +124,4 @@ xmltodict==0.14.2
 xmod==1.8.1
 zeep==4.3.1
 zonefile==0.1.1
+
