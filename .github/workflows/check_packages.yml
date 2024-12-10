@@ -25,18 +25,19 @@ jobs:
         shell: bash
         run: |
           while IFS= read -r line; do
-              if [[ $line != *"# pinned"* ]]; then
-                  PACKAGE=${line%==*} 
-                  NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'LATEST:')"
-                  NEWVERSION=${NEWVERSION##*[[:space:]]}
-                  if [[ $NEWVERSION ]]; then
-                      line=$PACKAGE"=="$NEWVERSION
-                  fi
-              fi
-              FILE+=$line"\n"
+              echo $line
+              # if [[ $line != *"# pinned"* ]]; then
+              #     PACKAGE=${line%==*} 
+              #     NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'LATEST:')"
+              #     NEWVERSION=${NEWVERSION##*[[:space:]]}
+              #     if [[ $NEWVERSION ]]; then
+              #         line=$PACKAGE"=="$NEWVERSION
+              #     fi
+              # fi
+              # FILE+=$line"\n"
           done < ./requirements.txt
-          echo -e $FILE > ./requirements.txt
-          echo "NEW_PACKAGES=$(git diff ./requirements.txt)" >> $GITHUB_ENV
+          # echo -e $FILE > ./requirements.txt
+          # echo "NEW_PACKAGES=$(git diff ./requirements.txt)" >> $GITHUB_ENV
 
 
   push_changes:
