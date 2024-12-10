@@ -30,18 +30,20 @@ jobs:
         run: |
           sudo python3 -m pip install --upgrade pip
           while IFS= read -r line; do
-              if [[ $line != *"# pinned"* ]]; then
-                  PACKAGE=${line%==*} 
-                  NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'Available versions: ')"
-                  NEWVERSION=${NEWVERSION%%,*}
-                  NEWVERSION=${NEWVERSION##*[[:space:]]}
-                  if [[ $NEWVERSION ]]; then
-                      line=$PACKAGE"=="$NEWVERSION
+              if [[ $line != "" ]]; then
+                  if [[ $line != *"# pinned"* && $line != \#* ]]; then
+                      PACKAGE=${line%==*} 
+                      NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'Available versions: ')"
+                      NEWVERSION=${NEWVERSION%%,*}
+                      NEWVERSION=${NEWVERSION##*[[:space:]]}
+                      if [[ $NEWVERSION ]]; then
+                          line=$PACKAGE"=="$NEWVERSION
+                      fi
                   fi
+                  FILE+=$line"\n"
               fi
-              FILE+=$line"\n"
-          done < ./requirements.txt
-          echo -e $FILE > ./requirements.txt
+          done < prequirements.txt
+          echo -e -n $FILE > ./requirements.txt
           if [[ !$(git diff --quiet ./requirements.txt) ]]; then
               echo "requirements<<EOF" >> $GITHUB_OUTPUT
               cat ./requirements.txt >> $GITHUB_OUTPUT
@@ -128,4 +130,3 @@ jobs:
                   - title: "Actions URL"
                     short: false
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
-

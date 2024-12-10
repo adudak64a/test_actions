@@ -1,7 +1,7 @@
 Brotli==1.1.0
 Events==0.5
 ImageHash==4.3.1
-Jinja2==3.1.4
+Jinja2==3.1.2
 MarkupSafe==3.0.2
 Naked==0.1.32
 Pillow==11.0.0
@@ -15,7 +15,7 @@ ansible==10.7.0
 ansible-vault==2.1.0
 anyio==4.7.0
 apacheconfig==0.3.2
-appdirs==1.4.4
+appdirs==1.4.0
 asn1crypto==1.5.1
 attrs==24.2.0
 bcrypt==4.2.1
@@ -124,4 +124,3 @@ xmltodict==0.14.2
 xmod==1.8.1
 zeep==4.3.1
 zonefile==0.1.1
-
