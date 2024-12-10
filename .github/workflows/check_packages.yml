@@ -39,7 +39,7 @@ jobs:
               FILE+=$line"\n"
           done < ./requirements.txt
           echo -e $FILE > ./requirements.txt
-          echo "FILE_DIFF=$(ls -al)" >> $GITHUB_OUTPUT
+          echo "FILE_DIFF=$(git diff --quiet ./requirements.txt && echo false || echo false)" >> $GITHUB_OUTPUT
 
       - name: "Send Slack message about failed check of new packages versions"
         if: failure()
@@ -92,7 +92,7 @@ jobs:
                     short: false
                     value: "Could not push a new commit to devel-borg"
                   - title: "Actions URL"
-                    short: false
+                    short: false 
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Failed push commit to devel-borg>"
 
       - name: "Send Slack message about failed push to devel-borg"
