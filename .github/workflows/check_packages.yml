@@ -15,8 +15,6 @@ jobs:
 
   main_workflow:
     runs-on: ubuntu-latest
-    outputs:
-      FILE_DIFF: ${{steps.check-requirements.outputs.FILE_DIFF}}
     steps:
 
       - name: Checkout code
@@ -42,7 +40,7 @@ jobs:
               FILE+=$line"\n"
           done < ./requirements.txt
           echo -e $FILE > ./requirements.txt
-          echo "FILE_DIFF=$(git diff --quiet ./requirements.txt && echo 'no' || echo 'yes')" >> $GITHUB_OUTPUT
+          echo "FILE_DIFF=$(git diff --quiet ./requirements.txt && echo 'no' || echo 'yes')" >> $GITHUB_ENV
 
       - name: "Send Slack message about failed check of new packages versions"
         if: failure()
