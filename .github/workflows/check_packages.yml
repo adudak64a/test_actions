@@ -13,7 +13,7 @@ jobs:
   main_workflow:
     runs-on: ubuntu-latest
     outputs:
-      new_packages: ${{env.NEW_PACKAGES}}
+      new_packages: ""
     steps:
 
       - name: Checkout code
