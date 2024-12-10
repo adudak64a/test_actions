@@ -13,7 +13,7 @@ jobs:
   main_workflow:
     runs-on: ubuntu-latest
     outputs:
-      FILE_DIFF: ""
+      FILE_DIFF: ${{steps.check-requirements.outputs.FILE_DIFF}}
     steps:
 
       - name: Checkout code
@@ -22,6 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Check and update requirements if needed
+        id: check-requirements
         shell: bash
         run: |
           sudo python3 -m pip install --upgrade pip
