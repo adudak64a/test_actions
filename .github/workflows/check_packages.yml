@@ -61,18 +61,6 @@ jobs:
                     short: false
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Log action>"
 
-
-  push_changes:
-    needs: main_workflow
-    if: needs.main_workflow.outputs.FILE_DIFF == 'yes'
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
       - name: "Push new requirements"
         id: push-new-requirements
         env:
@@ -86,7 +74,7 @@ jobs:
 
       - name: "Send Slack message about failed push to devel-borg"
         if: failure()
-        id: send-failure-message
+        id: send-failure-push-message
         uses: slackapi/slack-github-action@v2.0.0
         with:
           method: chat.postMessage
