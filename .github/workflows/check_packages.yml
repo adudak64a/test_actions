@@ -74,7 +74,7 @@ jobs:
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add ./requirements.txt
             git commit -m "[evn] - Updated requirements.txt"
-            git push  devel-borg
+            git push origin devel-borg
 
       - name: "Send Slack message about failed push to devel-borg"
         if: failure()
