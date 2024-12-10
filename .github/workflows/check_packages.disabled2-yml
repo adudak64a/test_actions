@@ -15,8 +15,6 @@ jobs:
 
   main_workflow:
     runs-on: ubuntu-latest
-    outputs:
-      requirements: ${{steps.check-requirements.outputs.requirements}}
     steps:
 
       - name: Checkout code
@@ -41,10 +39,10 @@ jobs:
               fi
               FILE+=$line"\n"
           done < ./requirements.txt
-          if [[ $(git diff --quiet ./requirements.txt) ]] then
-              echo "requirements=$(cat /requirements.txt)" >> $GITHUB_OUTPUT
-              echo "Does requirements.txt have an update: yes"
-          fi
+          echo -e $FILE > ./requirements.txt
+          FILE_DIFF=$(git diff --quiet ./requirements.txt && echo 'no' || echo 'yes')
+          echo "FILE_DIFF=$FILE_DIFF" >> $GITHUB_ENV
+          echo "Does requirements.txt have an update: $FILE_DIFF"
 
       - name: "Send Slack message about failed check of new packages versions"
         if: failure()
@@ -66,15 +64,12 @@ jobs:
                     short: false
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Log action>"
 
-  push_changes:
-    needs: main_workflow
-    if: needs.main_workflow.outputs.requirements != ''
-    runs-on: ubuntu-latest
-    steps:
       - name: "Push new requirements"
+        if: ${{ env.FILE_DIFF}} == 'yes'
         id: push-new-requirements
+        env:
+          GH_PAT: ${{ secrets.SERVICE_USER_TOKEN }}
         run: |
-            echo ${{needs.main_workflow.outputs.requirements}} > /requirements.txt
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add ./requirements.txt

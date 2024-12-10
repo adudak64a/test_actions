@@ -41,8 +41,9 @@ jobs:
               fi
               FILE+=$line"\n"
           done < ./requirements.txt
-          echo -e $FILE > ./requirements.txt
-          echo "FILE_DIFF=$(git diff --quiet ./requirements.txt && echo 'no' || echo 'yes')" >> $GITHUB_OUTPUT
+          FILE_DIFF=$(git diff --quiet ./requirements.txt && echo 'no' || echo 'yes')
+          echo "FILE_DIFF=$FILE_DIFF" >> $GITHUB_OUTPUT
+          echo "Does requirements.txt have an update: $FILE_DIFF"
 
       - name: "Send Slack message about failed check of new packages versions"
         if: failure()
