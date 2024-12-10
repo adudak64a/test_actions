@@ -24,18 +24,16 @@ jobs:
       - name: Check and update requirements if needed
         shell: bash
         run: |
-          pip -v
           while IFS= read -r line; do
-              echo $line
-              # if [[ $line != *"# pinned"* ]]; then
-              #     PACKAGE=${line%==*} 
-              #     NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'LATEST:')"
-              #     NEWVERSION=${NEWVERSION##*[[:space:]]}
-              #     if [[ $NEWVERSION ]]; then
-              #         line=$PACKAGE"=="$NEWVERSION
-              #     fi
-              # fi
-              # FILE+=$line"\n"
+              if [[ $line != *"# pinned"* ]]; then
+                  PACKAGE=${line%==*} 
+                  NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'LATEST:')"
+                  NEWVERSION=${NEWVERSION##*[[:space:]]}
+                  if [[ $NEWVERSION ]]; then
+                      line=$PACKAGE"=="$NEWVERSION
+                  fi
+              fi
+              FILE+=$line"\n"
           done < ./requirements.txt
           # echo -e $FILE > ./requirements.txt
           # echo "NEW_PACKAGES=$(git diff ./requirements.txt)" >> $GITHUB_ENV
