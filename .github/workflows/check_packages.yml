@@ -75,13 +75,14 @@ jobs:
 
       - name: "Push new requirements"
         id: push-new-requirements
+        env:
+          GH_PAT: ${{ secrets.SERVICE_USER_TOKEN }}
         run: |
-            git pull
+            git config user.name "adudak"
+            git config user.email "adudak64a@gmail.com"
             git add requirements.txt
             git commit -m "[evn] - Updated requirements.txt"
-            git push
-        env:
-          GH_TOKEN: ${{ secrets.SERVICE_USER_TOKEN }}
+            git push https://x-access-token:${GH_PAT}@github.com/${{ github.repository }} HEAD:devel-borg
 
       - name: "Send Slack message about failed push to devel-borg"
         if: failure()
