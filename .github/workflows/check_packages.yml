@@ -64,7 +64,7 @@ jobs:
 
   push_changes:
     needs: main_workflow
-    if: needs.main_workflow.outputs.FILE_DIFF == 'true'
+    if: needs.main_workflow.outputs.FILE_DIFF == 'yes'
     runs-on: ubuntu-latest
     steps:
       - name: "Push new requirements"
