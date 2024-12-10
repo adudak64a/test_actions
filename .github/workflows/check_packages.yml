@@ -5,8 +5,8 @@ env:
   SLACK_CHANNEL: "mig-trash"
 
 on:
-  push:
-    branches: devel-borg
+  schedule:
+    - cron:  '*/10 * * * *'
 
 permissions:
   contents: write
