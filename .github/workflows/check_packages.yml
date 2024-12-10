@@ -80,6 +80,8 @@ jobs:
             git add requirements.txt
             git commit -m "[evn] - Updated requirements.txt"
             git push
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Send Slack message about failed push to devel-borg"
         if: failure()
@@ -101,8 +103,8 @@ jobs:
                     short: false 
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Failed push commit to devel-borg>"
 
-      - name: "Send Slack message about failed push to devel-borg"
-        if: failure()
+      - name: "Send Slack message about success push to devel-borg"
+        if: success()
         id: send-success-message
         uses: slackapi/slack-github-action@v2.0.0
         with:
