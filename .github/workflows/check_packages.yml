@@ -24,7 +24,7 @@ jobs:
       - name: Check and update requirements if needed
         shell: bash
         run: |
-          pip install --upgrade pip
+          sudo python3 -m pip install --upgrade pip         
           pip index versions beautifulsoup4 --disable-pip-version-check
           while IFS= read -r line; do
               if [[ $line != *"# pinned"* ]]; then
