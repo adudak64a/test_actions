@@ -34,7 +34,7 @@ jobs:
                   fi
               fi
               FILE+=$line"\n"
-          done < requirements.txt
+          done < ./requirements.txt
           echo -e $FILE > ./requirements.txt
           echo "NEW_PACKAGES=$(git diff ./requirements.txt)" >> $GITHUB_ENV
 
