@@ -81,7 +81,7 @@ jobs:
             git commit -m "[evn] - Updated requirements.txt"
             git push
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.SERVICE_USER_TOKEN }}
 
       - name: "Send Slack message about failed push to devel-borg"
         if: failure()
