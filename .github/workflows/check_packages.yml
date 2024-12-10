@@ -26,7 +26,8 @@ jobs:
         run: |
           while IFS= read -r line; do
               if [[ $line != *"# pinned"* ]]; then
-                  PACKAGE=${line%==*} 
+                  PACKAGE=${line%==*}
+                  echo $PACKAGE
                   NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'LATEST:')"
                   NEWVERSION=${NEWVERSION##*[[:space:]]}
                   if [[ $NEWVERSION ]]; then
