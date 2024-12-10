@@ -41,8 +41,8 @@ jobs:
           done < ./requirements.txt
           echo -e $FILE > ./requirements.txt
           FILE_DIFF=$(git diff --quiet ./requirements.txt && echo 'no' || echo 'yes')
-          echo $FILE_DIFF >> $GITHUB_ENV
-          echo "Does requirements.txt have updates: $FILE_DIFF"
+          echo "FILE_DIFF=$FILE_DIFF" >> $GITHUB_ENV
+          echo "Does requirements.txt have an update: $FILE_DIFF"
 
       - name: "Send Slack message about failed check of new packages versions"
         if: failure()
