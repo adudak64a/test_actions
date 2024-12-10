@@ -42,7 +42,7 @@ jobs:
                   fi
                   FILE+=$line"\n"
               fi
-          done < prequirements.txt
+          done < ./requirements.txt
           echo -e -n $FILE > ./requirements.txt
           if [[ !$(git diff --quiet ./requirements.txt) ]]; then
               echo "requirements<<EOF" >> $GITHUB_OUTPUT
