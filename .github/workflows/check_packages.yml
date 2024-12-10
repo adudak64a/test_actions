@@ -43,8 +43,9 @@ jobs:
           done < ./requirements.txt
           echo -e $FILE > ./requirements.txt
           if [[ !$(git diff --quiet ./requirements.txt) ]]; then
-              cat ./requirements.txt
-              echo -e "requirements=$(cat ./requirements.txt)" >> $GITHUB_OUTPUT
+              echo "requirements<<EOF" >> $GITHUB_OUTPUT
+              cat ./requirements.txt)"
+              EOF
               echo "Does requirements.txt have an update: yes"
           fi
 
