@@ -15,6 +15,8 @@ jobs:
 
   main_workflow:
     runs-on: ubuntu-latest
+    outputs:
+      requirements: ${{steps.check-requirements.outputs.requirements}}
     steps:
 
       - name: Checkout code
@@ -22,6 +24,36 @@ jobs:
         with:
           fetch-depth: 0
           ref: devel-borg
+
+      - name: Check and update requirements if needed
+        id: check-requirements
+        shell: bash
+        run: |
+          sudo python3 -m pip install --upgrade pip
+          while IFS= read -r line; do
+              if [[ $line != "" ]]; then
+                  if [[ $line != *"# pinned"* && $line != \#* ]]; then
+                      PACKAGE=${line%==*} 
+                      NEWVERSION="$(pip index versions $PACKAGE --disable-pip-version-check 2>&1 | grep 'Available versions: ')"
+                      NEWVERSION=${NEWVERSION%%,*}
+                      NEWVERSION=${NEWVERSION##*[[:space:]]}
+                      if [[ $NEWVERSION ]]; then
+                          line=$PACKAGE"=="$NEWVERSION
+                      fi
+                  fi
+                  FILE+=$line"\n"
+              fi
+          done < ./requirements.txt
+          echo -e -n $FILE > ./requirements.txt
+          echo $(git diff --exit-code ./requirements.txt)
+          if !(git diff --quiet ./requirements.txt); then
+              echo "requirements<<EOF" >> $GITHUB_OUTPUT
+              cat ./requirements.txt >> $GITHUB_OUTPUT
+              echo "EOF" >> $GITHUB_OUTPUT
+              echo "Does requirements.txt have an update: yes"
+            else
+              echo "Does requirements.txt have an update: no"
+          fi
 
       - name: "Send Slack message about failed check of new packages versions"
         if: failure()
@@ -42,44 +74,6 @@ jobs:
                   - title: "Actions URL"
                     short: false
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Log action>"
-
-  execute_test:
-    needs: main_workflow
-    if: needs.main_workflow.outputs.matrix
-    uses: ./.github/workflows/_execute_test.yml
-    with:
-      matrix: ${{ needs.main_workflow.outputs.matrix }}
-      ansible_strategy_plugins: 'plugins/strategy_plugins/mitogen-0.3.18/ansible_mitogen/plugins/strategy'
-      virtual_env: true
-      ansible_version: '2.17.6'
-      latest_versions: true
-                        outputs:
-      requirements: ${{steps.check-requirements.outputs.requirements}}
-
-  fail_message:
-    needs: execute_test
-    if: ${{ failure() }}
-    runs-on: core
-    steps:
-
-      - name: "Send Slack message about failed test migration run"
-        id: send-failure-test-message
-        uses: slackapi/slack-github-action@v2.0.0
-        with:
-          method: chat.postMessage
-          token: ${{ secrets.SLACK_API_TOKEN }}
-          payload: |
-            channel: ${{ env.SLACK_CHANNEL }}
-            text: ":github-actions:"
-            attachments:
-              - color: "FF0000"
-                fields:
-                  - title: "Update requirements.txt"
-                    short: false
-                    value: "Something went wrong during a test or environment setup"
-                  - title: "Actions URL"
-                    short: false 
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
 
   push_changes:
     needs: main_workflow

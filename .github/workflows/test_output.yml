@@ -1,0 +1,24 @@
+---
+name: "Test Include"
+
+permissions:
+  pull-requests: write
+
+on:
+  push:  # default event's activity type is opened, synchronize, or reopened
+    branches:
+      - devel-borg
+
+jobs:
+  target_test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: echo 
+        run: |
+          echo "HELLO WORLD!"
+
+  ansible-lint:
+    uses: ./.github/workflows/_execute_test.yml
+    with:
+      virtual_env: true
+      latest_versions: true

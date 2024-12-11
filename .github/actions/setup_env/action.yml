@@ -1,0 +1,67 @@
+---
+name: 'Setup Ansible Environment'
+description: 'Sets up Python virtual environment and installs Ansible'
+outputs:
+  new_requirements: ${{steps.install_python_packages.outputs.new_requirements}}
+inputs:
+  python_version:
+    description: 'Path to the python'
+    required: false
+    default: 'python3'
+  requirements:
+    description: 'Path to requirements file'
+    required: false
+    default: 'requirements.txt'
+  latest_versions:
+    description: 'Unpin all package versions (true/false)'
+    required: false
+    default: 'false'
+runs:
+  using: 'composite'
+  steps:
+
+    - name: Create virtual environment
+      shell: bash
+      run: ${{ inputs.python_version }} -m virtualenv ${{ github.workspace }}/venv
+
+    - name: Activate virtual environment
+      shell: bash
+      run: |
+        echo "VIRTUAL_ENV=${{ github.workspace }}/venv" >> $GITHUB_ENV
+        echo "${{ github.workspace }}/venv/bin" >> $GITHUB_PATH
+
+    - name: Install requirements
+      id: install_python_packages
+      shell: bash
+      run: |
+        RED='\033[0;31m'
+        GREEN='\033[0;32m'
+        # Determine the requirements file to use
+        REQUIREMENTS_FILE="${{ inputs.requirements }}"
+        if [ -z "$REQUIREMENTS_FILE" ]; then
+          REQUIREMENTS_FILE="requirements.txt"
+        fi
+
+        echo -e "${GREEN}Using requirements file: $REQUIREMENTS_FILE"
+
+        # Prepare the requirements file
+        TEMP_REQUIREMENTS="temp_requirements.txt"
+        cp "$REQUIREMENTS_FILE" "$TEMP_REQUIREMENTS"
+
+        # If latest_versions is true, unpin package versions
+        if [ "${{ inputs.latest_versions }}" == "true" ]; then
+          echo -e "${GREEN}Unpinning package versions."
+          sed -E 's/(==|>=|<=|>|<)[^ ]+//g' "$TEMP_REQUIREMENTS" > "temp_requirements_unpinned.txt"
+          mv "temp_requirements_unpinned.txt" "$TEMP_REQUIREMENTS"
+        fi
+
+        # Install packages from the prepared requirements file
+        if [ -s "$TEMP_REQUIREMENTS" ]; then
+          echo -e "${GREEN}Installing packages:"
+          pip install -r "$TEMP_REQUIREMENTS"
+        else
+          echo -e "${RED}No packages to install from requirements."
+        fi
+
+        # Clean up temporary files
+        rm -f "$TEMP_REQUIREMENTS"
