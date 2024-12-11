@@ -30,7 +30,8 @@ jobs:
 
   outputsik:
     runs-on: ubuntu-20.04
+    needs: ansible-lint
     steps:
-      - name: "SJHOW"
+      - name: "SHOW"
         run:
-          echo ${{ job.ansible-lint.outputs.result}}
+          echo ${{ needs.ansible-lint.outputs.requirements}}
