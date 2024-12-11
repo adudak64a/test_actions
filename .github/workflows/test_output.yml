@@ -22,16 +22,16 @@ jobs:
         with:
           fetch-depth: 0
 
-  ansible-lint:
+  job1:
     uses: ./.github/workflows/_execute_test.yml
     with:
       virtual_env: true
       latest_versions: true
 
-  outputsik:
+  job2:
     runs-on: ubuntu-20.04
-    needs: ansible-lint
+    needs: job1
     steps:
       - name: "SHOW"
         run:
-          echo ${{ needs.ansible-lint.outputs.requirements}}
+          echo ${{ needs.job1.outputs.requirements}}
