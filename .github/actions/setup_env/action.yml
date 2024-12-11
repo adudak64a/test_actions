@@ -23,7 +23,9 @@ runs:
 
     - name: Create virtual environment
       shell: bash
-      run: ${{ inputs.python_version }} -m virtualenv ${{ github.workspace }}/venv
+      run: |
+        python3 -m pip install virtualenv
+        ${{ inputs.python_version }} -m virtualenv ${{ github.workspace }}/venv
 
     - name: Activate virtual environment
       shell: bash
