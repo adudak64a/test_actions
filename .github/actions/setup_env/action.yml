@@ -15,8 +15,7 @@ inputs:
     required: false
     default: 'false'
 outputs:
-  requirements:
-    description: "The result of this action"
+  requirements: ${{ steps.install_python_packages.outputs.requirements}}
 runs:
   using: 'composite'
   steps:
