@@ -39,5 +39,5 @@ jobs:
       
       - name: "SJHOW"
         run:
-          echo ${{ steps.custom-setup_ansible_environment.outputs.new_requirements}}
+          echo ${{ steps.setup_ansible_environment.outputs.requirements}}
 
