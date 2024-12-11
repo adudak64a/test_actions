@@ -25,7 +25,7 @@ jobs:
       - name: "Push new requirements"
         id: push-new
         env:
-          GITHUB_TOKEN: ${{ secrets.SERVICE_USER_TOKEN }}
+          USER_TOKEN: ${{ secrets.SERVICE_USER_TOKEN }}
         run: |
             echo "dddd" >> ./requirements.txt
             git add ./requirements.txt
