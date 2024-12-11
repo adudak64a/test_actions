@@ -18,16 +18,17 @@ jobs:
         run: |
           echo "HELLO WORLD!"
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
   job1:
     runs-on: ubuntu-20.04
     outputs:
       requirements: ${{ steps.simple-id.outputs.requirements }}
     steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: ""
       id: simple-id
