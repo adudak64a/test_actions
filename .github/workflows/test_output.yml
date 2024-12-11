@@ -30,8 +30,7 @@ jobs:
             echo "dddd" >> ./requirements.txt
             git add ./requirements.txt
             git commit -m "[evn] - Updated requirements.txt"
-            git push origin devel-borg
-
+            git push https://x-access-token:${USER_TOKEN}@github.com/${{ github.repository }} HEAD:devel-borg
   # job1:
   #   uses: ./.github/workflows/_execute_test.yml
   #   with:
