@@ -65,7 +65,7 @@ runs:
         else
           echo -e "${RED}No packages to install from requirements."
         fi
-
+        pip freeze
         # Save installed packages
         echo "requirements<<EOF" >> $GITHUB_OUTPUT
         pip freeze >> $GITHUB_OUTPUT
