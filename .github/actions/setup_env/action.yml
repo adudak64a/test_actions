@@ -1,8 +1,6 @@
 ---
 name: 'Setup Ansible Environment'
 description: 'Sets up Python virtual environment and installs Ansible'
-outputs:
-  new_requirements: ${{steps.install_python_packages.outputs.new_requirements}}
 inputs:
   python_version:
     description: 'Path to the python'
