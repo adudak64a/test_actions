@@ -16,11 +16,13 @@ on:
         description: 'venw or not'
         required: false
 
-
 jobs:
+
 
   run_test:
     name: Auto-test
+    outputs:
+      requirements: ${{ steps.setup_ansible_environment.outputs.result}}
     runs-on: ubuntu-latest
     steps:
 
@@ -36,8 +38,3 @@ jobs:
         with:
           requirements: ${{ inputs.requirements }}
           latest_versions: ${{ inputs.latest_versions }}
-      
-      - name: "SJHOW"
-        run:
-          echo ${{ steps.setup_ansible_environment.outputs.result}}
-

@@ -27,3 +27,10 @@ jobs:
     with:
       virtual_env: true
       latest_versions: true
+
+  outputsik:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: "SJHOW"
+        run:
+          echo ${{ job.ansible-lint.outputs.result}}
