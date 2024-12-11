@@ -72,11 +72,5 @@ runs:
         pip freeze >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
 
-        # Generate the output
-        result="Shell action output"
-
-        # Set the output
-        echo "result=$result" >> $GITHUB_OUTPUT
-
         # Clean up temporary files
         rm -f "$TEMP_REQUIREMENTS"
