@@ -36,9 +36,10 @@ jobs:
               git push origin ${{ env.BRANCH_NAME }}
               echo "GITPUSH=no" >> $GITHUB_ENV
       - name: "SSS"
-        if: ${{ env.GITPUSH}} == 'yes'
+        if: ${{ env.GITPUSH }} == 'yes'
         run: |
           echo "YES"
+          echo ${{ env.GITPUSH }}
   # job1:
   #   uses: ./.github/workflows/_execute_test.yml
   #   with:
