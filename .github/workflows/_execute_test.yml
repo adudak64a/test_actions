@@ -2,8 +2,6 @@
 name: Execute test on node
 on:
   workflow_call:
-    outputs:
-      new_requirements: ${{steps.install_python_packages.outputs.new_requirements}}
     inputs:
       requirements:
         type: string
@@ -37,5 +35,5 @@ jobs:
       
       - name: "SJHOW"
         run:
-          echo ${{ steps.custom-setup_ansible_environment.outputs.result}}
+          echo ${{ steps.custom-setup_ansible_environment.outputs.new_requirements}}
 
