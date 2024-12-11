@@ -16,6 +16,7 @@ inputs:
     default: 'false'
 outputs:
   result:
+    description: "The result of this action"
 runs:
   using: 'composite'
   steps:
