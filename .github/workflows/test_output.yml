@@ -34,7 +34,8 @@ jobs:
               git add ./requirements.txt
               git commit -m "[evn] - Updated requirements.txt"
               git push origin ${{ env.BRANCH_NAME }}
-              echo "GITPUSH='yes'" >> $GITHUB_ENV
+              echo "GITPUSH=yes" >> $GITHUB_ENV
+
       - name: "SSS"
         if: env.GITPUSH == 'yes'
         run: |
