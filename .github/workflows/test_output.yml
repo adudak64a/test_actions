@@ -3,6 +3,7 @@ name: "Test Include"
 
 permissions:
   pull-requests: write
+  contents: write
 
 on:
   push:  # default event's activity type is opened, synchronize, or reopened
