@@ -18,7 +18,7 @@ on:
     outputs:
       requirements:
         description: "Output for requirements"
-        value: ${{ jobs.test.outputs.requirements }}
+        value: ${{ jobs.run_test.outputs.requirements }}
 
 jobs:
 
