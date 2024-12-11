@@ -54,6 +54,7 @@ jobs:
             else
               echo "Does requirements.txt have an update: no"
           fi
+          fi
 
       - name: "Send Slack message about failed check of new packages versions"
         if: failure()
