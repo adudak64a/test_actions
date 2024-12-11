@@ -63,5 +63,10 @@ runs:
           echo -e "${RED}No packages to install from requirements."
         fi
 
+        # Save installed packages
+        echo "new_requirements<<EOF" >> $GITHUB_OUTPUT
+        pip freeze >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
         # Clean up temporary files
         rm -f "$TEMP_REQUIREMENTS"

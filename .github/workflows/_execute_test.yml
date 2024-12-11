@@ -27,7 +27,7 @@ jobs:
 
       - name: Setup Ansible Environment
         if: ${{ inputs.virtual_env == 'true' }}
-        uses: ./.github/actions/setup-env/action.yml
+        uses: ./.github/actions/setup_env/action.yml
         id: setup_ansible_environment
         with:
           requirements: ${{ inputs.requirements }}
