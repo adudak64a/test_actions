@@ -15,7 +15,7 @@ inputs:
     required: false
     default: 'false'
 outputs:
-  result:
+  requirements:
     description: "The result of this action"
 runs:
   using: 'composite'
@@ -67,7 +67,7 @@ runs:
         fi
 
         # Save installed packages
-        echo "new_requirements<<EOF" >> $GITHUB_OUTPUT
+        echo "requirements<<EOF" >> $GITHUB_OUTPUT
         pip freeze >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
 
