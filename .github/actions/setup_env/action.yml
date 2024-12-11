@@ -15,7 +15,7 @@ inputs:
     required: false
     default: 'false'
 outputs:
-  requirements: ${{ steps.install_python_packages.outputs.requirements}}
+  result:
 runs:
   using: 'composite'
   steps:
@@ -66,7 +66,7 @@ runs:
         fi
         pip freeze
         # Save installed packages
-        echo "requirements<<EOF" >> $GITHUB_OUTPUT
+        echo "result<<EOF" >> $GITHUB_OUTPUT
         pip freeze >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
 
