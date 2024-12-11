@@ -23,34 +23,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: "Push new requirements"
-        id: push-new
-        env:
-          USER_TOKEN: ${{ secrets.SERVICE_USER_TOKEN }}
-        run: |
-              echo "dddd" >> ./requirements.txt
-              git config user.name 'github-actions[bot]'
-              git config user.email 'github-actions[bot]@users.noreply.github.com'
-              git add ./requirements.txt
-              git commit -m "[evn] - Updated requirements.txt"
-              git push origin ${{ env.BRANCH_NAME }}
-              echo "GITPUSH=no" >> $GITHUB_ENV
+  job1:
+    runs-on: ubuntu-20.04
+    outputs:
+      requirements: ${{ steps.simple-id.outputs.requirements }}
+    steps:
 
-      - name: "SSS"
-        if: env.GITPUSH == 'yes'
-        run: |
-          echo "YES"
-          echo ${{ env.GITPUSH }}
-  # job1:
-  #   uses: ./.github/workflows/_execute_test.yml
-  #   with:
-  #     virtual_env: true
-  #     latest_versions: true
+    - name: ""
+      id: simple-id
+      uses: ./.github/workflows/_execute_test.yml
+      with:
+        virtual_env: true
+        latest_versions: true
 
-  # job2:
-  #   runs-on: ubuntu-20.04
-  #   needs: job1
-  #   steps:
-  #     - name: "SHOW"
-  #       run:
-  #         echo ${{ needs.job1.outputs.requirements}}
+    - name: "SHOW"
+      run:
+        echo ${{ steps.simple-id.outputs.requirements }}
+
+  job2:
+    runs-on: ubuntu-20.04
+    needs: job1
+    steps:
+      - name: "SHOW"
+        run:
+          echo ${{ needs.job1.outputs.requirements}}
