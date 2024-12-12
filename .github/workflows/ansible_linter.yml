@@ -58,7 +58,7 @@ jobs:
         id: run-lint
         uses: ansible/ansible-lint@main
         with:
-          args: "${{ env.FILENAMES }} >> temp.txt && echo 'LINES=$(cat temp.txt)' >> $GITHUB_ENV"
+          args: "${{ env.FILENAMES }} >> temp.txt; echo 'LINES=$(cat temp.txt)' >> $GITHUB_ENV"
 
       - name:
         if: failure()
