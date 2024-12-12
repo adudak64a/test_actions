@@ -5,9 +5,9 @@ permissions:
   pull-requests: write
 
 on:
-  pull_request:  # default event's activity type is opened, synchronize, or reopened
+  push:  # default event's activity type is opened, synchronize, or reopened
     branches:
-      - staging
+      - devel-borg
 
 jobs:
   target_test:

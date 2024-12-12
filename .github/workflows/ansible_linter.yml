@@ -58,7 +58,11 @@ jobs:
         id: run-lint
         uses: ansible/ansible-lint@main
         with:
-          args: ${{ env.FILENAMES }}
+          args: "${{ env.FILENAMES }} >> temp.txt && echo 'LINES=$(cat temp.txt)' >> $GITHUB_ENV"
+
+      - name:
+        run:
+          echo ${{ env.LINES}}
 
       # Add SLACK_API_TOKEN in Github secrets
       - name: "Send Slack notification (fail)"
