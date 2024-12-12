@@ -19,6 +19,8 @@ jobs:
   run_ansible_lint:
     name: "Run ansible-lint"
     runs-on: ubuntu-latest
+    outputs:
+      lines: ${{ steps.fail_fail.outputs.lines}}
     if: ${{ !contains(github.event.pull_request.title, '[skip ansible-lint]')}}
     steps:
 
@@ -61,30 +63,36 @@ jobs:
           args: "${{ env.FILENAMES }} >> temp.txt"
 
       - name:
+        id: fail_fail
         if: failure()
         run:
-          cat temp.txt
+          echo "lines<<EOF" >> $GITHUB_OUTPUT
+          cat temp.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-      # # Add SLACK_API_TOKEN in Github secrets
-      # - name: "Send Slack notification (fail)"
-      #   id: send-fail-message
-      #   if: failure()
-      #   uses: slackapi/slack-github-action@v2.0.0
-      #   with:
-      #     method: chat.postMessage
-      #     token: ${{ secrets.SLACK_TOKEN }}
-      #     payload: |
-      #       channel: ${{ env.SLACK_CHANNEL }}
-      #       text: ":github-actions:"
-      #       attachments:
-      #         - color: "FF0000"
-      #           fields:
-      #             - title: "Message"
-      #               short: false
-      #               value: "Ansible-lint has failed! Click Actions URL to see full log"
-      #             - title: "Actions URL"
-      #               short: false
-      #               value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
+      # Add SLACK_API_TOKEN in Github secrets
+      - name: "Send Slack notification (fail)"
+        id: send-fail-message
+        if: failure()
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Ansible-lint has failed! Click Actions URL to see full log"
+                  - title: "Message"
+                    short: false
+                    value: "```${{job.run_ansible_lint.outputs.lines}}```"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
 
       # # Uncomment if logic is desired
       # - name: "Close pull request if tests failed"

@@ -5,9 +5,6 @@
   tasks:
 
 
-
-
-
     - name: "DEBUG"
       debug:
         msg:
@@ -15,6 +12,7 @@
           - "ddddddd3"
           - 222233
           - "d3333d"
+
 
 
 
@@ -36,3 +34,6 @@
     - name: "ELK. Make sure that index pattern for general log is created. Include relevant tasks"
       include_tasks:
         tasks_from: deprecated/test.yml
+    - name: "ELK. Make sure that index pattern for general log is created. Include relevant tasks"
+      include_tasks:
+        tasks_from: showme/test.yml
