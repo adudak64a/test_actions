@@ -65,7 +65,7 @@ jobs:
       - name:
         id: fail_fail
         if: failure()
-        run:
+        run: |
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           cat temp.txt >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
