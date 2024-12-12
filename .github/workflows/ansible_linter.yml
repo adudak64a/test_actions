@@ -61,6 +61,7 @@ jobs:
           args: "${{ env.FILENAMES }} >> temp.txt && echo 'LINES=$(cat temp.txt)' >> $GITHUB_ENV"
 
       - name:
+        if: failure()
         run:
           echo ${{ env.LINES}}
 
