@@ -5,7 +5,7 @@ permissions:
   pull-requests: write
 
 on:
-  push:  # default event's activity type is opened, synchronize, or reopened
+  pull_request:  # default event's activity type is opened, synchronize, or reopened
     branches:
       - devel-borg
 

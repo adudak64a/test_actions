@@ -64,43 +64,43 @@ jobs:
         run:
           echo ${{ env.LINES}}
 
-      # Add SLACK_API_TOKEN in Github secrets
-      - name: "Send Slack notification (fail)"
-        id: send-fail-message
-        if: failure()
-        uses: slackapi/slack-github-action@v2.0.0
-        with:
-          method: chat.postMessage
-          token: ${{ secrets.SLACK_TOKEN }}
-          payload: |
-            channel: ${{ env.SLACK_CHANNEL }}
-            text: ":github-actions:"
-            attachments:
-              - color: "FF0000"
-                fields:
-                  - title: "Message"
-                    short: false
-                    value: "Ansible-lint has failed! Click Actions URL to see full log"
-                  - title: "Actions URL"
-                    short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
+      # # Add SLACK_API_TOKEN in Github secrets
+      # - name: "Send Slack notification (fail)"
+      #   id: send-fail-message
+      #   if: failure()
+      #   uses: slackapi/slack-github-action@v2.0.0
+      #   with:
+      #     method: chat.postMessage
+      #     token: ${{ secrets.SLACK_TOKEN }}
+      #     payload: |
+      #       channel: ${{ env.SLACK_CHANNEL }}
+      #       text: ":github-actions:"
+      #       attachments:
+      #         - color: "FF0000"
+      #           fields:
+      #             - title: "Message"
+      #               short: false
+      #               value: "Ansible-lint has failed! Click Actions URL to see full log"
+      #             - title: "Actions URL"
+      #               short: false
+      #               value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
 
-      # Uncomment if logic is desired
-      - name: "Close pull request if tests failed"
-        id: close-failed-pr
-        if: failure()
-        uses: actions/github-script@v6
-        with:
-          script: |
-              await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: ${{ github.event.number }},
-              body: "Pull Request has been closed because it didn't pass tests"
-              });
-              await github.rest.pulls.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: ${{ github.event.number }},
-              state: "closed"
-              });
+      # # Uncomment if logic is desired
+      # - name: "Close pull request if tests failed"
+      #   id: close-failed-pr
+      #   if: failure()
+      #   uses: actions/github-script@v6
+      #   with:
+      #     script: |
+      #         await github.rest.issues.createComment({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         issue_number: ${{ github.event.number }},
+      #         body: "Pull Request has been closed because it didn't pass tests"
+      #         });
+      #         await github.rest.pulls.update({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         pull_number: ${{ github.event.number }},
+      #         state: "closed"
+      #         });
