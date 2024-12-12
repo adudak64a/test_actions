@@ -8,6 +8,7 @@ on:
   pull_request:  # default event's activity type is opened, synchronize, or reopened
     branches:
       - devel-borg
+      - staging
 
 jobs:
   target_test:
