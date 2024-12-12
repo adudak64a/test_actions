@@ -1,0 +1,45 @@
+---
+name: Execute test on node
+on:
+  workflow_call:
+    inputs:
+      requirements:
+        type: string
+        description: 'Path to requirements file'
+        required: false
+      latest_versions:
+        type: string
+        description: 'Unpin all package versions (true/false)'
+        required: false
+      virtual_env:
+        type: string
+        description: 'venw or not'
+        required: false
+    outputs:
+      requirements:
+        description: "Output for requirements"
+        value: ${{ jobs.run_test.outputs.requirements }}
+
+jobs:
+
+
+  run_test:
+    name: Auto-test
+    outputs:
+      requirements: ${{ steps.setup_ansible_environment.outputs.result}}
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Ansible Environment
+        if: ${{ inputs.virtual_env == 'true' }}
+        uses: ./.github/actions/setup_env
+        id: setup_ansible_environment
+        with:
+          requirements: ${{ inputs.requirements }}
+          latest_versions: ${{ inputs.latest_versions }}
+
