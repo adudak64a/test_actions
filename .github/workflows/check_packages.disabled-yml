@@ -1,0 +1,143 @@
+---
+name: check-packages
+
+env:
+  SLACK_CHANNEL: "mig-trash"
+
+on:
+  schedule:
+    - cron:  '*/10 * * * *'
+
+permissions:
+  contents: write
+
+jobs:
+
+  main_workflow:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: devel-borg
+
+      - name: "Send Slack message about failed check of new packages versions"
+        if: failure()
+        id: send-failure-message
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Could not make check of new versions for packages"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Log action>"
+
+  execute_test:
+    needs: main_workflow
+    if: needs.main_workflow.outputs.matrix
+    uses: ./.github/workflows/_execute_test.yml
+    with:
+      matrix: ${{ needs.main_workflow.outputs.matrix }}
+      ansible_strategy_plugins: 'plugins/strategy_plugins/mitogen-0.3.18/ansible_mitogen/plugins/strategy'
+      virtual_env: true
+      ansible_version: '2.17.6'
+      latest_versions: true
+                        outputs:
+      requirements: ${{steps.check-requirements.outputs.requirements}}
+
+  fail_message:
+    needs: execute_test
+    if: ${{ failure() }}
+    runs-on: core
+    steps:
+
+      - name: "Send Slack message about failed test migration run"
+        id: send-failure-test-message
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Update requirements.txt"
+                    short: false
+                    value: "Something went wrong during a test or environment setup"
+                  - title: "Actions URL"
+                    short: false 
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
+
+  push_changes:
+    needs: main_workflow
+    if: needs.main_workflow.outputs.requirements != ''
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: devel-borg
+
+      - name: "Push new requirements"
+        id: push-new-requirements
+        run: |
+            echo "${{needs.main_workflow.outputs.requirements}}" > ./requirements.txt
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add ./requirements.txt
+            git commit -m "[evn] - Updated requirements.txt"
+            git push origin devel-borg
+
+      - name: "Send Slack message about failed push to devel-borg"
+        if: failure()
+        id: send-failure-push-message
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Could not push a new commit to devel-borg"
+                  - title: "Actions URL"
+                    short: false 
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Failed push commit to devel-borg>"
+
+      - name: "Send Slack message about success push to devel-borg"
+        if: success()
+        id: send-success-message
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-actions:"
+            attachments:
+              - color: "00ff00"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "File requirenmets.txt was successfully updated"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"

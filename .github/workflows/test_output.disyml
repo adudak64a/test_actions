@@ -1,0 +1,50 @@
+---
+name: "Test Include"
+
+permissions:
+  pull-requests: write
+  contents: write
+
+on:
+  push:  # default event's activity type is opened, synchronize, or reopened
+    branches:
+      - devel-borg
+
+jobs:
+  target_test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: echo 
+        run: |
+          echo "HELLO WORLD!"
+
+
+  job1:
+    runs-on: ubuntu-20.04
+    outputs:
+      requirements: ${{ steps.simple-id.outputs.requirements }}
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: ""
+      id: simple-id
+      uses: ./.github/workflows/_execute_test.yml
+      with:
+        virtual_env: true
+        latest_versions: true
+
+    - name: "SHOW"
+      run:
+        echo ${{ steps.simple-id.outputs.requirements }}
+
+  job2:
+    runs-on: ubuntu-20.04
+    needs: job1
+    steps:
+      - name: "SHOW"
+        run:
+          echo ${{ needs.job1.outputs.requirements}}
