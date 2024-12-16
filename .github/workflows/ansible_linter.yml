@@ -19,9 +19,6 @@ jobs:
   run_ansible_lint:
     name: "Run ansible-lint"
     runs-on: ubuntu-latest
-    outputs:
-      lines: ${{ steps.fail_fail.outputs.lines}}
-      floky: ""
     if: ${{ !contains(github.event.pull_request.title, '[skip ansible-lint]')}}
     steps:
 
