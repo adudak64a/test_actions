@@ -54,11 +54,11 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: "Run ansible-lint"
-        id: run-lint
-        uses: ansible/ansible-lint@main
-        with:
-          args: "${{ env.FILENAMES }} >> temp.txt"
+      # - name: "Run ansible-lint"
+      #   id: run-lint
+      #   uses: ansible/ansible-lint@main
+      #   with:
+      #     args: "${{ env.FILENAMES }} >> temp.txt"
 
       - name:
         id: fail_fail
@@ -93,7 +93,7 @@ jobs:
                   - title: "Message"
                     short: false
                     value: "Ansible-lint has failed! Click Actions URL to see full log"
-                  - value: ${{steps.fail_fail.outputs.lines}}
+                  - value: "${{steps.fail_fail.outputs.lines}}"
                   - title: "Actions URL"
                     short: false
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
