@@ -67,7 +67,7 @@ jobs:
           echo -e -n "dddd==0.1\ndddd==0\ndddd==0.1\ndddd==0.1" >> ./requirements.txt
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           echo -n '```' >> $GITHUB_OUTPUT
-          git --no-pager diff -U0 requirements.txt | sed -n '/^@@/,$p' | sed 's/$/\\\n/' >> $GITHUB_OUTPUT
+          git --no-pager diff -U0 requirements.txt | sed -n '/^@@/,$p' | sed G >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
