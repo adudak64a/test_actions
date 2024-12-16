@@ -67,10 +67,10 @@ jobs:
         id: fail_fail
         if: failure()
         run: |
+          echo -e "```$(cat temp.txt)" > temp.txt
+          echo "```" >> temp.txt
           echo "lines<<EOF" >> $GITHUB_OUTPUT
-          echo '```' >> $GITHUB_OUTPUT
           cat temp.txt >> $GITHUB_OUTPUT
-          echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       # Add SLACK_API_TOKEN in Github secrets
