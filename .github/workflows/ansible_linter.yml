@@ -68,7 +68,7 @@ jobs:
           git --no-pager diff --unified=0 ./requirements.txt
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           echo -n '```' >> $GITHUB_OUTPUT
-          echo -e $(git --no-pager diff --unified=0 ./requirements.txt) >> $GITHUB_OUTPUT
+          echo -e "$(git --no-pager diff --unified=0 ./requirements.txt)" >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 

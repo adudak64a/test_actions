@@ -1,0 +1,24 @@
+diff --git b/requirements.txt a/requirements.txt
+index 01b7900..4322860 100644
+--- b/requirements.txt
++++ a/requirements.txt
+@@ -14,2 +13,0 @@ sdf
+-sdfsdf
+-sdf
+\ No newline at end of file
+diff --git b/requirements.txt a/requirements.txt
+index 01b7900..4322860 100644
+--- b/requirements.txt
++++ a/requirements.txt
+@@ -14,2 +13,0 @@ sdf
+-sdfsdf
+-sdf
+\ No newline at end of file
+diff --git b/requirements.txt a/requirements.txt
+index 01b7900..4322860 100644
+--- b/requirements.txt
++++ a/requirements.txt
+@@ -14,2 +13,0 @@ sdf
+-sdfsdf
+-sdf
+\ No newline at end of file
