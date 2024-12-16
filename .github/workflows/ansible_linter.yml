@@ -56,7 +56,6 @@ jobs:
 
       - name: "Run ansible-lint"
         id: run-lint
-        if: failure()
         uses: ansible/ansible-lint@main
         with:
           args: "${{ env.FILENAMES }} >> temp.txt"
@@ -73,9 +72,9 @@ jobs:
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: "Fail"
-        if: success()
-        run: exit 1
+      # - name: "Fail"
+      #   if: success()
+      #   run: exit 1
 
       # Add SLACK_API_TOKEN in Github secrets
       - name: "Send Slack notification (fail)"
