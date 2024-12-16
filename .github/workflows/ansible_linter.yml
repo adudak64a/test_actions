@@ -67,7 +67,7 @@ jobs:
           echo -e -n "Events==0.5\nImageHash==4.3.1\n" >> ./requirements.txt
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           echo -n '```' >> $GITHUB_OUTPUT
-          echo "$(git --no-pager diff -R --unified=0 --raw ./requirements.txt | sed '/^[-+]/a\\')" >> $GITHUB_OUTPUT
+          echo "$(git --no-pager diff --unified=0 ./requirements.txt | sed '/^[-+]/a\\')" >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
