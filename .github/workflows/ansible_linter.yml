@@ -64,7 +64,7 @@ jobs:
         id: fail_fail
         # if: failure()
         run: |
-          # echo -e -n "dddd==0.1\ndddd==0\ndddd==0.1\ndddd==0.1\ndddd==0.1\ndddd==0.\ndddd==0" >> ./requirements_temp.txt
+          echo -e -n "dddd==0.1\ndddd==0\ndddd==0.1\ndddd==0.1" >> ./requirements_temp.txt
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           echo -n '```' >> $GITHUB_OUTPUT
           git --no-pager diff -U0 requirements.txt | sed -n '/^@@/,$p' >> $GITHUB_OUTPUT
