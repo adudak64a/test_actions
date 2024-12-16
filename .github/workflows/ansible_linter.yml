@@ -67,9 +67,9 @@ jobs:
         id: fail_fail
         if: failure()
         run: |
-          echo "lines<<EOF" >> $GITHUB_OUTPUT
+          echo "lines<<EOF DD" >> $GITHUB_OUTPUT
           cat temp.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "DD EOF" >> $GITHUB_OUTPUT
 
       # Add SLACK_API_TOKEN in Github secrets
       - name: "Send Slack notification (fail)"
