@@ -88,6 +88,7 @@ jobs:
                     short: false
                     value: "Ansible-lint has failed! Click Actions URL to see full log"
                   - value: "```${{steps.fail_fail.outputs.lines}}```"
+                  - value: ""
                   - title: "Actions URL"
                     short: false
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
