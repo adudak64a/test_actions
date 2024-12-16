@@ -71,9 +71,9 @@ jobs:
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      # - name: "Fail"
-      #   if: success()
-      #   run: exit 1
+      - name: "Fail"
+        if: success()
+        run: exit 1
 
       # Add SLACK_API_TOKEN in Github secrets
       - name: "Send Slack notification (fail)"
