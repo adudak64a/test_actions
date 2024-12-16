@@ -63,6 +63,10 @@ jobs:
         with:
           args: "${{ env.FILENAMES }} >> temp.txt"
 
+      - name: "Fail"
+        if: success()
+        run: exit 1
+
       - name:
         id: fail_fail
         if: failure()
