@@ -89,10 +89,11 @@ jobs:
                     short: false
                     value: "Ansible-lint has failed! Click Actions URL to see full log"
                   - value: "```${{steps.fail_fail.outputs.lines}}```"
-                  - value: "```${{steps.fail_fail.outputs.floky}}```"
+                  - value: ${{steps.fail_fail.outputs.floky}}
                   - title: "Actions URL"
                     short: false
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
+
 
       # # Uncomment if logic is desired
       # - name: "Close pull request if tests failed"
