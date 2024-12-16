@@ -62,7 +62,6 @@ jobs:
 
       - name:
         id: fail_fail
-        if: failure()
         run: |
           echo -e -n "Events==0.5\nImageHash==4.3.1\n" >> ./requirements.txt
           git --no-pager diff --unified=0 ./requirements.txt
