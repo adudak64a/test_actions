@@ -64,10 +64,10 @@ jobs:
         id: fail_fail
         # if: failure()
         run: |
-          echo -e -n "dddd==0.1\ndddd==0\ndddd==0.1\ndddd==0.1\ndddd==0.1\ndddd==0.\ndddd==0" >> ./requirements_temp.txt
+          # echo -e -n "dddd==0.1\ndddd==0\ndddd==0.1\ndddd==0.1\ndddd==0.1\ndddd==0.\ndddd==0" >> ./requirements_temp.txt
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           echo -n '```' >> $GITHUB_OUTPUT
-          comm -13 --nocheck-order ./requirements.txt ./requirements_temp.txt >> $GITHUB_OUTPUT
+          comm -13 --nocheck-order requirements.txt requirements2.txt >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
