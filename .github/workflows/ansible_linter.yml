@@ -64,7 +64,7 @@ jobs:
         id: fail_fail
         # if: failure()
         run: |
-          echo -e -n "Events==0.5\nImageHash==4.3.1\n" >> ./requirements_temp.txt
+          echo -e -n "Events==0.5\nImageHash==4.3.1\n" >> ./requirements.txt
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           echo -n '```' >> $GITHUB_OUTPUT
           echo "$(git --no-pager diff -R --unified=0 --raw ./requirements.txt | sed '/^[-+]/a\\')" >> $GITHUB_OUTPUT
