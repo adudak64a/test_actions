@@ -68,7 +68,7 @@ jobs:
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           echo -n '```' >> $GITHUB_OUTPUT
           echo "vars=$(git --no-pager diff --unified=0 ./requirements.txt)" >> $GITHUB_OUTPUT
-          echo '```' >> $GITHUB_OUTPUT
+          echo -n '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: "Fail"
