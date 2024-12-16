@@ -21,6 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       lines: ${{ steps.fail_fail.outputs.lines}}
+      floky: ""
     if: ${{ !contains(github.event.pull_request.title, '[skip ansible-lint]')}}
     steps:
 
@@ -88,7 +89,7 @@ jobs:
                     short: false
                     value: "Ansible-lint has failed! Click Actions URL to see full log"
                   - value: "```${{steps.fail_fail.outputs.lines}}```"
-                  - value: ""
+                  - value: "```${{steps.fail_fail.outputs.floky}}```"
                   - title: "Actions URL"
                     short: false
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
