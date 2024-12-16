@@ -54,11 +54,11 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      # - name: "Run ansible-lint"
-      #   id: run-lint
-      #   uses: ansible/ansible-lint@main
-      #   with:
-      #     args: "${{ env.FILENAMES }} >> temp.txt"
+      - name: "Run ansible-lint"
+        id: run-lint
+        uses: ansible/ansible-lint@main
+        with:
+          args: "${{ env.FILENAMES }} >> temp.txt"
 
       - name:
         id: fail_fail
@@ -67,7 +67,7 @@ jobs:
           git --no-pager diff --unified=0 ./requirements.txt
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           echo -n '```' >> $GITHUB_OUTPUT
-          echo -e "$(cat ./requirements.txt)" >> $GITHUB_OUTPUT
+          echo -e "$(cat temp.txt)" >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
