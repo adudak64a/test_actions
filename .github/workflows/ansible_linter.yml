@@ -68,7 +68,7 @@ jobs:
         if: failure()
         run: |
           echo "lines<<EOF" >> $GITHUB_OUTPUT
-          echo '```' >> $GITHUB_OUTPUT
+          echo -n '```' >> $GITHUB_OUTPUT
           cat temp.txt >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
