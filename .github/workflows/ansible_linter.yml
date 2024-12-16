@@ -64,11 +64,10 @@ jobs:
         id: fail_fail
         if: failure()
         run: |
-          echo -e -n "Events==0.5\nImageHash==4.3.1\n" >> ./requirements.txt
-          git --no-pager diff --unified=0 ./requirements.txt >> temp2.txt
+          echo -e -n "Events==0.5\nImageHash==4.3.1\n" >> ./requirements_temp.txt
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           echo -n '```' >> $GITHUB_OUTPUT
-          cat temp2.txt >> $GITHUB_OUTPUT
+          diff ./requirements.txt ./requirements_temp.txt >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
@@ -93,13 +92,7 @@ jobs:
                   - title: "Message"
                     short: false
                     value: "Ansible-lint has failed! Click Actions URL to see full log"
-                  - value: "diff --git a/requirements.txt b/requirements.txt
-                            index b96e298..6665547 100644
-                            --- a/requirements.txt
-                            +++ b/requirements.txt
-                            @@ -13,0 +14,2 @@ sdaf
-                            +Events==0.5
-                            +ImageHash==4.3.1"
+                  - value: "${{steps.fail_fail.outputs.lines}}"
                   - title: "Actions URL"
                     short: false
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
