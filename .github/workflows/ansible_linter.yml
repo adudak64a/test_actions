@@ -68,7 +68,7 @@ jobs:
           git --no-pager diff --unified=0 ./requirements.txt
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           echo -n '```' >> $GITHUB_OUTPUT
-          git --no-pager diff --unified=0 ./requirements.txt >> $GITHUB_OUTPUT
+          echo $(git --no-pager diff --unified=0 ./requirements.txt) >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
@@ -93,14 +93,7 @@ jobs:
                   - title: "Message"
                     short: false
                     value: "Ansible-lint has failed! Click Actions URL to see full log"
-                  - value: "```diff --git a/requirements.txt b/requirements.txt
-                            index b748bb7..e530d97 100644
-                            --- a/requirements.txt
-                            +++ b/requirements.txt
-                            @@ -11,0 +12,2 @@ dddd==0.
-                            +Events==0.5
-                            +ImageHash==4.3.1
-                            ```"
+                  - value: "${{steps.fail_fail.outputs.lines}}"
                   - title: "Actions URL"
                     short: false
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
