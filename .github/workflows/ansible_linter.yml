@@ -65,10 +65,10 @@ jobs:
         if: failure()
         run: |
           echo -e -n "Events==0.5\nImageHash==4.3.1\n" >> ./requirements.txt
-          # git --no-pager diff --unified=0 ./requirements.txt
+          # git --no-pager diff --unified=0 ./requirements.txt >> temp2.txt
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           echo -n '```' >> $GITHUB_OUTPUT
-          cat temp.txt >> $GITHUB_OUTPUT
+          cat temp2.txt >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
