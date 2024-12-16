@@ -1,0 +1,13 @@
+Brotli==1.1.0
+Events==0.5
+ImageHash==4.3.12
+dddd==0.1
+dddd==0.1
+dddd==0.1
+dddd==0.1
+dddd==0.
+dddd==0.
+dddd==0.1
+sdf
+sdf
+sdaf
