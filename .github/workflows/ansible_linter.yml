@@ -68,8 +68,7 @@ jobs:
           git --no-pager diff --unified=0 ./requirements.txt
           echo "lines<<EOF" >> $GITHUB_OUTPUT
           echo -n '```' >> $GITHUB_OUTPUT
-          VAr1=$( git --no-pager diff --unified=0 ./requirements.txt)
-          echo -e "$VAr1" >> $GITHUB_OUTPUT
+          git --no-pager diff --unified=0 ./requirements.txt >> $GITHUB_OUTPUT
           echo '```' >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
