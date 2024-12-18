@@ -62,7 +62,7 @@ jobs:
 
       - name: "Prettify ansible-lint output"
         if: failure()
-        run: ansible-galaxy --version
+        run: ls /usr/lib/python3/dist-packages/ansible_collections/
 
       - name: "Prettify ansible-lint output"
         id: prettify-res
