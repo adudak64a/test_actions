@@ -54,15 +54,14 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
+      - name: "SHOW"
+        run: echo "${{ github.head_ref }}"
+
       - name: "Run ansible-lint"
         id: run-lint
         uses: ansible/ansible-lint@main
         with:
-          args: "${{ env.FILENAMES }} >> temp.txt"
-
-      - name: "Prettify ansible-lint output"
-        if: failure()
-        run: ls /usr/lib/python3/dist-packages/ansible_collections/
+          args: " >> temp.txt"
 
       - name: "Prettify ansible-lint output"
         id: prettify-res
