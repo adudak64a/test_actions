@@ -61,10 +61,8 @@ jobs:
           args: "${{ env.FILENAMES }} >> temp.txt"
 
       - name: "Prettify ansible-lint output"
-        id: prettify-res
         if: failure()
         run: ansible-galaxy collection list
-
 
       - name: "Prettify ansible-lint output"
         id: prettify-res
