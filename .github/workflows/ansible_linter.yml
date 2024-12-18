@@ -63,6 +63,12 @@ jobs:
       - name: "Prettify ansible-lint output"
         id: prettify-res
         if: failure()
+        run: ansible-galaxy collection list
+
+
+      - name: "Prettify ansible-lint output"
+        id: prettify-res
+        if: failure()
         run: |
           echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
           cat temp.txt >> $GITHUB_OUTPUT
