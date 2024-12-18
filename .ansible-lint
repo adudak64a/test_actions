@@ -12,7 +12,7 @@ strict: false
 # Use default rules or custom from some another directory
 use_default_rules: true
 
-offline: false
+offline: true
 
 # Don't work if file from excluded directory directly checking via ansible-lint
 exclude_paths:
