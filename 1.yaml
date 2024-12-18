@@ -13,11 +13,17 @@
           - "d3333d"
 
 
-
-
-
-
-
+    - name: "Get schema name from XML"
+      xmldddd:
+        xmlstring: "{{ soap_response_context.content }}"
+        xpath: /soap:Envelope/soap:Body/ns2:listResponse/ns2:return/ns:readDatabase/ns:scheme
+        content: text
+        namespaces:
+          soap: 'http://schemas.xmlsoap.org/soap/envelope/'
+          ns2: 'http://soap.admin.openexchange.com'
+          ns: 'http://dataobjects.soap.admin.openexchange.com/xsd'
+      register: schema_name
+      no_log: "{{ hide_platform_sensitive_data }}"
 
 
     - name: "DEBUG"
