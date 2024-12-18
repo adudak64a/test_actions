@@ -58,11 +58,7 @@ jobs:
         id: run-lint
         uses: ansible/ansible-lint@main
         with:
-          args: "${{ env.FILENAMES }} >> temp.txt"
-
-      - name: "SHOW"
-        run: |
-          ansible-galaxy collection list
+          args: "${{ env.FILENAMES }} >> temp.txt; ansible-galaxy collection list"
 
       - name: "Prettify ansible-lint output"
         id: prettify-res
