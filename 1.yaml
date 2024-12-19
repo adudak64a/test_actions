@@ -25,6 +25,11 @@
       register: schema_name
       no_log: "{{ hide_platform_sensitive_data }}"
 
+
+
+
+
+
     - name: "Get schema name from XML"
       community.general.xml:
         xmlstring: "{{ soap_response_context.content }}"

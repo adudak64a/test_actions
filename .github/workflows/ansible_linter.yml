@@ -81,7 +81,7 @@ jobs:
           token: ${{ secrets.SLACK_TOKEN }}
           payload: |
             channel: ${{ env.SLACK_CHANNEL }}
-            text: ":github-actions:"
+            text: ":github-action:"
             attachments:
               - color: "FF0000"
                 fields:
@@ -89,9 +89,7 @@ jobs:
                     short: false
                     value: "Ansible-lint has failed! Click Actions URL to see full log"
                   - value: "```${{steps.prettify-res.outputs.GITDIFF}}```"
-                  - title: "Actions URL"
-                    short: false
-                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
+                  - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
 
 
       # # Uncomment if logic is desired
