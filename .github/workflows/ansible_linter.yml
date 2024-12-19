@@ -22,31 +22,31 @@ jobs:
     if: ${{ !contains(github.event.pull_request.title, '[skip ansible-lint]')}}
     steps:
 
-      - name: "Get list changed files"
-        id: get_changed_files
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const filesFullList = await github.rest.pulls.listFiles({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: ${{ github.event.number }}
-            });
-            const filesNames = filesFullList.data
-                .filter(file => file.status !== "removed")
-                .map(file => file.filename)
-                .join(' ');
-            require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `filesNames=${JSON.stringify(filesNames)}\n`);
-            console.log("List of changed files: " + filesNames)
+      # - name: "Get list changed files"
+      #   id: get_changed_files
+      #   uses: actions/github-script@v6
+      #   with:
+      #     script: |
+      #       const filesFullList = await github.rest.pulls.listFiles({
+      #       owner: context.repo.owner,
+      #       repo: context.repo.repo,
+      #       pull_number: ${{ github.event.number }}
+      #       });
+      #       const filesNames = filesFullList.data
+      #           .filter(file => file.status !== "removed")
+      #           .map(file => file.filename)
+      #           .join(' ');
+      #       require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `filesNames=${JSON.stringify(filesNames)}\n`);
+      #       console.log("List of changed files: " + filesNames)
 
-      # Otherwise linter accept list of files as a single filename
-      - name: "Remove trailing and leading quotes from list of changed files"
-        id: format-filenames
-        run: |
-          FILENAMES=${{ steps.get_changed_files.outputs.filesNames }}
-          FILENAMES="${FILENAMES%\"}"
-          FILENAMES="${FILENAMES#\"}"
-          echo "FILENAMES=$FILENAMES" >> $GITHUB_ENV
+      # # Otherwise linter accept list of files as a single filename
+      # - name: "Remove trailing and leading quotes from list of changed files"
+      #   id: format-filenames
+      #   run: |
+      #     FILENAMES=${{ steps.get_changed_files.outputs.filesNames }}
+      #     FILENAMES="${FILENAMES%\"}"
+      #     FILENAMES="${FILENAMES#\"}"
+      #     echo "FILENAMES=$FILENAMES" >> $GITHUB_ENV
 
       - name: "Checkout source branch"
         id: checkout-scm
@@ -54,36 +54,43 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
+      - name: "SHOW"
+        run: echo "${{ github.head_ref }}"
+
       - name: "Run ansible-lint"
         id: run-lint
         uses: ansible/ansible-lint@main
         with:
-          args: "${{ env.FILENAMES }} >> temp.txt && echo 'LINES=$(cat temp.txt)' >> $GITHUB_ENV"
+          args: " >> temp.txt"
 
-      - name:
-        run:
-          echo ${{ env.LINES}}
+      - name: "Prettify ansible-lint output"
+        id: prettify-res
+        if: failure()
+        run: |
+          echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
+          cat temp.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-      # # Add SLACK_API_TOKEN in Github secrets
-      # - name: "Send Slack notification (fail)"
-      #   id: send-fail-message
-      #   if: failure()
-      #   uses: slackapi/slack-github-action@v2.0.0
-      #   with:
-      #     method: chat.postMessage
-      #     token: ${{ secrets.SLACK_TOKEN }}
-      #     payload: |
-      #       channel: ${{ env.SLACK_CHANNEL }}
-      #       text: ":github-actions:"
-      #       attachments:
-      #         - color: "FF0000"
-      #           fields:
-      #             - title: "Message"
-      #               short: false
-      #               value: "Ansible-lint has failed! Click Actions URL to see full log"
-      #             - title: "Actions URL"
-      #               short: false
-      #               value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
+      # Add SLACK_API_TOKEN in Github secrets
+      - name: "Send Slack notification (fail)"
+        id: send-fail-message
+        if: failure()
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-action:"
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Ansible-lint has failed! Click Actions URL to see full log"
+                  - value: "```${{steps.prettify-res.outputs.GITDIFF}}```"
+                  - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
+
 
       # # Uncomment if logic is desired
       # - name: "Close pull request if tests failed"

@@ -5,13 +5,21 @@
   tasks:
 
 
-    - name: "DEBUG"
-      debug:
+    - naddme: "DEBUG"
+      dedddbug:
         msg:
           - "!ddd!!!ssssdddddd!!!!!!ddddd!!ddddddddeeeeedddddddddddddddddddd!!"
           - "ddddddd3"
           - 222233
           - "d3333d"
+
+
+
+
+
+
+
+
 
 
     - name: "DEBUG"
