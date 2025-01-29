@@ -1,0 +1,90 @@
+---
+# We need branch protection rule for all below to have purpose
+env:
+  SLACK_CHANNEL: "mig-trash"
+
+concurrency:
+  group: ${{ github.workflow }}
+
+name: "ansible-lint"
+on:
+  workflow_call:
+    secrets:
+      SLACK_TOKEN:
+        description: 'A token passed from the caller workflow'
+        required: true
+
+jobs:
+
+  run_ansible_lint:
+    name: "Run ansible-lint"
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.pull_request.title, '[skip ansible-lint]')}}
+    steps:
+
+      - name: "Checkout source branch"
+        id: checkout-scm
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: "SHOW"
+        run: echo "${{ github.head_ref }}"
+
+      - name: "Run ansible-lint"
+        id: run-lint
+        uses: ansible/ansible-lint@main
+        with:
+          args: " >> temp.txt"
+          requirements_file: ""
+
+      - name: "Prettify ansible-lint output"
+        id: prettify-res
+        if: failure()
+        run: |
+          echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
+          # Slack value files has 2000 chars max value
+          # 'head -c' doesn't return end of file char, so, be careful with this command
+          cat temp.txt | head -c 1991 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
+          [ $(wc -c < temp.txt) -gt 1991 ] && echo "..." >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      # Add SLACK_API_TOKEN in Github secrets
+      - name: "Send Slack notification (fail)"
+        id: send-fail-message
+        if: failure()
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: ":github-action:"
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Message"
+                    short: false
+                    value: "Ansible-lint has failed! Click Actions URL to see full log"
+                  - value: "```${{steps.prettify-res.outputs.GITDIFF}}```"
+                  - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
+
+
+      # - name: "Close pull request if tests failed"
+      #   id: close-failed-pr
+      #   if: failure()
+      #   uses: actions/github-script@v6
+      #   with:
+      #     script: |
+      #         await github.rest.issues.createComment({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         issue_number: ${{ github.event.number }},
+      #         body: "Pull Request has been closed because it didn't pass [ansible-lint](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) tests"
+      #         });
+      #         await github.rest.pulls.update({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         pull_number: ${{ github.event.number }},
+      #         state: "closed"
+      #         });

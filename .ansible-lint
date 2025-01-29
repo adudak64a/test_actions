@@ -1,0 +1,48 @@
+---
+# .ansible-lint
+# https://ansible.readthedocs.io/projects/lint/configuring/#specifying-configuration-files
+
+profile: basic
+
+# Enable checking of loop variable prefixes in roles
+loop_var_prefix: "{role}_"
+strict: false
+# Use default rules or custom from some another directory
+use_default_rules: true
+offline: false
+
+exclude_paths:
+  - 'test_playbooks/'
+  - 'deprecated/'
+  - '**/*.py'
+  - 'mtf-venv'
+  - 'site-packages'
+  - 'tools'
+
+
+enable_list:
+  - yaml            # https://ansible.readthedocs.io/projects/lint/rules/yaml/
+  - load-failure    # is unskippable
+  - syntax-check    # is unskippable
+
+# Ansible-lint completely ignores rules or tags listed below
+
+skip_list:
+  - deprecated-bare-vars
+  - key-order
+  - no-tabs
+  - playbook-extension
+  - command-instead-of-module
+  - command-instead-of-shell
+  - deprecated-local-action
+  - deprecated-module
+  - inline-env-var
+  - literal-compare
+  - jinja
+  - no-free-form
+  - no-jinja-when
+  - partial-become
+  - role-name
+  - schema
+  - name
+  - var-naming
