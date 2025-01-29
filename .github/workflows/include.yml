@@ -1,0 +1,28 @@
+---
+name: Execute test on node
+on:
+  workflow_call:
+    inputs:
+      branch_name:
+        type: string
+        description: 'Name of git branch'
+        required: false
+        default: ''
+
+
+jobs:
+
+    run_test:
+      runs-on: ubuntu-latest
+      steps:
+
+        - name: Chechout code
+          uses: actions/checkout@v2
+          with:
+            fetch-depth: 0
+            ref: ${{inputs.branch_name}}
+
+        - name: Get branch name
+          run: |
+            echo 'Branch name: ${{inputs.branch_name}}'
+            ls -al
