@@ -18,6 +18,8 @@ jobs:
 
         - name: Show files
           run: |
+            source /dome/ddd/
+            echo "HEI"
             ls -al
 
         - name: Chechout code
