@@ -16,12 +16,16 @@ jobs:
       runs-on: ubuntu-latest
       steps:
 
+        - name: Show files
+          run: |
+            ls -al
+
         - name: Chechout code
           uses: actions/checkout@v2
           with:
             fetch-depth: 0
             ref: ${{inputs.branch_name}}
 
-        - name: Get branch name
+        - name: Show files
           run: |
             ls -al
