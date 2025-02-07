@@ -24,8 +24,9 @@ jobs:
           run: echo "step one"
 
         - run: echo "step 2"
+          id: lint
           if: always()
 
         - name: Show files
-          if: failure()
+          if: failure() && steps.lint.outcome == 'failure'
           run: echo "step 3"
