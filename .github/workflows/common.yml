@@ -13,7 +13,3 @@ jobs:
 
   check_test:
     uses: ./.github/workflows/include.yml
-    secrets:
-      SLACK_TOKEN: ${{secrets.SLACK_API_TOKEN}}
-    # with:
-    #   branch_name: "devel-miracle"
