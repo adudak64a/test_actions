@@ -6,8 +6,8 @@ permissions:
     contents: read
 
 on:
-  pull_request:
-    branches: [staging, master]
+  push:
+    branches: staging
 
 jobs:
 
