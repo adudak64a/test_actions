@@ -73,7 +73,6 @@ pyAesCrypt==6.1.1
 pyasn1==0.6.1
 pyasyncore==1.0.4
 pycparser==2.22
-pycrypto==2.6.1
 pycurl==7.45.3
 Pygments==2.19.1
 pyinotify==0.9.6
