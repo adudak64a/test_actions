@@ -17,7 +17,9 @@ jobs:
       steps:
 
         - name: Show files
+          continue-on-error: true
           run: exit 1
+          
 
         - name: Show files
           if: failure()
