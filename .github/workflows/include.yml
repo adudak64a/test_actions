@@ -17,17 +17,15 @@ jobs:
       steps:
 
         - name: Show files
-          run: |
-            source /dome/ddd/
-            echo "HEI"
-            ls -al
-
-        - name: Chechout code
-          uses: actions/checkout@v2
-          with:
-            fetch-depth: 0
-            ref: ${{inputs.branch_name}}
+          run: exit 1
 
         - name: Show files
-          run: |
-            ls -al
+          if: failure()
+          run: echo "step one"
+
+        - run: echo "step 2"
+          if: always()
+
+        - name: Show files
+          if: failure()
+          run: echo "step 3"
