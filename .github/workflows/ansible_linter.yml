@@ -41,7 +41,7 @@ jobs:
       - name: "Update python packages"
         run: |
           pip install -r requirements_stable.txt
-          pip -U install ansible-lint
+          pip install -U ansible-lint
 
       - name: "Update ansible collections"
         run: ansible-galaxy collection install -r ansible_required_collections.yml
