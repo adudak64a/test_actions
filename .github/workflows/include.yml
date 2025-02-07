@@ -24,5 +24,4 @@ jobs:
 
         - name: Get branch name
           run: |
-            echo 'Branch name: ${{inputs.branch_name}}'
             ls -al
