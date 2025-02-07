@@ -1,0 +1,30 @@
+---
+# Required for correct work Github Action ansible/ansible-lint
+# If ansible-lint fails because of a new unknown ansible collection module, add it to this list
+# IMPORTANT: the module name should consist of two words separated by a period, as listed below
+collections:
+  - ansible.netcommon
+  - ansible.posix
+  - ansible.utils
+  - ansible.windows
+  - community.crypto
+  - community.dns
+  - community.docker
+  - community.general
+  - community.hashi_vault
+  - community.libvirt
+  - community.mysql
+  - community.network
+  - community.postgresql
+  - community.windows
+  - amazon.aws
+  - cyberark.conjur
+  - cyberark.pas
+  - frr.frr
+  - gluster.gluster
+  - servicenow.servicenow
+  - microsoft.ad
+  - openstack.cloud
+  - ovirt.ovirt
+  - azure.azcollection
+  - cloud.common
