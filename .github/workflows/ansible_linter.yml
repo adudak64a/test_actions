@@ -54,12 +54,14 @@ jobs:
         id: prettify-res
         if: failure()
         run: |
-          echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
-          # Slack value files has 2000 chars max value
-          # 'head -c' doesn't return end of file char, so, be careful with this command
-          cat temp.txt | head -c 1991 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
-          [ $(wc -c < temp.txt) -gt 1991 ] && echo "..." >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          if [ -s lint_tmp.txt ]; then
+            echo "lint_res<<EOF" >> $GITHUB_OUTPUT
+            echo -n '```' >> $GITHUB_OUTPUT
+            cat lint_tmp.txt | head -c 1991 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
+            [ $(wc -c < lint_tmp.txt) -gt 1991 ] && echo "..." >> $GITHUB_OUTPUT
+            echo '```' >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
 
       # Add SLACK_API_TOKEN in Github secrets
       - name: "Send Slack notification (fail)"
@@ -78,7 +80,7 @@ jobs:
                   - title: "Message"
                     short: false
                     value: "Ansible-lint has failed! Click Actions URL to see full log"
-                  - value: "```${{steps.prettify-res.outputs.GITDIFF}}```"
+                  - value: "${{steps.prettify-res.outputs.GITDIFF}}"
                   - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
 
 
