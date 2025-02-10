@@ -58,9 +58,9 @@ jobs:
           if [ -s lint_tmp.txt ]; then
             echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
             echo -n '```' >> $GITHUB_OUTPUT
-            cat lint_tmp.txt | head -c 1991 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
+            cat lint_tmp.txt | head -c 1900 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
             [ $(wc -c < lint_tmp.txt) -gt 1900 ] && echo "..." >> $GITHUB_OUTPUT
-            echo -n '```' >> $GITHUB_OUTPUT
+            echo '```' >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           fi
 
