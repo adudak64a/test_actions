@@ -1,0 +1,146 @@
+---
+- name: "Quick"
+  hosts: localhost
+
+  vars:
+    log_retries: "test test"
+    local_debug_vars: true
+
+  tasks:
+
+    - debug: msg="{{ log_retries }}"
+      vars:
+        log_retries: "dddd"
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+
+    - name: "TEST SHELL"
+      shell: "ls /"
+      register: comm_out
+      until: "{{ '/provider' in comm_out.stdout }}"
+      retries: 4
