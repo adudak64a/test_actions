@@ -79,8 +79,7 @@ jobs:
                 fields:
                   - title: "Message"
                     short: false
-                    value: "Ansible-lint has failed! Click Actions URL to see full log"
-                  - value: "${{steps.prettify-res.outputs.GITDIFF}}"
+                    value: "${{steps.prettify-res.outputs.GITDIFF}}"
                   - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
 
 
