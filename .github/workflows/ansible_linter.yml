@@ -54,6 +54,7 @@ jobs:
         id: prettify-res
         if: failure()
         run: |
+          cat lint_tmp.txt | head -c 1991
           if [ -s lint_tmp.txt ]; then
             echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
             # echo -n '```' >> $GITHUB_OUTPUT
