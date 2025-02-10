@@ -56,10 +56,10 @@ jobs:
         run: |
           if [ -s lint_tmp.txt ]; then
             echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
-            echo -n '```' >> $GITHUB_OUTPUT
+            # echo -n '```' >> $GITHUB_OUTPUT
             cat lint_tmp.txt | head -c 1991 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
             [ $(wc -c < lint_tmp.txt) -gt 1991 ] && echo "..." >> $GITHUB_OUTPUT
-            echo '```' >> $GITHUB_OUTPUT
+            # echo '```' >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           fi
 
@@ -79,95 +79,7 @@ jobs:
                 fields:
                   - title: "Message"
                     short: false
-                    value: "```yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:23
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:32
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:41
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:50
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:59
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:68
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:77
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:86
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:95
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:104
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:113
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:122
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 10.yml:131
-                            
-                            yaml[empty-lines]: Too many blank lines (9 > 2)
-                            1 copy 10.yml:141
-                            
-                            yaml[new-line-at-end-of-file]: No new line character at the end of file
-                            1 copy 10.yml:146
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:23
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:32
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:41
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:50
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:59
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:68
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:77
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:86
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:95
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:104
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:113
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:122
-                            
-                            yaml[empty-lines]: Too many blank lines (8 > 2)
-                            1 copy 11.yml:131
-                            
-                            yaml[empty-lines]: Too many blank lines (9 > 2)
-                            1 copy 11.yml:141
-                            
-                            yaml[new-line-at-end-of-file]: No new line
-                            ...```"
+                    value: "${{steps.prettify-res.outputs.GITDIFF}}"
                   - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
 
 
