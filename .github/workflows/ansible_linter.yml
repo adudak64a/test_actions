@@ -55,6 +55,7 @@ jobs:
         if: failure()
         run: |
           if [ -s lint_tmp.txt ]; then
+            cat lint_tmp.txt | head -c 1995 | wc -l
             count_lines=$(cat lint_tmp.txt | head -c 1995 | wc -l)
             limit=$((1995 - count_lines))
             echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
