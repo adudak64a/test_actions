@@ -14,10 +14,6 @@
 
     - debug: msg="{{ log_retries }}"
 
-
-
-
-
     - name: "TEST SHELL"
       shell: "ls /"
       register: comm_out
