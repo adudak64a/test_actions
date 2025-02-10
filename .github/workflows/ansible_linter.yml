@@ -55,8 +55,8 @@ jobs:
         if: failure()
         run: |
           if [ -s lint_tmp.txt ]; then
-            count_lines=$(cat lint_tmp.txt | head -c 1992 | wc -l)
-            limit=$((1992 - count_lines))
+            count_lines=$(cat lint_tmp.txt | head -c 1994 | wc -l)
+            limit=$((1994 - count_lines))
             echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
             echo -n '```' >> $GITHUB_OUTPUT
             cat lint_tmp.txt | head -c $limit | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
