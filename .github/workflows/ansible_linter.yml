@@ -82,7 +82,7 @@ jobs:
                   - title: "Message"
                     short: false
                     value: "${{ steps.prettify-res.outputs.GITDIFF }}"
-                    - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
+                  - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
 
 
       # - name: "Close pull request if tests failed"
