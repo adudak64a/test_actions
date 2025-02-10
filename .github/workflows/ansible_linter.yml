@@ -54,7 +54,6 @@ jobs:
         id: prettify-res
         if: failure()
         run: |
-          cat lint_tmp.txt | head -c 1990
           if [ -s lint_tmp.txt ]; then
             count_lines=$(cat lint_tmp.txt | head -c 1990 | wc -l)
             limit=$((1990 - count_lines))
@@ -62,7 +61,7 @@ jobs:
             echo -n '```' >> $GITHUB_OUTPUT
             cat lint_tmp.txt | head -c $limit | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
             # [ $(wc -c < lint_tmp.txt) -gt 1990 ] && echo "..." >> $GITHUB_OUTPUT
-            # echo '```' >> $GITHUB_OUTPUT
+            echo '```' >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           fi
 
