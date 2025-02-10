@@ -167,8 +167,7 @@ jobs:
                             1 copy 11.yml:141
                             
                             yaml[new-line-at-end-of-file]: No new line
-                            ...
-                            ```"
+                            ...```"
                   - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
 
 
