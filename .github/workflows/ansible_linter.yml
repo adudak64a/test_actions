@@ -54,6 +54,7 @@ jobs:
         id: prettify-res
         if: failure()
         run: |
+          cat 1.txt | head -c 1990
           if [ -s lint_tmp.txt ]; then
             count_lines=$(cat 1.txt | head -c 1990 | wc -l)
             limit=$((1990 - count_lines))
