@@ -40,11 +40,11 @@ jobs:
 
       - name: "Update python packages"
         run: |
-          pip install -r requirements_stable.txt
+          # pip install -r requirements_stable.txt
           pip install -U ansible-lint
 
-      - name: "Update ansible collections"
-        run: ansible-galaxy collection install -r ansible_required_collections.yml
+      # - name: "Update ansible collections"
+      #   run: ansible-galaxy collection install -r ansible_required_collections.yml
 
       - name: "Run ansible-lint"
         id: run-lint
@@ -55,7 +55,7 @@ jobs:
         if: failure()
         run: |
           if [ -s lint_tmp.txt ]; then
-            echo "lint_res<<EOF" >> $GITHUB_OUTPUT
+            echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
             echo -n '```' >> $GITHUB_OUTPUT
             cat lint_tmp.txt | head -c 1991 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
             [ $(wc -c < lint_tmp.txt) -gt 1991 ] && echo "..." >> $GITHUB_OUTPUT
