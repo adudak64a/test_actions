@@ -81,7 +81,46 @@ jobs:
                 fields:
                   - title: "Message"
                     short: false
-                    value: "${{ steps.prettify-res.outputs.GITDIFF }}"
+                    value: "```yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 > 233)
+                            yaml[empty-lines]: Too many blank lines (8 ```"
                   - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
 
 
