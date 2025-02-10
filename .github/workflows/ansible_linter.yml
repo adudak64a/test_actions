@@ -59,7 +59,7 @@ jobs:
             echo -n '```' >> $GITHUB_OUTPUT
             cat lint_tmp.txt | head -c 1991 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
             [ $(wc -c < lint_tmp.txt) -gt 1991 ] && echo "..." >> $GITHUB_OUTPUT
-            # echo '```' >> $GITHUB_OUTPUT
+            echo '```' >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           fi
 
