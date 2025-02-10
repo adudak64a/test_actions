@@ -48,7 +48,7 @@ jobs:
 
       - name: "Run ansible-lint"
         id: run-lint
-        run: ansible-lint >> temp.txt
+        run: ansible-lint > lint_tmp.txt
 
       - name: "Prettify ansible-lint output"
         id: prettify-res
