@@ -54,14 +54,12 @@ jobs:
         id: prettify-res
         if: failure()
         run: |
-          cat lint_tmp.txt | head -c 1990
-          echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-          cat lint_tmp.txt | head -c 1990 | sed -e '$a\' | sed 's/"/'\''/g'
           if [ -s lint_tmp.txt ]; then
+            count_lines=$((1990 - $(wc -l lint_tmp.txt)))
             echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
             echo -n '```' >> $GITHUB_OUTPUT
-            cat lint_tmp.txt | head -c 1990 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
-            # [ $(wc -c < lint_tmp.txt) -gt 1991 ] && echo "\.\.\." >> $GITHUB_OUTPUT
+            cat lint_tmp.txt | head -c $count_lines | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
+            # [ $(wc -c < lint_tmp.txt) -gt 1990 ] && echo "..." >> $GITHUB_OUTPUT
             echo '```' >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           fi

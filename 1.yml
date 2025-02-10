@@ -143,4 +143,4 @@
       shell: "ls /"
       register: comm_out
       until: "{{ '/provider' in comm_out.stdout }}"
-      retries: 4
+      retries: 4ca
