@@ -155,32 +155,23 @@ jobs:
                             yaml[empty-lines]: Too many blank lines (3 > 2)
                             1 copy 2.yml:276
 
-                            yaml[empty-lines]:
+                            yaml[empty-lines]: Too many blank lines (3 > 2)
                             1 copy 2.yml:280
 
-                            yaml[empty-lines]:
+                            yaml[empty-lines]: Too many blank lines (3 > 2)
                             1 copy 2.yml:284
 
-                            yaml[empty-lines]:
+                            yaml[empty-lines]: Too many blank lines (4 > 2)
                             1 copy 2.yml:289
 
-                            yaml[new-line-at-end-of-file]:
+                            yaml[new-line-at-end-of-file]: No new line character at the end of file
                             1 copy 2.yml:294
 
                             yaml[document-start]: Missing document start '---'
                             1 copy 3.yml:1
 
                             yaml[empty-lines]: Too many blank lines (30 > 2)
-                            1 copy 3.ymm
-
-                            yaml[empty-lines]:
-                            1 copy 2.yml:280
-
-                            yaml[empty-lines]:
-                            1 copy 2.yml:284
-
-                            yaml[empty-lines]:
-                            1 copy 2.yml:289 ...```"
+                            1 copy 3.yml 12 ...```"
 
 
       # - name: "Close pull request if tests failed"
