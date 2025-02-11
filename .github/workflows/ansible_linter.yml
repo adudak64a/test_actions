@@ -55,22 +55,22 @@ jobs:
         if: failure()
         run: |
           if [ -s lint_tmp.txt ]; then
-            # characters_limit=1990
-            # cat lint_tmp.txt | head -c 1972 | sed -e '$a\' | sed 's/"/'\''/g'
-            # number_non_empty_lines=$(cat lint_tmp.txt | head -c $characters_limit | awk 'NF' | wc -l)
-            # current_limit=$((characters_limit - number_non_empty_lines))
-            # echo $current_limit
-            # echo "d"
+            characters_limit=1990
+            cat lint_tmp.txt | head -c 1972 | sed -e '$a\' | sed 's/"/'\''/g'
+            number_non_empty_lines=$(cat lint_tmp.txt | head -c $characters_limit | awk 'NF' | wc -l)
+            current_limit=$((characters_limit - number_non_empty_lines))
+            echo $current_limit
+            echo "d"
             echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
             echo -n '```' >> $GITHUB_OUTPUT
-            # cat lint_tmp.txt | head -c 1972 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
-            # [ $(wc -c < lint_tmp.txt) -gt $current_limit ] && echo '...```' >> $GITHUB_OUTPUT || echo '```' >> $GITHUB_OUTPUT
+            cat lint_tmp.txt | head -c 1972 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
+            [ $(wc -c < lint_tmp.txt) -gt $current_limit ] && echo '...```' >> $GITHUB_OUTPUT || echo '```' >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
             cat $GITHUB_OUTPUT
           fi
 
       # Add SLACK_API_TOKEN in Github secretsd
-      - name: "Send Slack notifdidcdation (fail)"
+      - name: "Send Slack notifidcdation (fail)"
         id: send-fail-message
         if: failure()
         uses: slackapi/slack-github-action@v2.0.0
@@ -85,35 +85,7 @@ jobs:
                 fields:
                   - title: "Message"
                     short: false
-                    value: "```yaml[document-start]: Missing document start '---' 1 copy 2.yml:1
-                            yaml[empty-lines]: Too many blank lines (3 > 2) 1 copy 2.yml:35
-                            yaml[new-line-at-end-of-file]: No new line character at the end of file 1 copy 2.yml:40
-                            yaml[document-start]: Missing document start '---' 1 copy 3.yml:1
-                            yaml[empty-lines]: Too many blank lines (3 > 2) 1 copy 3.yml:35
-                            yaml[new-line-at-end-of-file]: No new line character at the end of file 1 copy 3.yml:40
-                            yaml[document-start]: Missing document start '---' 1 copy 4.yml:1
-                            yaml[empty-lines]: Too many blank lines (3 > 2) 1 copy 4.yml:35
-                            yaml[new-line-at-end-of-file]: No new line character at the end of file 1 copy 4.yml:40
-                            yaml[document-start]: Missing document start '---' 1 copy 5.yml:1
-                            yaml[empty-lines]: Too many blank lines (3 > 2) 1 copy 5.yml:35
-                            yaml[new-line-at-end-of-file]: No new line character at the end of file 1 copy 5.yml:40
-                            yaml[document-start]: Missing document start '---' 1 copy 6.yml:1
-                            yaml[empty-lines]: Too many blank lines (5 > 2) 1 copy 6.yml:21
-                            yaml[empty-lines]: Too many blank lines (6 > 2) 1 copy 6.yml:28
-                            yaml[empty-lines]: Too many blank lines (5 > 2) 1 copy 6.yml:34
-                            yaml[empty-lines]: Too many blank lines (5 > 2) 1 copy 6.yml:40
-                            yaml[empty-lines]: Too many blank lines (5 > 2) 1 copy 6.yml:46
-                            yaml[empty-lines]: Too many blank lines (5 > 2) 1 copy 6.yml:52
-                            yaml[empty-lines]: Too many blank lines (4 > 2) 1 copy 6.yml:57
-                            yaml[empty-lines]: Too many blank lines (4 > 2) 1 copy 6.yml:62
-                            yaml[empty-lines]: Too many blank lines (3 > 2) 1 copy 6.yml:66
-                            yaml[new-line-at-end-of-file]: No new line character at the end of file 1 copy 6.yml:71
-                            yaml[document-start]: Missing document start '---' 1 copy.yml:1
-                            yaml[empty-lines]: Too many blank lines (3 > 2) 1 copy.yml:35
-                            yaml[new-line-at-end-of-file]: No new line character at the end of file 1 copy.yml:40
-                            yaml[document-start]: Missing document start '---' 1.yml:1
-                            yaml[empty-lines]: Too many blank lines (3 > 2) 1.yml:35
-                            yaml[new-line-0 ...```"
+                    value: "${{ steps.prettify-res.outputs.GITDIFF }}"
                   - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
 
 
