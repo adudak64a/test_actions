@@ -60,6 +60,7 @@ jobs:
             number_non_empty_lines=$(cat lint_tmp.txt | head -c $characters_limit | awk 'NF' | wc -l)
             current_limit=$((characters_limit - number_non_empty_lines))
             echo $current_limit
+            echo "d"
             echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
             echo -n '```' >> $GITHUB_OUTPUT
             cat lint_tmp.txt | head -c 1990 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
