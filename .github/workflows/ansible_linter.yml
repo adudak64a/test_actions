@@ -113,7 +113,7 @@ jobs:
                             yaml[new-line-at-end-of-file]: No new line character at the end of file 1 copy.yml:40
                             yaml[document-start]: Missing document start '---' 1.yml:1
                             yaml[empty-lines]: Too many blank lines (3 > 2) 1.yml:35
-                            yaml[new-line- ...```"
+                            yaml[new-line-0 ...```"
                   - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
 
 
