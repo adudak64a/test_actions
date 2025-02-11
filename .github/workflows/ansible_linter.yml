@@ -167,11 +167,13 @@ jobs:
                             yaml[new-line-at-end-of-file]: No new line character at the end of file
                             1 copy 2.yml:294
 
-                            yaml[document-start]: Missing document start '---'
+                            yaml[document-start]: 
+                            Missing document start 
+                            '---'
                             1 copy 3.yml:1
 
                             yaml[empty-lines]: Too many blank lines (30 > 2)
-                            1 copy 3.yml ...```"
+                            1 copy 3.ym ...```"
 
 
       # - name: "Close pull request if tests failed"
