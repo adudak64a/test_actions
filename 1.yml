@@ -1,4 +1,3 @@
----
 - name: "Quick"
   hosts: localhost
 
@@ -14,128 +13,23 @@
 
     - debug: msg="{{ log_retries }}"
 
-
-
-
-
-
-
+    - debug: msg="{{ log_retries }}"
 
     - debug: msg="{{ log_retries }}"
 
-
-
-
-
-
-
+    - debug: msg="{{ log_retries }}"
 
     - debug: msg="{{ log_retries }}"
 
-
-
-
-
-
-
+    - debug: msg="{{ log_retries }}"
 
     - debug: msg="{{ log_retries }}"
 
-
-
-
-
-
-
+    - debug: msg="{{ log_retries }}"
 
     - debug: msg="{{ log_retries }}"
 
-
-
-
-
-
-
-
     - debug: msg="{{ log_retries }}"
-
-
-
-
-
-
-
-
-    - debug: msg="{{ log_retries }}"
-
-
-
-
-
-
-
-
-    - debug: msg="{{ log_retries }}"
-
-
-
-
-
-
-
-
-    - debug: msg="{{ log_retries }}"
-
-
-
-
-
-
-
-
-    - debug: msg="{{ log_retries }}"
-
-
-
-
-
-
-
-
-    - debug: msg="{{ log_retries }}"
-
-
-
-
-
-
-
-
-    - debug: msg="{{ log_retries }}"
-
-
-
-
-
-
-
-
-    - debug: msg="{{ log_retries }}"
-
-
-
-
-
-
-
-
-    - debug: msg="{{ log_retries }}"
-
-
-
-
-
-
 
 
 
