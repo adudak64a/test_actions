@@ -1,7 +1,7 @@
 ---
 # We need branch protection rule for all below to have purpose
 env:
-  SLACK_CHANNEL: "mig-trash"
+  SLACK_CHANNEL: "test_messages"
 
 concurrency:
   group: ${{ github.workflow }}
