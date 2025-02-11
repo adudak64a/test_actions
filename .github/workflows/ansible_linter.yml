@@ -60,9 +60,9 @@ jobs:
             current_limit=$((characters_limit - number_non_empty_lines))
             echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
             echo -n '```' >> $GITHUB_OUTPUT
-            cat lint_tmp.txt | head -c $current_limit | sed -e '$a\' | sed 's/"/'\''/g' | awk '{print $0 "..."}'>> $GITHUB_OUTPUT
-            # [ $(wc -c < lint_tmp.txt) -gt 1990 ] && echo "..." >> $GITHUB_OUTPUT
-            echo '```' >> $GITHUB_OUTPUT
+            cat lint_tmp.txt | head -c $current_limit | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
+            [ $(wc -c < lint_tmp.txt) -gt 1990 ] && echo "...\`\`\`" >> $GITHUB_OUTPUT
+            [ $(wc -c < lint_tmp.txt) -le 1990 ] && echo "```" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           fi
 
