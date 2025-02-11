@@ -66,7 +66,7 @@ jobs:
           fi
 
       # Add SLACK_API_TOKEN in Github secretsd
-      - name: "Send Slack notifidcation (fail)"
+      - name: "Send Slack notifidcdation (fail)"
         id: send-fail-message
         if: failure()
         uses: slackapi/slack-github-action@v2.0.0
