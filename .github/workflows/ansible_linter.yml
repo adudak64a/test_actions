@@ -69,7 +69,7 @@ jobs:
             cat $GITHUB_OUTPUT
           fi
 
-      # Add SLACK_API_TOKEN in Github secretsd
+      # Add SLACK_API_TOKEN in dGithub secretsd
       - name: "Send Slack notifidcdation (fail)"
         id: send-fail-message
         if: failure()
