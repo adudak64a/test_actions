@@ -55,8 +55,8 @@ jobs:
         if: failure()
         run: |
           if [ -s lint_tmp.txt ]; then
-            cat lint_tmp.txt
             characters_limit=1990
+            cat lint_tmp.txt | head -c $characters_limit
             number_non_empty_lines=$(cat lint_tmp.txt | head -c $characters_limit | awk 'NF' | wc -l)
             current_limit=$((characters_limit - number_non_empty_lines))
             echo $current_limit
