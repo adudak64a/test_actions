@@ -175,7 +175,7 @@ jobs:
 
 
       # - name: "Close pull request if tests failed"
-      #   id: close-failed-pr
+      #   id: close-failed-prd
       #   if: failure()
       #   uses: actions/github-script@v6
       #   with:
