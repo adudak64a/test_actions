@@ -171,7 +171,16 @@ jobs:
                             1 copy 3.yml:1
 
                             yaml[empty-lines]: Too many blank lines (30 > 2)
-                            1 copy 3.ym ...ddddd```"
+                            1 copy 3.ymm
+
+                            yaml[empty-lines]:
+                            1 copy 2.yml:280
+
+                            yaml[empty-lines]:
+                            1 copy 2.yml:284
+
+                            yaml[empty-lines]:
+                            1 copy 2.yml:289 ...```"
 
 
       # - name: "Close pull request if tests failed"
