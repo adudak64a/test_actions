@@ -83,6 +83,7 @@ jobs:
             attachments:
               - color: "FF0000"
                 fields:
+                  - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
                   - title: "Message"
                     short: false
                     value: "```yaml[document-start]: Missing document start '---'
@@ -154,16 +155,16 @@ jobs:
                             yaml[empty-lines]: Too many blank lines (3 > 2)
                             1 copy 2.yml:276
 
-                            yaml[empty-lines]: Too many blank lines (3 > 2)
+                            yaml[empty-lines]:
                             1 copy 2.yml:280
 
-                            yaml[empty-lines]: Too many blank lines (3 > 2)
+                            yaml[empty-lines]:
                             1 copy 2.yml:284
 
-                            yaml[empty-lines]: Too many blank lines (4 > 2)
+                            yaml[empty-lines]:
                             1 copy 2.yml:289
 
-                            yaml[new-line-at-end-of-file]: No new line character at the end of file
+                            yaml[new-line-at-end-of-file]:
                             1 copy 2.yml:294
 
                             yaml[document-start]: Missing document start '---'
@@ -171,7 +172,6 @@ jobs:
 
                             yaml[empty-lines]: Too many blank lines (30 > 2)
                             1 copy 3.ym ...ddddd```"
-                  - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
 
 
       # - name: "Close pull request if tests failed"
