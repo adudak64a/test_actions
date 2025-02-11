@@ -18,17 +18,13 @@ jobs:
 
         - name: Show files
           id: first
-          continue-on-error: true
-          run: exit 1
+          run: |
+            python -m venv testvenv
+            source testvenv/bin/activate
+            pip install anslible-lint
+            pip list
 
         - name: Show files
-          if: steps.first.outcome == 'failure'
-          run: echo "step one"
-
-        - run: echo "step 2"
-          id: lint
-          if: always()
-
-        - name: Show files
-          if: failure() 
-          run: echo "step 3"
+          id: second
+          run: |
+            pip list

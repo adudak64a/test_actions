@@ -12,7 +12,7 @@ on:
 jobs:
 
   check_test:
-    uses: ./.github/workflows/ansible_linter.yml
+    uses: ./.github/workflows/include.yml
     secrets:
       SLACK_TOKEN: ${{secrets.SLACK_API_TOKEN}}
     # with:
