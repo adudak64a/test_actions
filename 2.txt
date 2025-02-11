@@ -1,85 +1,86 @@
 yaml[document-start]: Missing document start '---'
 1 copy 2.yml:1
 
+yaml[empty-lines]: Too many blank lines (30 > 2)
+1 copy 2.yml:44
+
+yaml[empty-lines]: Too many blank lines (23 > 2)
+1 copy 2.yml:68
+
+yaml[empty-lines]: Too many blank lines (20 > 2)
+1 copy 2.yml:89
+
+yaml[empty-lines]: Too many blank lines (20 > 2)
+1 copy 2.yml:110
+
+yaml[empty-lines]: Too many blank lines (24 > 2)
+1 copy 2.yml:135
+
+yaml[empty-lines]: Too many blank lines (22 > 2)
+1 copy 2.yml:158
+
+yaml[empty-lines]: Too many blank lines (21 > 2)
+1 copy 2.yml:180
+
+yaml[empty-lines]: Too many blank lines (23 > 2)
+1 copy 2.yml:204
+
+yaml[empty-lines]: Too many blank lines (19 > 2)
+1 copy 2.yml:224
+
 yaml[empty-lines]: Too many blank lines (3 > 2)
-1 copy 2.yml:35
+1 copy 2.yml:228
 
 yaml[new-line-at-end-of-file]: No new line character at the end of file
-1 copy 2.yml:40
+1 copy 2.yml:233
 
 yaml[document-start]: Missing document start '---'
 1 copy 3.yml:1
 
+yaml[empty-lines]: Too many blank lines (30 > 2)
+1 copy 3.yml:44
+
+yaml[empty-lines]: Too many blank lines (23 > 2)
+1 copy 3.yml:68
+
+yaml[empty-lines]: Too many blank lines (20 > 2)
+1 copy 3.yml:89
+
+yaml[empty-lines]: Too many blank lines (20 > 2)
+1 copy 3.yml:110
+
+yaml[empty-lines]: Too many blank lines (24 > 2)
+1 copy 3.yml:135
+
+yaml[empty-lines]: Too many blank lines (22 > 2)
+1 copy 3.yml:158
+
+yaml[empty-lines]: Too many blank lines (21 > 2)
+1 copy 3.yml:180
+
+yaml[empty-lines]: Too many blank lines (23 > 2)
+1 copy 3.yml:204
+
+yaml[empty-lines]: Too many blank lines (19 > 2)
+1 copy 3.yml:224
+
 yaml[empty-lines]: Too many blank lines (3 > 2)
-1 copy 3.yml:35
+1 copy 3.yml:228
 
 yaml[new-line-at-end-of-file]: No new line character at the end of file
-1 copy 3.yml:40
+1 copy 3.yml:233
 
 yaml[document-start]: Missing document start '---'
 1 copy 4.yml:1
 
-yaml[empty-lines]: Too many blank lines (3 > 2)
-1 copy 4.yml:35
+yaml[empty-lines]: Too many blank lines (30 > 2)
+1 copy 4.yml:44
 
-yaml[new-line-at-end-of-file]: No new line character at the end of file
-1 copy 4.yml:40
+yaml[empty-lines]: Too many blank lines (23 > 2)
+1 copy 4.yml:68
 
-yaml[document-start]: Missing document start '---'
-1 copy 5.yml:1
+yaml[empty-lines]: Too many blank lines (20 > 2)
+1 copy 4.yml:89
 
-yaml[empty-lines]: Too many blank lines (3 > 2)
-1 copy 5.yml:35
-
-yaml[new-line-at-end-of-file]: No new line character at the end of file
-1 copy 5.yml:40
-
-yaml[document-start]: Missing document start '---'
-1 copy 6.yml:1
-
-yaml[empty-lines]: Too many blank lines (5 > 2)
-1 copy 6.yml:21
-
-yaml[empty-lines]: Too many blank lines (6 > 2)
-1 copy 6.yml:28
-
-yaml[empty-lines]: Too many blank lines (5 > 2)
-1 copy 6.yml:34
-
-yaml[empty-lines]: Too many blank lines (5 > 2)
-1 copy 6.yml:40
-
-yaml[empty-lines]: Too many blank lines (5 > 2)
-1 copy 6.yml:46
-
-yaml[empty-lines]: Too many blank lines (5 > 2)
-1 copy 6.yml:52
-
-yaml[empty-lines]: Too many blank lines (4 > 2)
-1 copy 6.yml:57
-
-yaml[empty-lines]: Too many blank lines (4 > 2)
-1 copy 6.yml:62
-
-yaml[empty-lines]: Too many blank lines (3 > 2)
-1 copy 6.yml:66
-
-yaml[new-line-at-end-of-file]: No new line character at the end of file
-1 copy 6.yml:71
-
-yaml[document-start]: Missing document start '---'
-1 copy.yml:1
-
-yaml[empty-lines]: Too many blank lines (3 > 2)
-1 copy.yml:35
-
-yaml[new-line-at-end-of-file]: No new line character at the end of file
-1 copy.yml:40
-
-yaml[document-start]: Missing document start '---'
-1.yml:1
-
-yaml[empty-lines]: Too many blank lines (3 > 2)
-1.yml:35
-
-yaml[new-line-a
+yaml[empty-lines]: Too many blank lines (20 > 2)
+1 copy 4.yml
