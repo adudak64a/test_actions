@@ -13,21 +13,214 @@
 
     - debug: msg="{{ log_retries }}"
 
-    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     - debug: msg="{{ log_retries }}"
 
-    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     - debug: msg="{{ log_retries }}"
 
-    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     - debug: msg="{{ log_retries }}"
 
-    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    - debug: msg="{{ log_retries }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     - debug: msg="{{ log_retries }}"
 

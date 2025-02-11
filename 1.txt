@@ -82,4 +82,4 @@ yaml[document-start]: Missing document start '---'
 yaml[empty-lines]: Too many blank lines (3 > 2)
 1.yml:35
 
-yaml[new-line-
+yaml[new-line-a
