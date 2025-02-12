@@ -58,10 +58,11 @@ jobs:
             characters_limit=1990
             number_spec_chars=$(cat lint_tmp.txt | head -c $characters_limit | grep -0 '[<>]' | wc -l)
             current_limit=$((characters_limit - number_spec_chars * 2))
+            echo $number_spec_chars
             echo $current_limit
             echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
             echo -n '```' >> $GITHUB_OUTPUT
-            cat lint_tmp.txt | head -c 1980 | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
+            cat lint_tmp.txt | head -c $current_limit | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
             [ $(wc -c < lint_tmp.txt) -gt $current_limit ] && echo '...```' >> $GITHUB_OUTPUT || echo '```' >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           fi
