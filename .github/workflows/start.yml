@@ -38,5 +38,6 @@ jobs:
       - run: |
           pip list
           pip install -r requirements_stable.txt
-          ansible-galaxy collection install -r ansible_required_collections.yml
+          pip list
+          ansible-galaxy collection install -r ansible_required_collections.yml -p ${{ github.workspace }}/venv/lib/python3.12/site-packages/ansible_collections
           ansible-galaxy collection list
