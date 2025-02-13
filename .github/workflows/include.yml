@@ -16,13 +16,15 @@ jobs:
       runs-on: ubuntu-latest
       steps:
 
-        - name: Chechout code
-          uses: actions/checkout@v2
-          with:
-            fetch-depth: 0
-            ref: ${{inputs.branch_name}}
-
-        - name: Get branch name
+        - name: Show files
+          id: first
           run: |
-            echo 'Branch name: ${{inputs.branch_name}}'
-            ls -al
+            python -m venv testvenv
+            source testvenv/bin/activate
+            pip install ansible-lint
+            pip list
+
+        - name: Show files
+          id: second
+          run: |
+            pip list
