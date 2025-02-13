@@ -19,7 +19,9 @@ jobs:
 
       - name: Create virtual environment
         shell: bash
-        run: python3 -m virtualenv ${{ github.workspace }}/venv
+        run: |
+          pip install virtualenv
+          python3 -m virtualenv ${{ github.workspace }}/venv
 
       - name: Activate virtual environment
         shell: bash
