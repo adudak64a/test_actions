@@ -1,19 +1,13 @@
 ---
-name: auto-test
-
-permissions:
-    pull-requests: write
-    contents: read
+name: Test Cron Schedule
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: "*/1 * * * *"
+    - cron: "*/1 * * * *"  # Runs every 5 minutes for testing
 
 jobs:
-
-  check_test:
-    uses: ./.github/workflows/ansible_linter.yml
-    secrets:
-      SLACK_TOKEN: ${{secrets.SLACK_API_TOKEN}}
-    # with:
-    #   branch_name: "devel-miracle"
+  test-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Cron job ran successfully!"
