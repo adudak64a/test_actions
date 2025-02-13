@@ -10,10 +10,27 @@ on:
     branches: [staging, master]
 
 jobs:
+  run_test:
+    runs-on: ubuntu-latest
+    steps:
 
-  check_test:
-    uses: ./.github/workflows/ansible_linter.yml
-    secrets:
-      SLACK_TOKEN: ${{secrets.SLACK_API_TOKEN}}
-    # with:
-    #   branch_name: "devel-miracle"
+      - run: |
+          pip list
+
+      - name: Create virtual environment
+        shell: bash
+        run: python3 -m virtualenv ${{ github.workspace }}/venv
+
+      - name: Activate virtual environment
+        shell: bash
+        run: |
+          echo "VIRTUAL_ENV=${{ github.workspace }}/venv" >> $GITHUB_ENV
+          echo "${{ github.workspace }}/venv/bin" >> $GITHUB_PATH
+
+      - run: |
+          pip list
+          pip install -r requirements_stable.txt
+          ansible-galaxy collection list
+          ansible-galaxy install -r ansible_required_collections.yml
+          ansible-galaxy collection list
+
