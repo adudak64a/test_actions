@@ -40,5 +40,11 @@ jobs:
           pip list
           pip install -r requirements_stable.txt
           pip list
-          ansible-galaxy collection install -r ansible_required_collections.yml
-          ansible-galaxy collection list
+          # Install ansible collections from special file
+          if [ -n "${{ github.workspace }}" ]; then
+            echo -e "${GREEN}Installing collections:"
+            ansible-galaxy collection install -r ansible_required_collections.yml
+            ansible-galaxy collection list
+          else
+            echo -e "${RED}No collections to install."
+          fi
