@@ -39,6 +39,6 @@ jobs:
           pip list
           pip install -r requirements_stable.txt
           ansible-galaxy collection list
-          ansible-galaxy install -r ansible_required_collections.yml
+          ansible-galaxy collection install -r ansible_required_collections.yml
           ansible-galaxy collection list
 
