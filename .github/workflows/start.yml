@@ -1,50 +1,50 @@
----
-name: auto-test
+# ---
+# name: auto-test
 
-permissions:
-    pull-requests: write
-    contents: read
+# permissions:
+#     pull-requests: write
+#     contents: read
 
-on:
-  pull_request:
-    branches: [staging, master]
+# on:
+#   pull_request:
+#     branches: [staging, master]
 
-jobs:
-  run_test:
-    runs-on: ubuntu-latest
-    steps:
+# jobs:
+#   run_test:
+#     runs-on: ubuntu-latest
+#     steps:
 
-      - run: |
-          pip list
+#       - run: |
+#           pip list
 
-      - name: Create virtual environment
-        shell: bash
-        run: |
-          pip install virtualenv
-          python3 -m virtualenv ${{ github.workspace }}/venv
+#       - name: Create virtual environment
+#         shell: bash
+#         run: |
+#           pip install virtualenv
+#           python3 -m virtualenv ${{ github.workspace }}/venv
 
-      - name: Activate virtual environment
-        shell: bash
-        run: |
-          echo "VIRTUAL_ENV=${{ github.workspace }}/venv" >> $GITHUB_ENV
-          echo "${{ github.workspace }}/venv/bin" >> $GITHUB_PATH
-          echo "ANSIBLE_COLLECTIONS_PATHS=${{ github.workspace }}/venv/lib/python3.12/site-packages/ansible_collections" >> $GITHUB_ENV
+#       - name: Activate virtual environment
+#         shell: bash
+#         run: |
+#           echo "VIRTUAL_ENV=${{ github.workspace }}/venv" >> $GITHUB_ENV
+#           echo "${{ github.workspace }}/venv/bin" >> $GITHUB_PATH
+#           echo "ANSIBLE_COLLECTIONS_PATHS=${{ github.workspace }}/venv/lib/python3.12/site-packages/ansible_collections" >> $GITHUB_ENV
 
-      - name: "Checkout source branch"
-        id: checkout-scm
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+#       - name: "Checkout source branch"
+#         id: checkout-scm
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
 
-      - run: |
-          pip list
-          pip install -r requirements_stable.txt
-          pip list
-          # Install ansible collections from special file
-          if [ -n "${{ github.workspace }}" ]; then
-            echo -e "${GREEN}Installing collections:"
-            ansible-galaxy collection install -r ansible_required_collections.yml
-            ansible-galaxy collection list
-          else
-            echo -e "${RED}No collections to install."
-          fi
+#       - run: |
+#           pip list
+#           pip install -r requirements_stable.txt
+#           pip list
+#           # Install ansible collections from special file
+#           if [ -n "${{ github.workspace }}" ]; then
+#             echo -e "${GREEN}Installing collections:"
+#             ansible-galaxy collection install -r ansible_required_collections.yml
+#             ansible-galaxy collection list
+#           else
+#             echo -e "${RED}No collections to install."
+#           fi
