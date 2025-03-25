@@ -31,60 +31,62 @@ jobs:
       - name: "SHOW"
         run: echo "${{ github.head_ref }}"
 
-      # - name: "Run ansible-lint"
-      #   id: run-lint
-      #   uses: ansible/ansible-lint@main
-      #   with:
-      #     args: " >> temp.txt"
-      #     requirements_file: ""
+      - name: "Run ansible-lint"
+        id: run-lint
+        uses: ansible/ansible-lint@main
+        with:
+          args: " >> temp.txt"
+          requirements_file: ""
 
-      - name: "Update python packages"
-        run: |
-          # pip install -r requirements_stable.txt
-          pip install -U ansible-lint
+      # - name: "Update python packages"
+      #   run: |
+      #     # pip install -r requirements_stable.txt
+      #     pip install -U ansible-lint
 
       # - name: "Update ansible collections"
       #   run: ansible-galaxy collection install -r ansible_required_collections.yml
 
       - name: "Run ansible-lint"
         id: run-lint
-        run: ansible-lint > lint_tmp.txt
+        run: | 
+          ansible-lint --version
+          ansible-lint > lint_tmp.txt
 
-      - name: "Prettify ansible-lint output"
-        id: prettify-res
-        if: failure()
-        run: |
-          if [ -s lint_tmp.txt ]; then
-            characters_limit=1990
-            number_spec_chars=$(cat lint_tmp.txt | head -c $characters_limit | grep -o '[<>]' | wc -l)
-            current_limit=$((characters_limit - number_spec_chars * 2))
-            echo $number_spec_chars
-            echo $current_limit
-            echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
-            echo -n '```' >> $GITHUB_OUTPUT
-            cat lint_tmp.txt | head -c $current_limit | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
-            [ $(wc -c < lint_tmp.txt) -gt $current_limit ] && echo '...```' >> $GITHUB_OUTPUT || echo '```' >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-          fi
+      # - name: "Prettify ansible-lint output"
+      #   id: prettify-res
+      #   if: failure()
+      #   run: |
+      #     if [ -s lint_tmp.txt ]; then
+      #       characters_limit=1990
+      #       number_spec_chars=$(cat lint_tmp.txt | head -c $characters_limit | grep -o '[<>]' | wc -l)
+      #       current_limit=$((characters_limit - number_spec_chars * 2))
+      #       echo $number_spec_chars
+      #       echo $current_limit
+      #       echo "GITDIFF<<EOF" >> $GITHUB_OUTPUT
+      #       echo -n '```' >> $GITHUB_OUTPUT
+      #       cat lint_tmp.txt | head -c $current_limit | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
+      #       [ $(wc -c < lint_tmp.txt) -gt $current_limit ] && echo '...```' >> $GITHUB_OUTPUT || echo '```' >> $GITHUB_OUTPUT
+      #       echo "EOF" >> $GITHUB_OUTPUT
+      #     fi
 
       # Add SLACK_API_TOKEN in dGithub secretsd
-      - name: "Send Slack notifidcdation (fail)"
-        id: send-fail-message
-        if: failure()
-        uses: slackapi/slack-github-action@v2.0.0
-        with:
-          method: chat.postMessage
-          token: ${{ secrets.SLACK_TOKEN }}
-          payload: |
-            channel: ${{ env.SLACK_CHANNEL }}
-            text: ":github-action:"
-            attachments:
-              - color: "FF0000"
-                fields:
-                  - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
-                  - title: "Message"
-                    short: false
-                    value: "${{steps.prettify-res.outputs.GITDIFF}}"
+      # - name: "Send Slack notifidcdation (fail)"
+      #   id: send-fail-message
+      #   if: failure()
+      #   uses: slackapi/slack-github-action@v2.0.0
+      #   with:
+      #     method: chat.postMessage
+      #     token: ${{ secrets.SLACK_TOKEN }}
+      #     payload: |
+      #       channel: ${{ env.SLACK_CHANNEL }}
+      #       text: ":github-action:"
+      #       attachments:
+      #         - color: "FF0000"
+      #           fields:
+      #             - value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|Action log>"
+      #             - title: "Message"
+      #               short: false
+      #               value: "${{steps.prettify-res.outputs.GITDIFF}}"
 
       # - name: "Close pull request if tests failed"
       #   id: close-failed-prd
