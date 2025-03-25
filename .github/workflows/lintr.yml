@@ -25,7 +25,7 @@ jobs:
 
       - name: "Run ansible-lint"
         id: run-lint
-        uses: ansible/ansible-lint@v8
+        uses: ansible/ansible-lint@v7
         with:
           args: " >> temp.txt"
           requirements_file: ""
