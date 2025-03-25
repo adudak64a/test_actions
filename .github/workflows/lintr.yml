@@ -1,0 +1,28 @@
+---
+name: auto-test
+
+permissions:
+    pull-requests: write
+    contents: read
+
+on:
+  pull_request:
+    branches: [staging, master]
+
+jobs:
+  run_test:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "Run ansible-lint"
+        id: run-lint
+        uses: ansible/ansible-lint@main
+        with:
+          args: " >> temp.txt"
+          requirements_file: ""
+
+
+      - name: "Run ansible-lint"
+        id: run-dlint
+        run: | 
+          ansible-lint --version
