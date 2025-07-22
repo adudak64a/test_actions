@@ -1,7 +1,5 @@
 ---
 # We need branch protection rule for all below to have purpose
-env:
-  SLACK_CHANNEL: "test_messages"
 
 concurrency:
   group: ${{ github.workflow }}
@@ -10,6 +8,17 @@ concurrency:
 name: "ansible-lint"
 on:
   workflow_call:
+    inputs:
+      path_to_files:
+        description: 'Path to folder that need to be scanned'
+        required: false
+        default: ''
+        type: string
+      SLACK_CHANNEL:
+        description: 'Path to folder that need to be scanned'
+        required: false
+        default: 'test_messages'
+        type: string
     secrets:
       SLACK_TOKEN:
         description: 'A slack token passed from the caller workflow'
@@ -45,7 +54,7 @@ jobs:
         id: run-lint
         uses: ansible/ansible-lint@v25.6.0
         with:
-          args: "${{ github.event.inputs.platform != '' && format('{0} >> lint_tmp.txt', github.event.inputs.platform) || ' >> lint_tmp.txt' }}"
+          args: "${{ github.event.inputs.path_to != '' && format('{0} >> lint_tmp.txt', github.event.inputs.path_to) || ' >> lint_tmp.txt' }}"
           requirements_file: "./ansible_required_collections.yml"
       # Slack 'value' field has 2000 chars max value
       # Slack API action has a bug, it counts one '<' or '>' char as 3 chars during counting text
@@ -74,7 +83,7 @@ jobs:
           method: chat.postMessage
           token: ${{ secrets.SLACK_TOKEN }}
           payload: |
-            channel: ${{ env.SLACK_CHANNEL }}
+            channel: ${{ inputs.SLACK_CHANNEL }}
             text: ":red-x-mark:"
             attachments:
               - color: "FF0000"
@@ -86,21 +95,21 @@ jobs:
                     short: false
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
 
-      - name: "Close pull request if tests failed"
-        id: close-failed-pr
-        if: failure()
-        uses: actions/github-script@v6
-        with:
-          script: |
-              await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: ${{ github.event.number }},
-              body: "Pull Request has been closed because it didn't pass [ansible-lint](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) tests"
-              });
-              await github.rest.pulls.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: ${{ github.event.number }},
-              state: "closed"
-              });
+      # - name: "Close pull request if tests failed"
+      #   id: close-failed-pr
+      #   if: failure() and github.event_name != 'workflow_call'
+      #   uses: actions/github-script@v6
+      #   with:
+      #     script: |
+      #         await github.rest.issues.createComment({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         issue_number: ${{ github.event.number }},
+      #         body: "Pull Request has been closed because it didn't pass [ansible-lint](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) tests"
+      #         });
+      #         await github.rest.pulls.update({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         pull_number: ${{ github.event.number }},
+      #         state: "closed"
+      #         });
