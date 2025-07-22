@@ -56,7 +56,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{github.event.inputs.PYTHON_VERSION}}
+          python-version: ${{ inputs.PYTHON_VERSION }}
 
       - name: Cache Ansible Collections
         id: ansible-collections-cache
