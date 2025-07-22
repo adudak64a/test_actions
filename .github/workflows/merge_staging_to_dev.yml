@@ -1,0 +1,18 @@
+---
+name: PRs to staging
+on:
+  pull_request:
+    branches: [staging]
+    types: [closed]
+jobs:
+  merge-staging-back-to-dev:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Merge staging back
+      run: |
+          git fetch --unshallow
+          git checkout $GITHUB_HEAD_REF
+          git merge --ff-only 'origin/staging'
+          git push

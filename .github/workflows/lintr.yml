@@ -1,0 +1,38 @@
+---
+name: auto-test
+
+permissions:
+    pull-requests: write
+    contents: read
+
+on:
+  pull_request:
+    branches: [staging, master]
+
+jobs:
+  run_test:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "Checkout source branch"
+        id: checkout-scm
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: "SHOW"
+        run: echo "${{ github.head_ref }}"
+
+      - name: "Run ansible-lint"
+        id: run-lint
+        uses: ansible/ansible-lint@v24
+        with:
+          args: " >> temp.txt"
+          requirements_file: ""
+
+
+      - name: "Run ansible-lint"
+        if: failure()
+        id: run-dlint
+        run: | 
+          ansible-lint --version
