@@ -52,7 +52,7 @@ jobs:
 
       - name: "Run ansible-lint"
         id: run-lint
-        uses: ansible/ansible-lint@v25.6.0
+        uses: ansible/ansible-lint@v24
         with:
           args: "${{ github.event.inputs.path_to_files != '' && format('{0} >> lint_tmp.txt', github.event.inputs.path_to_files) || '>> lint_tmp.txt' }}"
           requirements_file: "./ansible_required_collections.yml"
