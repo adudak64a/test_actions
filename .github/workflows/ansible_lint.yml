@@ -65,8 +65,8 @@ jobs:
           ansible-galaxy collection install -r ./ansible_required_collections.yml
 
           echo "Running ansible-lint..."
-          LINT_ARGS=${{ github.event.inputs.path_to_files != '' && format('{0} >> lint_tmp.txt', github.event.inputs.path_to_files) || format('>> lint_tmp.txt') }}
-          ansible-lint $LINT_ARGS
+          SCAN_PATH=${{ github.event.inputs.path_to_files != '' &&  github.event.inputs.path_to_files || '' }}
+          ansible-lint $LINT_ARGS >> lint_tmp.txt'
 
       # - name: "Run ansible-lint"
       #   id: run-lint
