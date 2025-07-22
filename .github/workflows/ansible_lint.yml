@@ -59,7 +59,7 @@ jobs:
         id: run-lint
         run: |
           echo "Installing ansible-core and ansible-lint..."
-          pip install ansible-lint==25.1.0
+          pip install ansible-lint==24.12.2
 
           echo "Installing Ansible Galaxy collections..."
           ansible-galaxy collection install -r ./ansible_required_collections.yml
