@@ -7,12 +7,9 @@ permissions:
   contents: read
 
 on:
-  workflow_dispatch:
-    inputs:
-      path_to_files:
-        description: 'Path to folder that need to be scanned'
-        required: false
-        default: ''
+  pull_request:
+    branches: [staging, master]
+
 
 jobs:
 
