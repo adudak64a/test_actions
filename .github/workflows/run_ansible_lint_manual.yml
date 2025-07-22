@@ -1,5 +1,5 @@
 ---
-name: auto-test
+name: run_ansible_lint_manual
 
 # Need for ansible_lint.yml
 permissions:
@@ -14,9 +14,9 @@ on:
         required: false
         default: ''
       SLACK_CHANNEL:
-        description: 'Path to folder that need to be scanned'
+        description: 'Channel'
         required: false
-        default: ''
+        default: 'test_messages'
 
 jobs:
 
