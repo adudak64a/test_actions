@@ -41,7 +41,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.12.3
 
       # - name: Cache Ansible Collections
       #   id: ansible-collections-cache
@@ -59,7 +59,7 @@ jobs:
         id: run-lint
         run: |
           echo "Installing ansible-core and ansible-lint..."
-          pip install ansible-lint==24.12.2
+          pip install ansible-lint==24.12.2 -no-cache-dir 
 
           echo "Installing Ansible Galaxy collections..."
           ansible-galaxy collection install -r ./ansible_required_collections.yml
