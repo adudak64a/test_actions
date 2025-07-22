@@ -74,13 +74,13 @@ jobs:
         id: run-lint
         run: |
           Yellow="\033[0;33m"
-          echo "${Yello}Installing ansible-core and ansible-lint..."
+          echo "${Yellow}Installing ansible-core and ansible-lint..."
           pip install ansible-lint==${{inputs.ANSIBLE_LINT}} ansible-core==${{inputs.ANSIBLE_CORE}}
 
-          echo "${Yello}Installing Ansible Galaxy collections..."
+          echo "${Yellow}Installing Ansible Galaxy collections..."
           ansible-galaxy collection install -r ./ansible_required_collections.yml
 
-          echo "${Yello}Running ansible-lint..."
+          echo "${Yellow}Running ansible-lint..."
           SCAN_PATH=${{ inputs.SCAN_ITEM != '' && inputs.SCAN_ITEM || '' }}
           ansible-lint $SCAN_PATH >> lint_tmp.txt
 
