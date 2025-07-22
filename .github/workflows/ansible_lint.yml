@@ -59,16 +59,13 @@ jobs:
         id: run-lint
         run: |
           echo "Installing ansible-core and ansible-lint..."
-          pip install ansible-lint==25.1.2
+          pip install ansible-lint==25.1.0
 
           echo "Installing Ansible Galaxy collections..."
           ansible-galaxy collection install -r ./ansible_required_collections.yml
 
-          pwd
-          ls -al
-
           echo "Running ansible-lint..."
-          ansible-lint "${{ github.event.inputs.path_to_files != '' && format('{0} >> lint_tmp.txt', github.event.inputs.path_to_files) || '>> lint_tmp.txt' }}"
+          ansible-lint "${{ github.event.inputs.path_to_files != '' && format('{0} >> lint_tmp.txt', github.event.inputs.path_to_files) || format('>> lint_tmp.txt') }}"
 
       # - name: "Run ansible-lint"
       #   id: run-lint
