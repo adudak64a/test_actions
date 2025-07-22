@@ -9,15 +9,30 @@ name: "ansible-lint"
 on:
   workflow_call:
     inputs:
-      path_to_files:
-        description: 'Path to folder that need to be scanned'
+      SCAN_ITEM:
+        description: "Folder or file for scaning"
         required: false
-        default: ''
+        default: ""
         type: string
       SLACK_CHANNEL:
-        description: 'Path to folder that need to be scanned'
+        description: "Slach channel for messages"
         required: false
-        default: 'test_messages'
+        default: "test_messages"
+        type: string
+      PYTHON_VERSION:
+        description: "Version of installed python"
+        required: false
+        default: "3.12.3"
+        type: string
+      ANSIBLE_LINT:
+        description: "Version of ansible-lint python package"
+        required: false
+        default: "24.12.2"
+        type: string
+      ANSIBLE_CORE:
+        description: "Version of ansible-core python package"
+        required: false
+        default: "2.17.6"
         type: string
     secrets:
       SLACK_TOKEN:
@@ -38,6 +53,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.PYTHON_VERSION }}
+
       - name: Cache Ansible Collections
         id: ansible-collections-cache
         uses: actions/cache@v4
@@ -50,12 +70,25 @@ jobs:
             ansible-collections-global-${{ runner.os }}-
             ansible-collections-${{ runner.os }}-
 
-      - name: "Run ansible-lint"
+      - name: Install custom ansible-core
         id: run-lint
-        uses: ansible/ansible-lint@v25.6.0
-        with:
-          args: "${{ github.event.inputs.path_to_files != '' && format('{0} >> lint_tmp.txt', github.event.inputs.path_to_files) || '>> lint_tmp.txt' }}"
-          requirements_file: "./ansible_required_collections.yml"
+        run: |
+          echo "Installing ansible-core and ansible-lint..."
+          pip install ansible-lint==${{inputs.ANSIBLE_LINT}} ansible-core==${{inputs.ANSIBLE_CORE}}
+
+          echo "Installing Ansible Galaxy collections..."
+          ansible-galaxy collection install -r ./ansible_required_collections.yml
+
+          echo "Running ansible-lint..."
+          SCAN_PATH=${{ inputs.SCAN_ITEM != '' && inputs.SCAN_ITEM || '' }}
+          ansible-lint $SCAN_PATH >> lint_tmp.txt
+
+      # - name: "Run ansible-lint"
+      #   id: run-lint
+      #   uses: ansible/ansible-lint@v24
+      #   with:
+      #     args: "${{ inputs.SCAN_ITEM != '' && format('{0} >> lint_tmp.txt', inputs.SCAN_ITEM) || '>> lint_tmp.txt' }}"
+      #     requirements_file: "./ansible_required_collections.yml"
 
       # Slack 'value' field has 2000 chars max value
       # Slack API action has a bug, it counts one '<' or '>' char as 3 chars during counting text
