@@ -38,6 +38,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
       - name: Cache Ansible Collections
         id: ansible-collections-cache
         uses: actions/cache@v4
@@ -50,12 +55,29 @@ jobs:
             ansible-collections-global-${{ runner.os }}-
             ansible-collections-${{ runner.os }}-
 
-      - name: "Run ansible-lint"
+      - name: Install custom ansible-core
         id: run-lint
-        uses: ansible/ansible-lint@v24
-        with:
-          args: "${{ github.event.inputs.path_to_files != '' && format('{0} >> lint_tmp.txt', github.event.inputs.path_to_files) || '>> lint_tmp.txt' }}"
-          requirements_file: "./ansible_required_collections.yml"
+        run: |
+          echo "Installing ansible-core and ansible-lint..."
+          pip install ansible-lint==25.1.2
+
+          echo "Installing Ansible Galaxy collections..."
+          ansible-galaxy collection install -r ./ansible_required_collections.yml
+
+          pwd
+          ls -al
+
+          echo "Running ansible-lint..."
+          ansible-lint "${{ github.event.inputs.path_to_files != '' && format('{0} >> lint_tmp.txt', github.event.inputs.path_to_files) || '>> lint_tmp.txt' }}"
+
+      # - name: "Run ansible-lint"
+      #   id: run-lint
+      #   uses: ansible/ansible-lint@v24
+      #   with:
+      #     args: "${{ github.event.inputs.path_to_files != '' && format('{0} >> lint_tmp.txt', github.event.inputs.path_to_files) || '>> lint_tmp.txt' }}"
+      #     requirements_file: "./ansible_required_collections.yml"
+
+
 
       # Slack 'value' field has 2000 chars max value
       # Slack API action has a bug, it counts one '<' or '>' char as 3 chars during counting text
