@@ -1,0 +1,113 @@
+---
+# We need branch protection rule for all below to have purpose
+env:
+  SLACK_CHANNEL: "test_messages"
+
+concurrency:
+  group: ${{ github.workflow }}
+
+# To perform this action-file, the main file must have write permissions for the pull-request
+name: "ansible-lint_new"
+on:
+  workflow_call:
+    secrets:
+      SLACK_TOKEN:
+        description: 'A slack token passed from the caller workflow'
+        required: true
+  workflow_dispatch:
+    inputs:
+      path_to_file:
+        description: 'Path to folder that need to be scanned'
+        required: false
+        default: ''
+
+jobs:
+
+  run_ansible_lint:
+    name: "Run ansible-lint"
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.pull_request.title, '[skip ansible-lint]')}}
+    steps:
+
+      - name: "Checkout source branch"
+        id: checkout-scm
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Cache Ansible Collections
+        id: ansible-collections-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.ansible/collections
+            ${{ github.workspace }}/tmp_ansible_collections
+          key: ansible-collections-global-${{ runner.os }}-${{ hashFiles('./ansible_required_collections.yml') }}
+          restore-keys: |
+            ansible-collections-global-${{ runner.os }}-
+            ansible-collections-${{ runner.os }}-
+
+      - name: "Run ansible-lint"
+        id: run-lint
+        uses: ansible/ansible-lint@v25.1.0
+        with:
+          args: "${{ github.event.inputs.platform != '' && format('{0} >> lint_tmp.txt', github.event.inputs.platform) || ' >> lint_tmp.txt' }}"
+          requirements_file: "./ansible_required_collections.yml"
+
+      # Slack 'value' field has 2000 chars max value
+      # Slack API action has a bug, it counts one '<' or '>' char as 3 chars during counting text
+      # 'head -c' doesn't return end of file symbol, so, be careful with this command
+      - name: "Prettify ansible-lint output"
+        id: prettify-res
+        if: failure()
+        run: |
+          if [ -s lint_tmp.txt ]; then
+            characters_limit=1990
+            number_spec_chars=$(cat lint_tmp.txt | head -c $characters_limit | grep -o '[<>]' | wc -l)
+            current_limit=$((characters_limit - number_spec_chars * 2))
+            echo "lint_res<<EOF" >> $GITHUB_OUTPUT
+            echo -n '```' >> $GITHUB_OUTPUT
+            cat lint_tmp.txt | head -c $current_limit | sed -e '$a\' | sed 's/"/'\''/g' >> $GITHUB_OUTPUT
+            [ $(wc -c < lint_tmp.txt) -gt $current_limit ] && echo '...```' >> $GITHUB_OUTPUT || echo '```' >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+      # Add SLACK_API_TOKEN in Github secrets
+      - name: "Send Slack notification (fail)"
+        id: send-fail-message
+        if: failure()
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_TOKEN }}
+          payload: |
+            channel: ${{ env.SLACK_CHANNEL }}
+            text: ":red-x-mark:"
+            attachments:
+              - color: "FF0000"
+                fields:
+                  - title: "Ansible-lint check has failed!"
+                    short: false
+                    value: "${{ steps.prettify-res.outputs.lint_res }}"
+                  - title: "Actions URL"
+                    short: false
+                    value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
+
+      - name: "Close pull request if tests failed"
+        id: close-failed-pr
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+              await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.number }},
+              body: "Pull Request has been closed because it didn't pass [ansible-lint](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) tests"
+              });
+              await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ github.event.number }},
+              state: "closed"
+              });

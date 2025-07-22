@@ -1,0 +1,96 @@
+---
+name: Execute test on node
+on:
+  workflow_call:
+    inputs:
+      matrix:
+        type: string
+        description: 'Matrix for the test platform(s)'
+        required: true
+      ansible_strategy_plugins:
+        type: string
+        description: 'Ansible strategy plugins to use. If not specified, the default plugins will be used'
+        required: false
+      virtual_env:
+        type: string
+        description: 'Use a virtual environment if true, use the system environment if false'
+        required: false
+      ansible_version:
+        type: string
+        description: 'Specify a version of Ansible to install in . If not provided, uses default from requirements or latest'
+        required: false
+      requirements:
+        type: string
+        description: 'Path to requirements file'
+        required: false
+      collections:
+        type: string
+        description: 'Path to ansible collections file'
+        required: false
+      latest_versions:
+        type: string
+        description: 'Unpin all package versions (true/false)'
+        required: false
+      python_version:
+        type: string
+        description: 'Python version for virtualenv'
+        required: false
+        default: 'python3'
+      branch_name:
+        type: string
+        description: 'Name of the git branch to be used'
+        required: false
+        default: ''
+    outputs:
+      installed_requirements:
+        description: "List installed pip packages"
+        value: ${{jobs.run_test.outputs.installed_requirements}}
+
+jobs:
+
+  run_test:
+    name: Auto-test ${{ matrix.platform }}
+    outputs:
+      installed_requirements: ${{ steps.setup_ansible_environment.outputs.installed_requirements }}
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(inputs.matrix) }}
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.branch_name }}
+
+      - name: Cache Ansible Collections
+        id: ansible-collections-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.ansible/collections
+            ${{ github.workspace }}/tmp_ansible_collections
+          key: ansible-collections-global-${{ runner.os }}-${{ hashFiles('./ansible_required_collections.yml') }}
+          restore-keys: |
+            ansible-collections-global-${{ runner.os }}-
+            ansible-collections-${{ runner.os }}-
+
+      - name: Set ANSIBLE_STRATEGY_PLUGINS if provided
+        if: ${{ inputs.ansible_strategy_plugins != '' }}
+        run: echo "ANSIBLE_STRATEGY_PLUGINS=${{ inputs.ansible_strategy_plugins }}" >> $GITHUB_ENV
+
+      - name: Setup Ansible Environment
+        id: setup_ansible_environment
+        if: ${{ inputs.virtual_env == 'true' }}
+        uses: ./.github/actions/setup-ansible-env
+        with:
+          ansible_version: ${{ inputs.ansible_version }}
+          requirements: ${{ inputs.requirements }}
+          collections: ${{ inputs.collections }}
+          latest_versions: ${{ inputs.latest_versions }}
+          python_version: ${{ inputs.python_version }}
+
+      - name: move action file
+        run: yes | cp ${{ matrix.action_file }} .github/actions/run_test/action.yml
+
+      - uses: ./.github/actions/run_test

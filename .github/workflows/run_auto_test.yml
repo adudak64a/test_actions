@@ -1,0 +1,56 @@
+---
+name: auto-test
+
+# Need for ansible_lint.yml
+permissions:
+  pull-requests: write
+  contents: read
+
+on:
+  pull_request:
+    branches: [staging]
+
+jobs:
+
+  ansible_lint:
+    uses: ./.github/workflows/ansible_lint.yml
+    secrets:
+      SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
+
+  main_workflow:
+    if: "!contains(github.event.pull_request.title, '[skip auto-test]') && success()"
+    needs: ansible_lint
+    runs-on: core
+    outputs:
+      matrix: ${{ steps.get-matrix.outputs.matrix }}
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/generate-matrix
+        id: get-matrix
+        with:
+          platform: ${{ github.event.inputs.platform }}
+          service_user_token: ${{ secrets.SERVICE_USER_TOKEN }}
+
+  execute_test:
+    needs: main_workflow
+    if: needs.main_workflow.outputs.matrix
+    uses: ./.github/workflows/_execute_test.yml
+    with:
+      matrix: ${{ needs.main_workflow.outputs.matrix }}
+      ansible_version: '2.17.6'
+      ansible_strategy_plugins: 'plugins/strategy_plugins/mitogen-0.3.18/ansible_mitogen/plugins/strategy'
+      virtual_env: true
+
+  auto-test_result:
+    needs: ['execute_test', 'main_workflow']
+    runs-on: core
+    if: ${{ always() }}
+    steps:
+      - name: Check for failures
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1

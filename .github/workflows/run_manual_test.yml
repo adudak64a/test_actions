@@ -1,0 +1,66 @@
+---
+name: manual-test
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Platform to run test on (e.g: target/cpanel)'
+        required: true
+        default: 'target/cpanel'
+      extra_vars:
+        description: "Extra vars (e.g:  my_var: 'a', roles_to_test: ['mysql_database','ftp_account'])"
+        required: false
+      ansible_strategy_plugins:
+        description: 'Path to the ansible strategy plugin (by default will be used from ansible.cfg)'
+        required: false
+      virtual_env:
+        type: boolean
+        description: 'Use a virtual environment'
+        required: false
+        default: false
+      python_version:
+        description: 'Path to the python binary used for virtualenv (by default python3 will be used)'
+        required: false
+      requirements:
+        description: 'Path to requirements file for virtual environment (by default will be used from repository root)'
+        required: false
+      latest_versions:
+        type: boolean
+        description: 'Install unpinned versions of pip packages from requirements file'
+        required: false
+        default: false
+      ansible_version:
+        description: 'Ansible core version to install in virtual environment (by default will be installed from requirements.txt)'
+        required: false
+
+jobs:
+
+  main_workflow:
+    runs-on: core
+    outputs:
+      matrix: ${{ steps.get-matrix.outputs.matrix }}
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/generate-matrix
+        id: get-matrix
+        with:
+          platform: ${{ github.event.inputs.platform }}
+          service_user_token: ${{ secrets.SERVICE_USER_TOKEN }}
+
+  execute_test:
+    needs: main_workflow
+    if: needs.main_workflow.outputs.matrix
+    uses: ./.github/workflows/_execute_test.yml
+    with:
+      matrix: ${{ needs.main_workflow.outputs.matrix }}
+      ansible_version: ${{ github.event.inputs.ansible_version }}
+      ansible_strategy_plugins: ${{ github.event.inputs.ansible_strategy_plugins }}
+      virtual_env: ${{ github.event.inputs.virtual_env }}
+      python_version: ${{ github.event.inputs.python_version }}
+      requirements: ${{ github.event.inputs.requirements }}
+      latest_versions: ${{ github.event.inputs.latest_versions }}
