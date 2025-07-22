@@ -9,14 +9,26 @@ permissions:
 on:
   workflow_dispatch:
     inputs:
-      path_to_files:
-        description: 'Path to folder that need to be scanned'
+      SCAN_ITEM:
+        description: "Folder or file for scaning"
         required: false
-        default: ''
+        default: ""
       SLACK_CHANNEL:
-        description: 'Channel'
+        description: "Slach channel for messages"
         required: false
-        default: 'test_messages'
+        default: "test_messages"
+      PYTHON_VERSION:
+        description: "Version of installed python"
+        required: false
+        default: "3.12.3"
+      ANSIBLE_LINT:
+        description: "Version of ansible-lint python package"
+        required: false
+        default: "24.12.2"
+      ANSIBLE_CORE:
+        description: "Version of ansible-core python package"
+        required: false
+        default: "2.17.6"
 
 jobs:
 
@@ -24,6 +36,9 @@ jobs:
     uses: ./.github/workflows/ansible_lint.yml
     with:
       SLACK_CHANNEL: ${{ github.event.inputs.SLACK_CHANNEL}}
-      path_to_files: ${{ github.event.inputs.path_to_files}}
+      SCAN_ITEM: ${{ github.event.inputs.SCAN_ITEM}}
+      PYTHON_VERSION: ${{ github.event.inputs.PYTHON_VERSION}}
+      ANSIBLE_LINT: ${{ github.event.inputs.ANSIBLE_LINT}}
+      ANSIBLE_CORE: ${{ github.event.inputs.ANSIBLE_CORE}}
     secrets:
       SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
