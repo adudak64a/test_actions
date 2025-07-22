@@ -1,0 +1,22 @@
+---
+name: auto-test
+
+# Need for ansible_lint.yml
+permissions:
+  pull-requests: write
+  contents: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      path_to_files:
+        description: 'Path to folder that need to be scanned'
+        required: false
+        default: ''
+
+jobs:
+
+  ansible_lint:
+    uses: ./.github/workflows/ansible_lint.yml
+    secrets:
+      SLACK_TOKEN: ${{ secrets.SLACK_API_TOKEN }}
