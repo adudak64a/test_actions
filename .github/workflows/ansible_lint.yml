@@ -66,7 +66,7 @@ jobs:
 
           echo "Running ansible-lint..."
           SCAN_PATH=${{ github.event.inputs.path_to_files != '' &&  github.event.inputs.path_to_files || '' }}
-          ansible-lint $LINT_ARGS >> lint_tmp.txt'
+          ansible-lint $SCAN_PATH >> lint_tmp.txt
 
       # - name: "Run ansible-lint"
       #   id: run-lint
