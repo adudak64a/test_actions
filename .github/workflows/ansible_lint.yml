@@ -129,21 +129,21 @@ jobs:
                     short: false
                     value: "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|ansible-lint>"
 
-      # - name: "Close pull request if tests failed"
-      #   id: close-failed-pr
-      #   if: failure() and github.event_name != 'workflow_call'
-      #   uses: actions/github-script@v6
-      #   with:
-      #     script: |
-      #         await github.rest.issues.createComment({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         issue_number: ${{ github.event.number }},
-      #         body: "Pull Request has been closed because it didn't pass [ansible-lint](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) tests"
-      #         });
-      #         await github.rest.pulls.update({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         pull_number: ${{ github.event.number }},
-      #         state: "closed"
-      #         });
+      - name: "Close pull request if tests failed"
+        id: close-failed-pr
+        if: failure() and github.event_name != 'workflow_dispatch'
+        uses: actions/github-script@v6
+        with:
+          script: |
+              await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ github.event.number }},
+              body: "Pull Request has been closed because it didn't pass [ansible-lint](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) tests"
+              });
+              await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ github.event.number }},
+              state: "closed"
+              });
