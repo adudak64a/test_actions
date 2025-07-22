@@ -72,6 +72,7 @@ jobs:
 
       - name: Install custom ansible-core
         id: run-lint
+
         run: |
           echo "Installing ansible-core and ansible-lint..."
           pip install ansible-lint==${{inputs.ANSIBLE_LINT}} ansible-core==${{inputs.ANSIBLE_CORE}}
