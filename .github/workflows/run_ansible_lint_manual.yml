@@ -35,8 +35,8 @@ jobs:
   ansible_lint:
     uses: ./.github/workflows/ansible_lint.yml
     with:
-      SLACK_CHANNEL: ${{ github.event.inputs.SLACK_CHANNEL}}
       SCAN_ITEM: ${{ github.event.inputs.SCAN_ITEM}}
+      SLACK_CHANNEL: ${{ github.event.inputs.SLACK_CHANNEL}}
       PYTHON_VERSION: ${{ github.event.inputs.PYTHON_VERSION}}
       ANSIBLE_LINT: ${{ github.event.inputs.ANSIBLE_LINT}}
       ANSIBLE_CORE: ${{ github.event.inputs.ANSIBLE_CORE}}

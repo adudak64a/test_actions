@@ -73,16 +73,18 @@ jobs:
       - name: Install custom ansible-core
         id: run-lint
         run: |
-          echo "Installing ansible-core and ansible-lint..."
+          Yellow="\033[0;33m"
+          echo "${Yello}Installing ansible-core and ansible-lint..."
           pip install ansible-lint==${{inputs.ANSIBLE_LINT}} ansible-core==${{inputs.ANSIBLE_CORE}}
 
-          echo "Installing Ansible Galaxy collections..."
+          echo "${Yello}Installing Ansible Galaxy collections..."
           ansible-galaxy collection install -r ./ansible_required_collections.yml
 
-          echo "Running ansible-lint..."
+          echo "${Yello}Running ansible-lint..."
           SCAN_PATH=${{ inputs.SCAN_ITEM != '' && inputs.SCAN_ITEM || '' }}
           ansible-lint $SCAN_PATH >> lint_tmp.txt
 
+      # Example of using ansible-lint github action
       # - name: "Run ansible-lint"
       #   id: run-lint
       #   uses: ansible/ansible-lint@v24
