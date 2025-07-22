@@ -58,17 +58,17 @@ jobs:
         with:
           python-version: ${{github.event.inputs.PYTHON_VERSION}}
 
-      # - name: Cache Ansible Collections
-      #   id: ansible-collections-cache
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: |
-      #       ~/.ansible/collections
-      #       ${{ github.workspace }}/tmp_ansible_collections
-      #     key: ansible-collections-global-${{ runner.os }}-${{ hashFiles('./ansible_required_collections.yml') }}
-      #     restore-keys: |
-      #       ansible-collections-global-${{ runner.os }}-
-      #       ansible-collections-${{ runner.os }}-
+      - name: Cache Ansible Collections
+        id: ansible-collections-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.ansible/collections
+            ${{ github.workspace }}/tmp_ansible_collections
+          key: ansible-collections-global-${{ runner.os }}-${{ hashFiles('./ansible_required_collections.yml') }}
+          restore-keys: |
+            ansible-collections-global-${{ runner.os }}-
+            ansible-collections-${{ runner.os }}-
 
       - name: Install custom ansible-core
         id: run-lint
